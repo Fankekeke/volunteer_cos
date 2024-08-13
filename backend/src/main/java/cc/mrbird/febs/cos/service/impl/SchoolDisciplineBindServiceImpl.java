@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 学校专业绑定 实现层
@@ -28,5 +29,10 @@ public class SchoolDisciplineBindServiceImpl extends ServiceImpl<SchoolDisciplin
     @Override
     public IPage<LinkedHashMap<String, Object>> selectDisciplineBindPage(Page<SchoolDisciplineBind> page, SchoolDisciplineBind schoolDisciplineBind) {
         return baseMapper.selectDisciplineBindPage(page, schoolDisciplineBind);
+    }
+
+    @Override
+    public List<LinkedHashMap<String, Object>> selectBindBySchool(Integer schoolId) {
+        return baseMapper.selectBindBySchool(schoolId);
     }
 }

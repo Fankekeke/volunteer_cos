@@ -1,6 +1,7 @@
 package cc.mrbird.febs.cos.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -50,4 +51,7 @@ public class SchoolDisciplineBind implements Serializable {
 
     @TableField(exist = false)
     private String employment;
+
+    @TableField(exist = false)
+    private List<SchoolDisciplineBind> binds;
 }

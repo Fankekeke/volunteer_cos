@@ -39,6 +39,17 @@ public class ApplyBillInfoController {
     }
 
     /**
+     * 添加志愿申请信息
+     *
+     * @param applyBillInfo 志愿申请信息
+     * @return 结果
+     */
+    @PostMapping("/addApplyBill")
+    public R addApplyBill(ApplyBillInfo applyBillInfo) {
+        return R.ok(applyBillInfoService.addApplyBill(applyBillInfo));
+    }
+
+    /**
      * 查询志愿申请信息详情
      *
      * @param id 主键ID
@@ -78,6 +89,12 @@ public class ApplyBillInfoController {
      */
     @PutMapping
     public R edit(ApplyBillInfo applyBillInfo) {
+        if (StrUtil.isNotEmpty(applyBillInfo.getStatus()) && "2".equals(applyBillInfo.getStatus())) {
+            applyBillInfo.setUserConfirmDate(DateUtil.formatDateTime(new Date()));
+        }
+        if (StrUtil.isNotEmpty(applyBillInfo.getStatus()) && "3".equals(applyBillInfo.getStatus())) {
+            applyBillInfo.setSchoolConfirmDate(DateUtil.formatDateTime(new Date()));
+        }
         return R.ok(applyBillInfoService.updateById(applyBillInfo));
     }
 

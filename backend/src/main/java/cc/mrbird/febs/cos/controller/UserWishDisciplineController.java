@@ -2,8 +2,11 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.entity.UserWishDiscipline;
+import cc.mrbird.febs.cos.service.IUserInfoService;
 import cc.mrbird.febs.cos.service.IUserWishDisciplineService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ import java.util.List;
 public class UserWishDisciplineController {
 
     private final IUserWishDisciplineService userWishDisciplineService;
+
+    private final IUserInfoService userInfoService;
 
     /**
      * 分页获取学生志愿专业信息
@@ -64,7 +69,18 @@ public class UserWishDisciplineController {
      */
     @PostMapping
     public R save(UserWishDiscipline userWishDiscipline) {
-        return R.ok(userWishDisciplineService.save(userWishDiscipline));
+        // 获取学生信息
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userWishDiscipline.getUserId()));
+        if (userInfo != null) {
+            userWishDiscipline.setUserId(userInfo.getId());
+        }
+        List<UserWishDiscipline> disciplineList = userWishDiscipline.getDisciplineList();
+        // 删除旧数据
+        userWishDisciplineService.remove(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, userWishDiscipline.getUserId()));
+        for (UserWishDiscipline wishDiscipline : disciplineList) {
+            wishDiscipline.setUserId(userWishDiscipline.getUserId());
+        }
+        return R.ok(userWishDisciplineService.saveBatch(disciplineList));
     }
 
     /**

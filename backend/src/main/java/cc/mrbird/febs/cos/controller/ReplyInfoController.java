@@ -3,12 +3,17 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.ReplyInfo;
+import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.service.IReplyInfoService;
+import cc.mrbird.febs.cos.service.IUserInfoService;
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +28,8 @@ public class ReplyInfoController {
 
     private final IReplyInfoService replyInfoService;
 
+    private final IUserInfoService userInfoService;
+
     /**
      * 分页获取学校评论信息
      *
@@ -33,6 +40,17 @@ public class ReplyInfoController {
     @GetMapping("/page")
     public R page(Page<ReplyInfo> page, ReplyInfo replyInfo) {
         return R.ok(replyInfoService.selectReplyPage(page, replyInfo));
+    }
+
+    /**
+     * 根据学校ID获取评论信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    @GetMapping("/selectReplyBySchool")
+    public R selectReplyBySchool(Integer schoolId) {
+        return R.ok(replyInfoService.selectReplyBySchool(schoolId));
     }
 
     /**
@@ -64,6 +82,13 @@ public class ReplyInfoController {
      */
     @PostMapping
     public R save(ReplyInfo replyInfo) {
+        // 发送时间
+        replyInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        // 用户ID设置
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, replyInfo.getUserId()));
+        if (userInfo != null) {
+            replyInfo.setUserId(userInfo.getId());
+        }
         return R.ok(replyInfoService.save(replyInfo));
     }
 

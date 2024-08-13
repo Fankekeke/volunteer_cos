@@ -24,10 +24,10 @@ public class ScoreLineInfoController {
     private final IScoreLineInfoService scoreLineInfoService;
 
     /**
-     * 分页获取学校专业绑定信息
+     * 分页获取分数线信息
      *
-     * @param page                 分页对象
-     * @param scoreLineInfo 学校专业绑定信息
+     * @param page          分页对象
+     * @param scoreLineInfo 分数线信息
      * @return 结果
      */
     @GetMapping("/page")
@@ -36,7 +36,19 @@ public class ScoreLineInfoController {
     }
 
     /**
-     * 查询学校专业绑定信息详情
+     * 根据学校获取分数线
+     *
+     * @param schoolId 学校ID
+     * @param year     年份
+     * @return 结果
+     */
+    @GetMapping("/selectScoreLineBySchool")
+    public R selectScoreLineBySchool(Integer schoolId, String year) {
+        return R.ok(scoreLineInfoService.selectScoreLineBySchool(schoolId, year));
+    }
+
+    /**
+     * 查询分数线信息详情
      *
      * @param id 主键ID
      * @return 结果
@@ -47,7 +59,7 @@ public class ScoreLineInfoController {
     }
 
     /**
-     * 查询学校专业绑定信息列表
+     * 查询分数线信息列表
      *
      * @return 结果
      */
@@ -57,9 +69,9 @@ public class ScoreLineInfoController {
     }
 
     /**
-     * 新增学校专业绑定信息
+     * 新增分数线信息
      *
-     * @param scoreLineInfo 学校专业绑定信息
+     * @param scoreLineInfo 分数线信息
      * @return 结果
      */
     @PostMapping
@@ -68,9 +80,9 @@ public class ScoreLineInfoController {
     }
 
     /**
-     * 修改学校专业绑定信息
+     * 修改分数线信息
      *
-     * @param scoreLineInfo 学校专业绑定信息
+     * @param scoreLineInfo 分数线信息
      * @return 结果
      */
     @PutMapping
@@ -79,10 +91,10 @@ public class ScoreLineInfoController {
     }
 
     /**
-     * 删除学校专业绑定信息
+     * 删除分数线信息
      *
      * @param ids ids
-     * @return 学校专业绑定信息
+     * @return 分数线信息
      */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {

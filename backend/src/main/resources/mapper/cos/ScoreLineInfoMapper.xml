@@ -27,6 +27,7 @@
         (di.id = sli.discipline_id)
         where
         1 = 1
+        AND sli.templateFlag = '0'
         <if test="scoreLineInfo.schoolName != null and scoreLineInfo.schoolName != ''">
             AND ss.name LIKE CONCAT('%',#{scoreLineInfo.schoolName},'%')
         </if>
@@ -39,6 +40,70 @@
         <if test="scoreLineInfo.year != null and scoreLineInfo.year != ''">
             AND sli.year = #{scoreLineInfo.year}
         </if>
+        order by
+        sli.`year` desc
+    </select>
+
+    <!-- 根据学校获取分数线 -->
+    <select id="selectScoreLineBySchool" resultType="java.util.LinkedHashMap">
+        select
+        sli.id,
+        sli.school_id,
+        sli.discipline_id,
+        sli.`type`,
+        sli.score,
+        sli.template_flag,
+        sli.`year`,
+        sli.admissions,
+        ss.name as schoolName,
+        ss.area,
+        ss.manage,
+        ss.`level`,
+        di.name as disciplineName,
+        di.employment
+        from
+        score_line_info sli
+        left join sys_school ss on
+        (ss.id = sli.school_id)
+        left join discipline_info di on
+        (di.id = sli.discipline_id)
+        where
+        1 = 1
+        AND sli.school_id = #{schoolId}
+        AND sli.templateFlag = '0'
+        <if test="year != null and year != ''">
+            AND sli.year = #{year}
+        </if>
+        order by
+        sli.`year` desc
+    </select>
+
+    <!-- 查询默认分数线 -->
+    <select id="selectScoreLineDefault" resultType="java.util.LinkedHashMap">
+        select
+        sli.id,
+        sli.school_id,
+        sli.discipline_id,
+        sli.`type`,
+        sli.score,
+        sli.template_flag,
+        sli.`year`,
+        sli.admissions,
+        ss.name as schoolName,
+        ss.area,
+        ss.manage,
+        ss.`level`,
+        di.name as disciplineName,
+        di.employment
+        from
+        score_line_info sli
+        left join sys_school ss on
+        (ss.id = sli.school_id)
+        left join discipline_info di on
+        (di.id = sli.discipline_id)
+        where
+        1 = 1
+        AND sli.templateFlag = '1'
         order by
         sli.`year` desc
     </select>

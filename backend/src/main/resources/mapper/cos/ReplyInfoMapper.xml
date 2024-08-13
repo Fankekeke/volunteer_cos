@@ -40,4 +40,35 @@
         order by
         ri.create_date desc
     </select>
+
+    <!-- 根据学校ID获取评论信息 -->
+    <select id="selectReplyBySchool" resultType="java.util.LinkedHashMap">
+        select
+        ri.id,
+        ri.user_id,
+        ri.content,
+        ri.to_user_id,
+        ri.create_date,
+        ri.school_id,
+        ss.name as schoolName,
+        ss.area,
+        ss.manage,
+        ss.`level`,
+        ui.name as userName,
+        ui.id_card,
+        ui.`type`,
+        ui.sex,
+        ui.images
+        from
+        reply_info ri
+        left join sys_school ss on
+        (ss.id = ri.school_id)
+        left join user_info ui on
+        (ui.id = ri.user_id)
+        where
+        1 = 1
+        AND ri.school_id = #{schoolId}
+        order by
+        ri.create_date desc
+    </select>
 </mapper>

@@ -33,7 +33,34 @@
             AND di.employment LIKE CONCAT('%',#{schoolDisciplineBind.employment},'%')
         </if>
         order by
-        school_id,
+        sdb.school_id,
+        sdb.index_no desc
+    </select>
+
+    <!-- 根据学校ID获取绑定信息 -->
+    <select id="selectBindBySchool" resultType="java.util.LinkedHashMap">
+        select
+        sdb.id,
+        sdb.school_id,
+        sdb.discipline_id,
+        sdb.index_no,
+        ss.name as schoolName,
+        ss.area,
+        ss.manage,
+        ss.`level`,
+        di.name as disciplineName,
+        di.employment
+        from
+        school_discipline_bind sdb
+        left join sys_school ss on
+        (ss.id = sdb.school_id)
+        left join discipline_info di on
+        (di.id = sdb.discipline_id)
+        where
+        1 = 1
+        AND di.school_id = #{schoolId}
+        order by
+        sdb.school_id,
         sdb.index_no desc
     </select>
 </mapper>

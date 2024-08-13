@@ -2,8 +2,11 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.entity.UserWishInfo;
+import cc.mrbird.febs.cos.service.IUserInfoService;
 import cc.mrbird.febs.cos.service.IUserWishInfoService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ import java.util.List;
 public class UserWishInfoController {
 
     private final IUserWishInfoService userWishInfoService;
+
+    private final IUserInfoService userInfoService;
 
     /**
      * 分页获取志愿填报信息
@@ -64,6 +69,11 @@ public class UserWishInfoController {
      */
     @PostMapping
     public R save(UserWishInfo userWishInfo) {
+        // 获取学生信息
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userWishInfo.getUserId()));
+        if (userInfo != null) {
+            userWishInfo.setUserId(userInfo.getId());
+        }
         return R.ok(userWishInfoService.save(userWishInfo));
     }
 

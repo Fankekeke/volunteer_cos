@@ -23,4 +23,12 @@ public interface IApplyBillInfoService extends IService<ApplyBillInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectApplyBillPage(Page<ApplyBillInfo> page, ApplyBillInfo applyBillInfo);
+
+    /**
+     * 添加志愿申请信息
+     *
+     * @param applyBillInfo 志愿申请信息
+     * @return 结果
+     */
+    boolean addApplyBill(ApplyBillInfo applyBillInfo);
 }

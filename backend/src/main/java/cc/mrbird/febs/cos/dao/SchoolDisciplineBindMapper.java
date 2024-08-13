@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 学校专业绑定 mapper层
@@ -23,4 +24,12 @@ public interface SchoolDisciplineBindMapper extends BaseMapper<SchoolDisciplineB
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectDisciplineBindPage(Page<SchoolDisciplineBind> page, @Param("schoolDisciplineBind") SchoolDisciplineBind schoolDisciplineBind);
+
+    /**
+     * 根据学校ID获取绑定信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectBindBySchool(@Param("schoolId")Integer schoolId);
 }

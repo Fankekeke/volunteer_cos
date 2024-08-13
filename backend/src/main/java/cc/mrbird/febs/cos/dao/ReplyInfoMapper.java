@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 学校评论管理 mapper层
@@ -23,4 +24,13 @@ public interface ReplyInfoMapper extends BaseMapper<ReplyInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectReplyPage(Page<ReplyInfo> page, @Param("replyInfo") ReplyInfo replyInfo);
+
+    /**
+     * 根据学校ID获取评论信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectReplyBySchool(@Param("schoolId") Integer schoolId);
+
 }

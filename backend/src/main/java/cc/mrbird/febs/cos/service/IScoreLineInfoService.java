@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 分数线 service层
@@ -23,4 +24,13 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectScoreLinePage(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo);
+
+    /**
+     * 根据学校获取分数线
+     *
+     * @param schoolId 学校ID
+     * @param year     年份
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectScoreLineBySchool(Integer schoolId, String year);
 }
