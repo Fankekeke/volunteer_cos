@@ -32,7 +32,7 @@ public class SysSchoolController {
      */
     @GetMapping("/page")
     public R page(Page<SysSchool> page, SysSchool sysSchool) {
-        return R.ok();
+        return R.ok(sysSchoolService.selectSchoolPage(page, sysSchool));
     }
 
     /**

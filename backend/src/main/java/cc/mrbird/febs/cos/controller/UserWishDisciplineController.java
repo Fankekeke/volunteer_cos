@@ -32,7 +32,7 @@ public class UserWishDisciplineController {
      */
     @GetMapping("/page")
     public R page(Page<UserWishDiscipline> page, UserWishDiscipline userWishDiscipline) {
-        return R.ok();
+        return R.ok(userWishDisciplineService.selectUserWishDisciplinePage(page, userWishDiscipline));
     }
 
     /**

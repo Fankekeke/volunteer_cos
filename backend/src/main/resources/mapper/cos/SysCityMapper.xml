@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.SysCityMapper">
 
+    <!-- 分页获取城市信息 -->
+    <select id="selectCityPage" resultType="java.util.LinkedHashMap">
+        select
+        id,
+        name,
+        parent_id,
+        initial,
+        initials,
+        pinyin,
+        extra,
+        suffix,
+        code,
+        area_code,
+        order_by
+        from
+        sys_city
+        where
+        1 = 1
+        <if test="sysCity.name != null and sysCity.name != ''">
+            AND name LIKE CONCAT('%',#{sysCity.name},'%')
+        </if>
+        <if test="sysCity.initial != null and sysCity.initial != ''">
+            AND initial LIKE CONCAT('%',#{sysCity.initial},'%')
+        </if>
+        <if test="sysCity.suffix != null and sysCity.suffix != ''">
+            AND suffix = #{sysCity.suffix}
+        </if>
+        order by
+        order_by
+    </select>
 </mapper>

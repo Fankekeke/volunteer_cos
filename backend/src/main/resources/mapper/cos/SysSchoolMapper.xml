@@ -2,4 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.SysSchoolMapper">
 
+    <!-- 分页获取学校信息 -->
+    <select id="selectSchoolPage" resultType="java.util.LinkedHashMap">
+        select
+        id,
+        name,
+        address,
+        area,
+        `number`,
+        `desc`,
+        http,
+        manage,
+        `level`,
+        `type`,
+        city_id,
+        school_code
+        from
+        sys_school
+        where
+        1 = 1
+        <if test="sysSchool.name != null and sysSchool.name != ''">
+            AND name LIKE CONCAT('%',#{sysSchool.name},'%')
+        </if>
+        <if test="sysSchool.area != null and sysSchool.area != ''">
+            AND area LIKE CONCAT('%',#{sysSchool.area},'%')
+        </if>
+        <if test="sysSchool.manage != null and sysSchool.manage != ''">
+            AND manage LIKE CONCAT('%',#{sysSchool.manage},'%')
+        </if>
+        <if test="sysSchool.type != null and sysSchool.type != ''">
+            AND type LIKE CONCAT('%',#{sysSchool.type},'%')
+        </if>
+        order by
+        city_id desc
+    </select>
 </mapper>

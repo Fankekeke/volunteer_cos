@@ -32,7 +32,7 @@ public class UserWishInfoController {
      */
     @GetMapping("/page")
     public R page(Page<UserWishInfo> page, UserWishInfo userWishInfo) {
-        return R.ok();
+        return R.ok(userWishInfoService.selectUserWishPage(page, userWishInfo));
     }
 
     /**

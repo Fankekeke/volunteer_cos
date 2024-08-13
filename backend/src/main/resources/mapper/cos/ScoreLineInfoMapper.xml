@@ -2,4 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.ScoreLineInfoMapper">
 
+    <!-- 分页获取学校专业绑定信息 -->
+    <select id="selectScoreLinePage" resultType="java.util.LinkedHashMap">
+        select
+        sli.id,
+        sli.school_id,
+        sli.discipline_id,
+        sli.`type`,
+        sli.score,
+        sli.template_flag,
+        sli.`year`,
+        sli.admissions,
+        ss.name as schoolName,
+        ss.area,
+        ss.manage,
+        ss.`level`,
+        di.name as disciplineName,
+        di.employment
+        from
+        score_line_info sli
+        left join sys_school ss on
+        (ss.id = sli.school_id)
+        left join discipline_info di on
+        (di.id = sli.discipline_id)
+        where
+        1 = 1
+        <if test="scoreLineInfo.schoolName != null and scoreLineInfo.schoolName != ''">
+            AND ss.name LIKE CONCAT('%',#{scoreLineInfo.schoolName},'%')
+        </if>
+        <if test="scoreLineInfo.disciplineName != null and scoreLineInfo.disciplineName != ''">
+            AND di.name LIKE CONCAT('%',#{scoreLineInfo.disciplineName},'%')
+        </if>
+        <if test="scoreLineInfo.type != null and scoreLineInfo.type != ''">
+            AND sli.type = #{scoreLineInfo.type}
+        </if>
+        <if test="scoreLineInfo.year != null and scoreLineInfo.year != ''">
+            AND sli.year = #{scoreLineInfo.year}
+        </if>
+        order by
+        sli.`year` desc
+    </select>
 </mapper>

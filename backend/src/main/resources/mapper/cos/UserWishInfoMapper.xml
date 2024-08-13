@@ -2,4 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.UserWishInfoMapper">
 
+    <!-- 分页获取志愿填报信息 -->
+    <select id="selectUserWishPage" resultType="java.util.LinkedHashMap">
+        select
+        uwi.id,
+        uwi.user_id,
+        uwi.index_no,
+        uwi.school_id,
+        uwi.discipline_id,
+        uwi.status,
+        ss.name as schoolName,
+        ss.area,
+        ss.manage,
+        ss.`level`,
+        ui.name as userName,
+        ui.id_card,
+        ui.`type`,
+        ui.sex,
+        ui.images,
+        di.name as disciplineName,
+        di.employment
+        from
+        user_wish_info uwi
+        left join discipline_info di on
+        (di.id = uwi.discipline_id)
+        left join user_info ui on
+        (ui.id = uwi.user_id)
+        left join sys_school ss on
+        (ss.id = uwi.school_id)
+        where
+        1 = 1
+        <if test="userWishInfo.userName != null and userWishInfo.userName != ''">
+            AND ui.name LIKE CONCAT('%',#{userWishInfo.userName},'%')
+        </if>
+        <if test="userWishInfo.schoolName != null and userWishInfo.schoolName != ''">
+            AND ss.name LIKE CONCAT('%',#{userWishInfo.schoolName},'%')
+        </if>
+        <if test="userWishInfo.disciplineName != null and userWishInfo.disciplineName != ''">
+            AND di.name LIKE CONCAT('%',#{userWishInfo.schoolName},'%')
+        </if>
+        <if test="userWishInfo.status != null and userWishInfo.status != ''">
+            AND uwi.status = #{userWishInfo.status}
+        </if>
+        order by
+        uwi.user_id,
+        uwi.index_no desc
+    </select>
 </mapper>

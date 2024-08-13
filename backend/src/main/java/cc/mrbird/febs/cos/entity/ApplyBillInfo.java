@@ -2,6 +2,10 @@ package cc.mrbird.febs.cos.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,6 +21,12 @@ import lombok.experimental.Accessors;
 public class ApplyBillInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 主键ID
+     */
+    @TableId(type = IdType.AUTO)
+    private Integer id;
 
     /**
      * 所属学校
@@ -41,17 +51,27 @@ public class ApplyBillInfo implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createDate;
+    private String createDate;
 
     /**
      * 用户确认时间
      */
-    private LocalDateTime userConfirmDate;
+    private String userConfirmDate;
 
     /**
      * 学校确认时间
      */
-    private LocalDateTime schoolConfirmDate;
+    private String schoolConfirmDate;
 
+    @TableField(exist = false)
+    private String schoolName;
 
+    @TableField(exist = false)
+    private String level;
+
+    @TableField(exist = false)
+    private String userName;
+
+    @TableField(exist = false)
+    private String idCard;
 }

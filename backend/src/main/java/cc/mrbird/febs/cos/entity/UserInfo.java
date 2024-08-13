@@ -22,6 +22,12 @@ public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 主键ID
+     */
+    @TableId(type = IdType.AUTO)
+    private Integer id;
+
+    /**
      * 学生编号
      */
     private String code;
@@ -39,7 +45,7 @@ public class UserInfo implements Serializable {
     /**
      * 出生日期
      */
-    private LocalDate birthday;
+    private String birthday;
 
     /**
      * 身份证号码
@@ -74,7 +80,7 @@ public class UserInfo implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createDate;
+    private String createDate;
 
     /**
      * 所属账户

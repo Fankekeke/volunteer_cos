@@ -32,7 +32,7 @@ public class SysCityController {
      */
     @GetMapping("/page")
     public R page(Page<SysCity> page, SysCity sysCity) {
-        return R.ok();
+        return R.ok(sysCityService.selectCityPage(page, sysCity));
     }
 
     /**

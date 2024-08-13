@@ -2,4 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.UserWishDisciplineMapper">
 
+    <!-- 分页获取学生志愿专业信息 -->
+    <select id="selectUserWishDisciplinePage" resultType="java.util.LinkedHashMap">
+        select
+        uwd.id,
+        uwd.user_id,
+        uwd.discipline_id,
+        ui.name as userName,
+        ui.id_card,
+        ui.`type`,
+        ui.sex,
+        ui.images,
+        di.name as disciplineName,
+        di.employment
+        from
+        user_wish_discipline uwd
+        left join discipline_info di on
+        (di.id = uwd.discipline_id)
+        left join user_info ui on
+        (ui.id = uwd.user_id)
+        where
+        1 = 1
+        <if test="userWishDiscipline.userName != null and userWishDiscipline.userName != ''">
+            AND ui.name LIKE CONCAT('%',#{userWishDiscipline.userName},'%')
+        </if>
+        <if test="userWishDiscipline.idCard != null and userWishDiscipline.idCard != ''">
+            AND ui.id_card LIKE CONCAT('%',#{userWishDiscipline.idCard},'%')
+        </if>
+        <if test="userWishDiscipline.disciplineName != null and userWishDiscipline.disciplineName != ''">
+            AND di.name LIKE CONCAT('%',#{userWishDiscipline.disciplineName},'%')
+        </if>
+        order by
+        uwd.user_id desc
+    </select>
 </mapper>

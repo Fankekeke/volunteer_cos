@@ -2,4 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.ApplyBillInfoMapper">
 
+    <!-- 分页获取志愿申请信息 -->
+    <select id="selectApplyBillPage" resultType="java.util.LinkedHashMap">
+        select
+        abi.id,
+        abi.school_id,
+        abi.code,
+        abi.user_id,
+        abi.status,
+        abi.create_date,
+        abi.user_confirm_date,
+        abi.school_confirm_date,
+        ss.name as schoolName,
+        ss.area,
+        ss.manage,
+        ss.`level`,
+        ui.name as userName,
+        ui.id_card,
+        ui.`type`,
+        ui.sex,
+        ui.images
+        from
+        apply_bill_info abi
+        left join sys_school ss on
+        (ss.id = abi.school_id)
+        left join user_info ui on
+        (ui.id = abi.user_id)
+        where
+        1 = 1
+        <if test="applyBillInfo.schoolName != null and applyBillInfo.schoolName != ''">
+            AND ss.name LIKE CONCAT('%',#{applyBillInfo.schoolName},'%')
+        </if>
+        <if test="applyBillInfo.level != null and applyBillInfo.level != ''">
+            AND ss.level LIKE CONCAT('%',#{applyBillInfo.level},'%')
+        </if>
+        <if test="applyBillInfo.userName != null and applyBillInfo.userName != ''">
+            AND ui.name LIKE CONCAT('%',#{applyBillInfo.userName},'%')
+        </if>
+        <if test="applyBillInfo.idCard != null and applyBillInfo.idCard != ''">
+            AND ui.id_card LIKE CONCAT('%',#{applyBillInfo.idCard},'%')
+        </if>
+        order by
+        abi.create_date desc
+    </select>
 </mapper>

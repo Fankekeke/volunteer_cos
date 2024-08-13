@@ -2,6 +2,10 @@ package cc.mrbird.febs.cos.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,6 +21,12 @@ import lombok.experimental.Accessors;
 public class ReplyInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 主键ID
+     */
+    @TableId(type = IdType.AUTO)
+    private Integer id;
 
     /**
      * 评价人
@@ -36,12 +46,16 @@ public class ReplyInfo implements Serializable {
     /**
      * 回复时间
      */
-    private LocalDateTime createDate;
+    private String createDate;
 
     /**
      * 所属学校
      */
     private Integer schoolId;
 
+    @TableField(exist = false)
+    private String schoolName;
 
+    @TableField(exist = false)
+    private String userName;
 }
