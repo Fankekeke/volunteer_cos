@@ -1,6 +1,7 @@
 package cc.mrbird.febs.cos.dao;
 
 import cc.mrbird.febs.cos.entity.ScoreLineInfo;
+import cc.mrbird.febs.cos.entity.vo.ScoreLineVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,6 +34,15 @@ public interface ScoreLineInfoMapper extends BaseMapper<ScoreLineInfo> {
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> selectScoreLineBySchool(@Param("schoolId") Integer schoolId, @Param("year") String year);
+
+    /**
+     * 根据学校获取分数线
+     *
+     * @param schoolIds 学校IDS
+     * @param year      年份
+     * @return 结果
+     */
+    List<ScoreLineVo> selectScoreLineBySchoolIds(@Param("schoolIds") List<Integer> schoolIds, @Param("year") String year);
 
     /**
      * 查询默认分数线

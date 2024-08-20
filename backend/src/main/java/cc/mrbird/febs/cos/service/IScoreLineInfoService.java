@@ -19,7 +19,7 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
     /**
      * 分页获取学校专业绑定信息
      *
-     * @param page                 分页对象
+     * @param page          分页对象
      * @param scoreLineInfo 学校专业绑定信息
      * @return 结果
      */
@@ -33,4 +33,12 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> selectScoreLineBySchool(Integer schoolId, String year);
+
+    /**
+     * 获取分数线地图信息
+     *
+     * @param year 年份
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectScoreMap(Integer year);
 }

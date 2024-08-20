@@ -2,13 +2,18 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.BulletinInfo;
 import cc.mrbird.febs.cos.entity.SysSchool;
+import cc.mrbird.febs.cos.service.IBulletinInfoService;
 import cc.mrbird.febs.cos.service.ISysSchoolService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -22,6 +27,8 @@ import java.util.List;
 public class SysSchoolController {
 
     private final ISysSchoolService sysSchoolService;
+
+    private final IBulletinInfoService bulletinInfoService;
 
     /**
      * 分页获取学校信息
@@ -44,6 +51,30 @@ public class SysSchoolController {
     @GetMapping("/{id}")
     public R detail(@PathVariable("id") Integer id) {
         return R.ok(sysSchoolService.getById(id));
+    }
+
+    /**
+     * 获取学校信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    @GetMapping("/selectSchoolBulletin/{schoolId}")
+    public R selectSchoolBulletin(@PathVariable("schoolId") Integer schoolId) {
+        // 返回数据
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
+            {
+                put("school", null);
+                put("bulletin", Collections.emptyList());
+            }
+        };
+        SysSchool school = sysSchoolService.getOne(Wrappers.<SysSchool>lambdaQuery().eq(SysSchool::getUserId, schoolId));
+        result.put("school", school);
+
+        // 公告信息
+        List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, 1));
+        result.put("bulletin", bulletinInfoList);
+        return R.ok(result);
     }
 
     /**

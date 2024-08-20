@@ -16,7 +16,10 @@
         `level`,
         `type`,
         city_id,
-        school_code
+        school_code,
+        user_id,
+        longitude,
+        latitude
         from
         sys_school
         where

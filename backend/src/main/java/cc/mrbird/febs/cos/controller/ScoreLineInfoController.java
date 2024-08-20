@@ -36,6 +36,17 @@ public class ScoreLineInfoController {
     }
 
     /**
+     * 获取分数线地图信息
+     *
+     * @param year 年份
+     * @return 结果
+     */
+    @GetMapping("/selectScoreMap")
+    public R selectScoreMap(Integer year) {
+        return R.ok(scoreLineInfoService.selectScoreMap(year));
+    }
+
+    /**
      * 根据学校获取分数线
      *
      * @param schoolId 学校ID
