@@ -146,4 +146,34 @@
         order by
         sli.`year` desc
     </select>
+
+    <!-- 查询默认分数线 -->
+    <select id="selectScoreLineDefaultFix" resultType="cc.mrbird.febs.cos.entity.vo.ScoreLineVo">
+        select
+            sli.id,
+            sli.school_id,
+            sli.discipline_id,
+            sli.`type`,
+            sli.score,
+            sli.template_flag,
+            sli.`year`,
+            sli.admissions,
+            ss.name as schoolName,
+            ss.area,
+            ss.manage,
+            ss.`level`,
+            di.name as disciplineName,
+            di.employment
+        from
+            score_line_info sli
+                left join sys_school ss on
+                (ss.id = sli.school_id)
+                left join discipline_info di on
+                (di.id = sli.discipline_id)
+        where
+            1 = 1
+          AND sli.templateFlag = '1'
+        order by
+            sli.`year` desc
+    </select>
 </mapper>

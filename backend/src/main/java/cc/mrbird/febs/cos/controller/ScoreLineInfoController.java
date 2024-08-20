@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -36,6 +37,26 @@ public class ScoreLineInfoController {
     }
 
     /**
+     * 校院统计
+     *
+     * @return 结果
+     */
+    @GetMapping("/selectSchoolRate")
+    public R selectSchoolRate() {
+        return R.ok(scoreLineInfoService.selectSchoolRate());
+    }
+
+    /**
+     * 招生统计
+     *
+     * @param year 年份
+     * @return 结果
+     */
+    public R selectAdmissionsRate(Integer year) {
+        return R.ok();
+    }
+
+    /**
      * 获取分数线地图信息
      *
      * @param year 年份
@@ -44,6 +65,19 @@ public class ScoreLineInfoController {
     @GetMapping("/selectScoreMap")
     public R selectScoreMap(Integer year) {
         return R.ok(scoreLineInfoService.selectScoreMap(year));
+    }
+
+    /**
+     * 获取推荐学校
+     *
+     * @param score        分数
+     * @param disciplineId 专业ID
+     * @param type         类型
+     * @return
+     */
+    @GetMapping("/selectRecommendSchool")
+    public R selectRecommendSchool(Integer score, Integer disciplineId, String type) {
+        return R.ok(scoreLineInfoService.selectRecommendSchool(score, disciplineId, type));
     }
 
     /**

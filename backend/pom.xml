@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cc.mrbird</groupId>
-    <artifactId>Order-Platform</artifactId>
+    <artifactId>Volunteer-Platform</artifactId>
     <version>1.0.0-release</version>
     <packaging>jar</packaging>
 

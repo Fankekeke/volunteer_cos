@@ -50,4 +50,11 @@ public interface ScoreLineInfoMapper extends BaseMapper<ScoreLineInfo> {
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> selectScoreLineDefault();
+
+    /**
+     * 查询默认分数线
+     *
+     * @return 结果
+     */
+    List<ScoreLineVo> selectScoreLineDefaultFix();
 }

@@ -1,11 +1,13 @@
 package cc.mrbird.febs.cos.service;
 
 import cc.mrbird.febs.cos.entity.ScoreLineInfo;
+import cc.mrbird.febs.cos.entity.vo.ScoreLineVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -41,4 +43,29 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> selectScoreMap(Integer year);
+
+    /**
+     * 获取推荐学校
+     *
+     * @param score        分数
+     * @param disciplineId 专业ID
+     * @param type         类型
+     * @return
+     */
+    List<ScoreLineVo> selectRecommendSchool(Integer score, Integer disciplineId, String type);
+
+    /**
+     * 校院统计
+     *
+     * @return 结果
+     */
+    LinkedHashMap<String, Object> selectSchoolRate();
+
+    /**
+     * 招生统计
+     *
+     * @param year 年份
+     * @return 结果
+     */
+    LinkedHashMap<String, Object> selectAdmissionsRate(Integer year);
 }
