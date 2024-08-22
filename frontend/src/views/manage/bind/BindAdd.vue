@@ -177,7 +177,7 @@ export default {
         // values.birthday = moment(values.birthday).format('YYYY-MM-DD')
         if (!err) {
           this.loading = true
-          this.$post('/cos/bind-info', {
+          this.$post('/cos/school-discipline-bind', {
             ...values
           }).then((r) => {
             this.reset()

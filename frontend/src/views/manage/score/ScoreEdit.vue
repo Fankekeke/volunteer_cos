@@ -211,7 +211,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$put('/cos/score-info', {
+          this.$put('/cos/score-line-info', {
             ...values
           }).then((r) => {
             this.reset()

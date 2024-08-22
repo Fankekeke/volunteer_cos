@@ -296,7 +296,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/apply-info/' + ids).then(() => {
+          that.$delete('/cos/apply-bill-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -369,7 +369,7 @@ export default {
       if (params.type === undefined) {
         delete params.type
       }
-      this.$get('/cos/apply-info/page', {
+      this.$get('/cos/apply-bill-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

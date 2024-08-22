@@ -211,7 +211,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$put('/cos/bind-info', {
+          this.$put('/cos/school-discipline-bind', {
             ...values
           }).then((r) => {
             this.reset()

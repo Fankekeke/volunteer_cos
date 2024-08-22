@@ -177,7 +177,7 @@ export default {
         // values.birthday = moment(values.birthday).format('YYYY-MM-DD')
         if (!err) {
           this.loading = true
-          this.$post('/cos/wishDiscipline-info', {
+          this.$post('/cos/user-wish-discipline', {
             ...values
           }).then((r) => {
             this.reset()
