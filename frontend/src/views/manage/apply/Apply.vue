@@ -15,7 +15,7 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="志愿申请编号"
+                label="申请编号"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.code"/>
@@ -39,7 +39,8 @@
     </div>
     <div>
       <div class="operator">
-<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button type="primary" ghost @click="add">新增</a-button>
+        <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -64,8 +65,6 @@
         <template slot="operation" slot-scope="text, record">
           <a-icon type="cloud" @click="handleapplyViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
           <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
-<!--          <a-icon v-if="record.status == 0" type="caret-up" @click="audit(record.id, 1)" title="up" style="margin-right: 10px"></a-icon>-->
-<!--          <a-icon v-if="record.status == 1" type="caret-down" @click="audit(record.id, 0)" title="down" style="margin-right: 10px"></a-icon>-->
         </template>
       </a-table>
     </div>
@@ -159,7 +158,7 @@ export default {
           }
         }
       }, {
-        title: '志愿申请头像',
+        title: '头像',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.images) return <a-avatar shape="square" icon="apply" />
