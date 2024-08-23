@@ -7,14 +7,6 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="企业名称"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
                 label="专业编号"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
@@ -23,10 +15,18 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="联系方式"
+                label="专业名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.phone"/>
+                <a-input v-model="queryParams.name"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="就业方向"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-input v-model="queryParams.employment"/>
               </a-form-item>
             </a-col>
           </div>
@@ -140,58 +140,11 @@ export default {
         title: '专业编号',
         dataIndex: 'code'
       }, {
-        title: '企业名称',
+        title: '专业名称',
         dataIndex: 'name'
       }, {
-        title: '审核状态',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '0':
-              return <a-tag>未审核</a-tag>
-            case '1':
-              return <a-tag color="red">审核驳回</a-tag>
-            case '2':
-              return <a-tag color="green">已审核</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '专业头像',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="discipline" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="discipline" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="discipline" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '联系方式',
-        dataIndex: 'phone'
-      }, {
-        title: '类型',
-        dataIndex: 'type',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '1':
-              return <a-tag>经销商</a-tag>
-            case '2':
-              return <a-tag>批发商</a-tag>
-            case '3':
-              return <a-tag>散客</a-tag>
-            case '4':
-              return <a-tag>代理商</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '联系人',
-        dataIndex: 'contact',
+        title: '就业方向',
+        dataIndex: 'employment',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -200,20 +153,17 @@ export default {
           }
         }
       }, {
-        title: '性别',
-        dataIndex: 'sex',
+        title: '备注',
+        dataIndex: 'remark',
         customRender: (text, row, index) => {
-          switch (text) {
-            case '1':
-              return <a-tag color="blue">男</a-tag>
-            case '2':
-              return <a-tag color="pink">女</a-tag>
-            default:
-              return '- -'
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
           }
         }
       }, {
-        title: '注册时间',
+        title: '创建时间',
         dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -233,12 +183,6 @@ export default {
     this.fetch()
   },
   methods: {
-    audit (disciplineId, flag) {
-      this.$post('/cos/discipline-info/discipline/audit', {disciplineId, flag}).then((r) => {
-        this.$message.success('修改成功！')
-        this.fetch()
-      })
-    },
     handledisciplineViewOpen (row) {
       this.disciplineView.data = row
       this.disciplineView.visiable = true

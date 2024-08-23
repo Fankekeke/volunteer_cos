@@ -7,26 +7,34 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="企业名称"
+                label="学校名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
+                <a-input v-model="queryParams.schoolName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="申请编号"
+                label="层次"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.code"/>
+                <a-input v-model="queryParams.level"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="联系方式"
+                label="学生姓名"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.phone"/>
+                <a-input v-model="queryParams.userName"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="身份证号"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-input v-model="queryParams.idCard"/>
               </a-form-item>
             </a-col>
           </div>
@@ -137,22 +145,33 @@ export default {
     }),
     columns () {
       return [{
-        title: '志愿申请编号',
+        title: '申请单号',
         dataIndex: 'code'
       }, {
-        title: '企业名称',
-        dataIndex: 'name'
+        title: '学生姓名',
+        dataIndex: 'userName'
       }, {
-        title: '审核状态',
-        dataIndex: 'status',
+        title: '性别',
+        dataIndex: 'sex',
         customRender: (text, row, index) => {
           switch (text) {
-            case '0':
-              return <a-tag>未审核</a-tag>
             case '1':
-              return <a-tag color="red">审核驳回</a-tag>
+              return <a-tag>男</a-tag>
             case '2':
-              return <a-tag color="green">已审核</a-tag>
+              return <a-tag >女</a-tag>
+            default:
+              return '- -'
+          }
+        }
+      }, {
+        title: '类型',
+        dataIndex: 'type',
+        customRender: (text, row, index) => {
+          switch (text) {
+            case '1':
+              return <a-tag>文科</a-tag>
+            case '2':
+              return <a-tag >理科</a-tag>
             default:
               return '- -'
           }
@@ -170,28 +189,11 @@ export default {
           </a-popover>
         }
       }, {
-        title: '联系方式',
-        dataIndex: 'phone'
+        title: '学校名称',
+        dataIndex: 'schoolName'
       }, {
-        title: '类型',
-        dataIndex: 'type',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '1':
-              return <a-tag>经销商</a-tag>
-            case '2':
-              return <a-tag>批发商</a-tag>
-            case '3':
-              return <a-tag>散客</a-tag>
-            case '4':
-              return <a-tag>代理商</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '联系人',
-        dataIndex: 'contact',
+        title: '主管部门',
+        dataIndex: 'manage',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -200,20 +202,32 @@ export default {
           }
         }
       }, {
-        title: '性别',
-        dataIndex: 'sex',
+        title: '层次',
+        dataIndex: 'level',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '状态',
+        dataIndex: 'status',
         customRender: (text, row, index) => {
           switch (text) {
             case '1':
-              return <a-tag color="blue">男</a-tag>
+              return <a-tag>发送申请</a-tag>
             case '2':
-              return <a-tag color="pink">女</a-tag>
+              return <a-tag >用户确认</a-tag>
+            case '3':
+              return <a-tag >学校确认</a-tag>
             default:
               return '- -'
           }
         }
       }, {
-        title: '注册时间',
+        title: '申请时间',
         dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -233,12 +247,6 @@ export default {
     this.fetch()
   },
   methods: {
-    audit (applyId, flag) {
-      this.$post('/cos/apply-info/apply/audit', {applyId, flag}).then((r) => {
-        this.$message.success('修改成功！')
-        this.fetch()
-      })
-    },
     handleapplyViewOpen (row) {
       this.applyView.data = row
       this.applyView.visiable = true

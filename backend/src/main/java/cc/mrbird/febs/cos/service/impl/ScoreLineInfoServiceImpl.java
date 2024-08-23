@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -174,7 +173,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
         List<SysSchool> schoolList = sysSchoolService.list();
 
         // 按地区分类
-        Map<String, List<SysSchool>> areaMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getArea));
+        Map<String, List<SysSchool>> areaMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getProvince));
         // 按主管部门分类
         Map<String, List<SysSchool>> manageMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getManage));
         // 按层次分类
@@ -209,7 +208,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
         List<Integer> schoolIds = schoolList.stream().map(SysSchool::getId).collect(Collectors.toList());
 
         // 按地区分类
-        Map<String, List<SysSchool>> areaMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getArea));
+        Map<String, List<SysSchool>> areaMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getProvince));
         // 按主管部门分类
         Map<String, List<SysSchool>> manageMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getManage));
         // 按层次分类

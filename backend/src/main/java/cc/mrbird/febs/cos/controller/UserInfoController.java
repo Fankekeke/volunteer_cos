@@ -3,7 +3,6 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.BulletinInfo;
-import cc.mrbird.febs.cos.entity.SysSchool;
 import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.service.IBulletinInfoService;
 import cc.mrbird.febs.cos.service.IUserInfoService;
