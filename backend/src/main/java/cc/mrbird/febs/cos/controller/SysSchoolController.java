@@ -3,21 +3,26 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.BulletinInfo;
+import cc.mrbird.febs.cos.entity.Professional;
 import cc.mrbird.febs.cos.entity.SysSchool;
 import cc.mrbird.febs.cos.service.IBulletinInfoService;
+import cc.mrbird.febs.cos.service.IProfessionalService;
 import cc.mrbird.febs.cos.service.ISysSchoolService;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * 全国学校数据 控制层
+ * 学校信息 控制层
  *
  * @author FanK
  */
@@ -30,6 +35,8 @@ public class SysSchoolController {
 
     private final IBulletinInfoService bulletinInfoService;
 
+    private final IProfessionalService professionalService;
+
     /**
      * 分页获取学校信息
      *
@@ -37,9 +44,28 @@ public class SysSchoolController {
      * @param sysSchool 学校信息
      * @return 结果
      */
+    @Async
     @GetMapping("/page")
     public R page(Page<SysSchool> page, SysSchool sysSchool) {
         return R.ok(sysSchoolService.selectSchoolPage(page, sysSchool));
+    }
+
+    @GetMapping("/test")
+    public R test() {
+        List<SysSchool> schools = sysSchoolService.list();
+        Map<String, List<SysSchool>> schoolMap = schools.stream().collect(Collectors.groupingBy(SysSchool::getName));
+
+        List<Professional> professionalList = professionalService.list();
+
+        for (Professional professional : professionalList) {
+            List<SysSchool> confusionList = schoolMap.get(professional.getSchoolName());
+            if (CollectionUtil.isEmpty(confusionList)) {
+                continue;
+            }
+            professional.setSchoolId(confusionList.get(0).getId());
+        }
+        professionalService.updateBatchById(professionalList);
+        return R.ok(true);
     }
 
     /**
@@ -51,30 +77,6 @@ public class SysSchoolController {
     @GetMapping("/{id}")
     public R detail(@PathVariable("id") Integer id) {
         return R.ok(sysSchoolService.getById(id));
-    }
-
-    /**
-     * 获取学校信息
-     *
-     * @param schoolId 学校ID
-     * @return 结果
-     */
-    @GetMapping("/selectSchoolBulletin/{schoolId}")
-    public R selectSchoolBulletin(@PathVariable("schoolId") Integer schoolId) {
-        // 返回数据
-        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
-            {
-                put("school", null);
-                put("bulletin", Collections.emptyList());
-            }
-        };
-        SysSchool school = sysSchoolService.getOne(Wrappers.<SysSchool>lambdaQuery().eq(SysSchool::getUserId, schoolId));
-        result.put("school", school);
-
-        // 公告信息
-        List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, 1));
-        result.put("bulletin", bulletinInfoList);
-        return R.ok(result);
     }
 
     /**
@@ -118,5 +120,29 @@ public class SysSchoolController {
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {
         return R.ok(sysSchoolService.removeByIds(ids));
+    }
+
+    /**
+     * 获取学校信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    @GetMapping("/selectSchoolBulletin/{schoolId}")
+    public R selectSchoolBulletin(@PathVariable("schoolId") Integer schoolId) {
+        // 返回数据
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>() {
+            {
+                put("school", null);
+                put("bulletin", Collections.emptyList());
+            }
+        };
+        SysSchool school = sysSchoolService.getOne(Wrappers.<SysSchool>lambdaQuery().eq(SysSchool::getUserId, schoolId));
+        result.put("school", school);
+
+        // 学校信息
+        List<BulletinInfo> bulletinList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, 1));
+        result.put("bulletin", bulletinList);
+        return R.ok(result);
     }
 }

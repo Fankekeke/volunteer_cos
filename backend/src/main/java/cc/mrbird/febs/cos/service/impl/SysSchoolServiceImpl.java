@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedHashMap;
 
 /**
- * 全国学校数据 实现层
+ * 学校信息 实现层
  *
  * @author FanK
  */

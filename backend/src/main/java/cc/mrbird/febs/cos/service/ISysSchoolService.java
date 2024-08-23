@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.LinkedHashMap;
 
 /**
- * 全国学校数据 service层
+ * 学校信息 service层
  *
  * @author FanK
  */

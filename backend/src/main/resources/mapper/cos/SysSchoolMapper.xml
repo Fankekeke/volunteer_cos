@@ -5,21 +5,7 @@
     <!-- 分页获取学校信息 -->
     <select id="selectSchoolPage" resultType="java.util.LinkedHashMap">
         select
-        id,
-        name,
-        address,
-        area,
-        `number`,
-        `desc`,
-        http,
-        manage,
-        `level`,
-        `type`,
-        city_id,
-        school_code,
-        user_id,
-        longitude,
-        latitude
+        *
         from
         sys_school
         where

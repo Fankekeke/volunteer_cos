@@ -1,7 +1,6 @@
 package cc.mrbird.febs.cos.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -10,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 全国学校数据
+ * 学校信息
  *
  * @author FanK
  */
@@ -28,73 +27,64 @@ public class SysSchool implements Serializable {
     private Integer id;
 
     /**
-     * 学校名称
+     * 学校
      */
     private String name;
 
     /**
-     * 学校地址
+     * 省份
+     */
+    private String province;
+
+    /**
+     * 城市
+     */
+    private String city;
+
+    /**
+     * 地址
      */
     private String address;
 
     /**
-     * 学校地区
-     */
-    private String area;
-
-    /**
-     * 人数
-     */
-    private Integer number;
-
-    /**
-     * 备注
-     */
-    private String desc;
-
-    /**
-     * 网址
-     */
-    private String http;
-
-    /**
-     * 主管部门
-     */
-    private String manage;
-
-    /**
-     * 层次
+     * 水平层次
      */
     private String level;
 
     /**
-     * 类型
+     * 办学类别
      */
     private String type;
 
     /**
-     * 所在城市
+     * 办学类型
      */
-    private Integer cityId;
+    private String schoolType;
 
     /**
-     * 学校标识码
+     * 985
      */
-    private String schoolCode;
+    private String nineFlag;
 
     /**
-     * 所属账户
+     * 211
      */
+    private String twoFlag;
+
+    /**
+     * 双一流
+     */
+    private String doubleFirstClass;
+
+    /**
+     * 归属
+     */
+    private String manage;
+
+    /**
+     * 开设专业链接
+     */
+    private String linkUrl;
+
     private Integer userId;
-
-    /**
-     * 经度
-     */
-    private BigDecimal longitude;
-
-    /**
-     * 纬度
-     */
-    private BigDecimal latitude;
-
 }
