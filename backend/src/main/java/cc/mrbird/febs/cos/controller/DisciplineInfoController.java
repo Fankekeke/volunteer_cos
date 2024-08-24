@@ -5,6 +5,8 @@ import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.DisciplineInfo;
 import cc.mrbird.febs.cos.service.IDisciplineInfoService;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.UUID;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,16 @@ public class DisciplineInfoController {
     }
 
     /**
+     * 获取专业类型
+     *
+     * @return 结果
+     */
+    @GetMapping("/selectDisciplineTopList")
+    public R selectDisciplineTopList() {
+        return R.ok(disciplineInfoService.list(Wrappers.<DisciplineInfo>lambdaQuery().eq(DisciplineInfo::getType, "1")));
+    }
+
+    /**
      * 查询专业信息详情
      *
      * @param id 主键ID
@@ -67,7 +79,8 @@ public class DisciplineInfoController {
     @PostMapping
     public R save(DisciplineInfo disciplineInfo) {
         // 专业编号
-        disciplineInfo.setCode("DIS-" + System.currentTimeMillis());
+        disciplineInfo.setCode("DIS" + UUID.fastUUID());
+        disciplineInfo.setDelFlag("0");
         // 创建时间
         disciplineInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(disciplineInfoService.save(disciplineInfo));
@@ -92,6 +105,6 @@ public class DisciplineInfoController {
      */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {
-        return R.ok(disciplineInfoService.removeByIds(ids));
+        return R.ok(disciplineInfoService.update(Wrappers.<DisciplineInfo>lambdaUpdate().set(DisciplineInfo::getDelFlag, "1").in(DisciplineInfo::getId, ids)));
     }
 }

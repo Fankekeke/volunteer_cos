@@ -22,5 +22,5 @@ public interface IDisciplineInfoService extends IService<DisciplineInfo> {
      * @param disciplineInfo 专业信息
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> selectDisciplinePage(Page<DisciplineInfo> page, DisciplineInfo disciplineInfo);
+    IPage<DisciplineInfo> selectDisciplinePage(Page<DisciplineInfo> page, DisciplineInfo disciplineInfo);
 }

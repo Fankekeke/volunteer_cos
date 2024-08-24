@@ -1,52 +1,59 @@
 <template>
-  <a-modal v-model="show" title="评论详情" @cancel="onClose" :width="850">
+  <a-modal v-model="show" title="学校详情" @cancel="onClose" :width="850">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
       </a-button>
     </template>
-    <div style="font-size: 13px;font-family: SimHei" v-if="replyData !== null">
+    <div style="font-size: 13px;font-family: SimHei" v-if="schoolData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">评论信息</span></a-col>
-        <a-col :span="8"><b>学生姓名：</b>
-          {{ replyData.userName }}
-        </a-col>
-        <a-col :span="8"><b>类型：</b>
-          {{ replyData.type == 1 ? '文科' : '理科' }}
-        </a-col>
-        <a-col :span="8"><b>身份号码：</b>
-          {{ replyData.idCard == null ? '暂无数据' : replyData.idCard }}
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>学校姓名：</b>
-          {{ replyData.schoolName }}
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">学校信息</span></a-col>
+        <a-col :span="8"><b>学校名称：</b>
+          {{ schoolData.name }}
         </a-col>
         <a-col :span="8"><b>省份：</b>
-          {{ replyData.province == null ? '暂无数据' : replyData.province }}
+          {{ schoolData.province }}
         </a-col>
         <a-col :span="8"><b>城市：</b>
-          {{ replyData.city == null ? '暂无数据' : replyData.city }}
+          {{ schoolData.city }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>归属：</b>
-          {{ replyData.manage == null ? '暂无数据' : replyData.manage }}
+        <a-col :span="8"><b>地址：</b>
+          {{ schoolData.address }}
         </a-col>
         <a-col :span="8"><b>水平层次：</b>
-          {{ replyData.level == null ? '暂无数据' : replyData.level }}
+          {{ schoolData.level }}
         </a-col>
-        <a-col :span="8"><b>评论时间：</b>
-          {{ replyData.createDate ? replyData.createDate : '- -'}}
+        <a-col :span="8"><b>办学类别：</b>
+          {{ schoolData.type }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">评论内容</span></a-col>
-        <a-col :span="24">
-          {{ replyData.content ? replyData.content : '- -'}}
+        <a-col :span="8"><b>办学类型：</b>
+          {{ schoolData.schoolType }}
+        </a-col>
+        <a-col :span="8"><b>是否为985：</b>
+          {{ schoolData.nineFlag }}
+        </a-col>
+        <a-col :span="8"><b>是否为211：</b>
+          {{ schoolData.twoFlag }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>是否为双一流：</b>
+          {{ schoolData.doubleFirstClass }}
+        </a-col>
+        <a-col :span="8"><b>归属：</b>
+          {{ schoolData.manage }}
+        </a-col>
+        <br/>
+        <br/>
+        <a-col :span="24"><b>开设专业链接：</b>
+          {{ schoolData.linkUrl }}
         </a-col>
       </a-row>
       <br/>
@@ -66,20 +73,20 @@ function getBase64 (file) {
   })
 }
 export default {
-  name: 'replyView',
+  name: 'schoolView',
   props: {
-    replyShow: {
+    schoolShow: {
       type: Boolean,
       default: false
     },
-    replyData: {
+    schoolData: {
       type: Object
     }
   },
   computed: {
     show: {
       get: function () {
-        return this.replyShow
+        return this.schoolShow
       },
       set: function () {
       }
@@ -95,9 +102,9 @@ export default {
     }
   },
   watch: {
-    replyShow: function (value) {
+    schoolShow: function (value) {
       if (value) {
-        this.imagesInit(this.replyData.images)
+        this.imagesInit(this.schoolData.images)
       }
     }
   },

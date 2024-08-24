@@ -3,10 +3,12 @@
 <mapper namespace="cc.mrbird.febs.cos.dao.DisciplineInfoMapper">
 
     <!-- 分页获取专业信息 -->
-    <select id="selectDisciplinePage" resultType="java.util.LinkedHashMap">
+    <select id="selectDisciplinePage" resultType="cc.mrbird.febs.cos.entity.DisciplineInfo">
         select
         id,
         code,
+        parent_code,
+        type,
         name,
         create_date,
         del_flag,
@@ -17,6 +19,7 @@
         discipline_info
         where
         1 = 1
+        and del_flag = '0'
         <if test="disciplineInfo.code != null and disciplineInfo.code != ''">
             AND code LIKE CONCAT('%',#{disciplineInfo.code},'%')
         </if>

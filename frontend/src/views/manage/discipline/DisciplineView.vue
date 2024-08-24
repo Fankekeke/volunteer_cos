@@ -8,77 +8,32 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="disciplineData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">专业信息</span></a-col>
-        <a-col :span="8"><b>企业名称：</b>
+        <a-col :span="8"><b>专业名称：</b>
           {{ disciplineData.name }}
         </a-col>
-        <a-col :span="8"><b>专业编号：</b>
-          {{ disciplineData.code }}
-        </a-col>
-        <a-col :span="8"><b>联系方式：</b>
-          {{ disciplineData.phone }}
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>类型：</b>
-          <a-tag v-if="disciplineData.type == 1">经销商</a-tag>
-          <a-tag v-if="disciplineData.type == 2">批发商</a-tag>
-          <a-tag v-if="disciplineData.type == 3">散客</a-tag>
-          <a-tag v-if="disciplineData.type == 4">代理商</a-tag>
-        </a-col>
-        <a-col :span="8"><b>联系人：</b>
-          {{ disciplineData.contact }}
-        </a-col>
-        <a-col :span="8"><b>性别：</b>
-          <a-tag v-if="disciplineData.sex == 1" color="blue">男</a-tag>
-          <a-tag v-if="disciplineData.sex == 2" color="pink">女</a-tag>
-        </a-col>
-      </a-row>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>邮箱地址：</b>
-          {{ disciplineData.email }}
-        </a-col>
-        <a-col :span="8"><b>审核状态：</b>
-          <a-tag v-if="disciplineData.status == 0">未审核</a-tag>
-          <a-tag v-if="disciplineData.status == 1" color="red">审核驳回</a-tag>
-          <a-tag v-if="disciplineData.status == 2" color="green">已审核</a-tag>
-        </a-col>
         <a-col :span="8"><b>创建时间：</b>
-          {{ disciplineData.createDate ? disciplineData.createDate : '- -'}}
+          {{ disciplineData.createDate }}
+        </a-col>
+        <a-col :span="8"><b>类型：</b>
+          <a-tag v-if="disciplineData.type == 1">专业类型</a-tag>
+          <a-tag v-if="disciplineData.type == 2">专业名称</a-tag>
         </a-col>
       </a-row>
+      <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>审核时间：</b>
-          {{ disciplineData.auditDate ? disciplineData.auditDate : '- -'}}
-        </a-col>
-        <a-col :span="8"><b>消费金额：</b>
-          {{ disciplineData.price ? disciplineData.price : '- -'}}
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">就业方向</span></a-col>
+        <a-col :span="24">
+          {{ disciplineData.employment ? disciplineData.employment : '暂无信息'}}
         </a-col>
       </a-row>
-      <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">备注</span></a-col>
         <a-col :span="24">
-          {{ disciplineData.remark ? disciplineData.remark : '- -'}}
+          {{ disciplineData.remark ? disciplineData.remark : '暂无信息'}}
         </a-col>
       </a-row>
-      <br/>
-      <a-col :span="24">
-        <a-upload
-          name="avatar"
-          action="http://127.0.0.1:9527/file/fileUpload/"
-          list-type="picture-card"
-          :file-list="fileList"
-          @preview="handlePreview"
-          @change="picHandleChange">
-        </a-upload>
-        <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-          <img alt="example" style="width: 100%" :src="previewImage" />
-        </a-modal>
-      </a-col>
     </div>
   </a-modal>
 </template>

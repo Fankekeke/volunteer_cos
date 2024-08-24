@@ -7,15 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="专业编号"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.code"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="专业名称"
+                label="学校名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.name"/>
@@ -23,10 +15,26 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="就业方向"
+                label="办学类别"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.employment"/>
+                <a-input v-model="queryParams.type"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="归属"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-input v-model="queryParams.manage"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="办学类型"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-input v-model="queryParams.schoolType"/>
               </a-form-item>
             </a-col>
           </div>
@@ -45,7 +53,6 @@
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
                :columns="columns"
-               :rowClassName="(record, index) => index % 2 === 1 ? 'odd' : 'even'"
                :rowKey="record => record.id"
                :dataSource="dataSource"
                :pagination="pagination"
@@ -64,53 +71,53 @@
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="cloud" @click="handledisciplineViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
+          <a-icon type="cloud" @click="handleschoolViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
           <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
         </template>
       </a-table>
     </div>
-    <discipline-add
-      v-if="disciplineAdd.visiable"
-      @close="handledisciplineAddClose"
-      @success="handledisciplineAddSuccess"
-      :disciplineAddVisiable="disciplineAdd.visiable">
-    </discipline-add>
-    <discipline-edit
-      ref="disciplineEdit"
-      @close="handledisciplineEditClose"
-      @success="handledisciplineEditSuccess"
-      :disciplineEditVisiable="disciplineEdit.visiable">
-    </discipline-edit>
-    <discipline-view
-      @close="handledisciplineViewClose"
-      :disciplineShow="disciplineView.visiable"
-      :disciplineData="disciplineView.data">
-    </discipline-view>
+    <school-add
+      v-if="schoolAdd.visiable"
+      @close="handleschoolAddClose"
+      @success="handleschoolAddSuccess"
+      :schoolAddVisiable="schoolAdd.visiable">
+    </school-add>
+    <school-edit
+      ref="schoolEdit"
+      @close="handleschoolEditClose"
+      @success="handleschoolEditSuccess"
+      :schoolEditVisiable="schoolEdit.visiable">
+    </school-edit>
+    <school-view
+      @close="handleschoolViewClose"
+      :schoolShow="schoolView.visiable"
+      :schoolData="schoolView.data">
+    </school-view>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
 import {mapState} from 'vuex'
-import disciplineAdd from './DisciplineAdd.vue'
-import disciplineEdit from './DisciplineEdit.vue'
-import disciplineView from './DisciplineView.vue'
+import schoolAdd from './SchoolAdd.vue'
+import schoolEdit from './SchoolEdit.vue'
+import schoolView from './SchoolView.vue'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 export default {
-  name: 'discipline',
-  components: {RangeDate, disciplineAdd, disciplineEdit, disciplineView},
+  name: 'school',
+  components: {RangeDate, schoolAdd, schoolEdit, schoolView},
   data () {
     return {
       advanced: false,
-      disciplineAdd: {
+      schoolAdd: {
         visiable: false
       },
-      disciplineEdit: {
+      schoolEdit: {
         visiable: false
       },
-      disciplineView: {
+      schoolView: {
         visiable: false,
         data: null
       },
@@ -129,39 +136,62 @@ export default {
         showSizeChanger: true,
         showTotal: (total, range) => `显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
       },
-      disciplineList: []
+      schoolList: []
     }
   },
   computed: {
     ...mapState({
-      currentdiscipline: state => state.account.discipline
+      currentschool: state => state.account.school
     }),
     columns () {
       return [{
-        title: '专业编号',
-        dataIndex: 'code',
-        ellipsis: true
-      }, {
-        title: '专业名称',
+        title: '学校名称',
         dataIndex: 'name',
         ellipsis: true
       }, {
-        title: '类型',
+        title: '省份',
+        dataIndex: 'province',
+        ellipsis: true
+      }, {
+        title: '城市',
+        dataIndex: 'city'
+      }, {
+        title: '地址',
+        dataIndex: 'address',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
+      }, {
+        title: '办学类型',
+        dataIndex: 'schoolType',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
+      }, {
+        title: '水平层次',
+        dataIndex: 'level',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
+      }, {
+        title: '办学类别',
         dataIndex: 'type',
         customRender: (text, row, index) => {
-          switch (text) {
-            case '1':
-              return <a-tag color="blue">专业类型</a-tag>
-            case '2':
-              return <a-tag >专业名称</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '就业方向',
-        dataIndex: 'employment',
-        customRender: (text, row, index) => {
           if (text !== null) {
             return text
           } else {
@@ -170,8 +200,8 @@ export default {
         },
         ellipsis: true
       }, {
-        title: '备注',
-        dataIndex: 'remark',
+        title: '归属',
+        dataIndex: 'manage',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -180,16 +210,6 @@ export default {
           }
         },
         ellipsis: true
-      }, {
-        title: '创建时间',
-        dataIndex: 'createDate',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
       }, {
         title: '操作',
         dataIndex: 'operation',
@@ -201,15 +221,21 @@ export default {
     this.fetch()
   },
   methods: {
-    handledisciplineViewOpen (row) {
-      this.disciplineView.data = row
-      this.disciplineView.visiable = true
+    audit (schoolId, flag) {
+      this.$post('/cos/school-info/school/audit', {schoolId, flag}).then((r) => {
+        this.$message.success('修改成功！')
+        this.fetch()
+      })
     },
-    handledisciplineViewClose () {
-      this.disciplineView.visiable = false
+    handleschoolViewOpen (row) {
+      this.schoolView.data = row
+      this.schoolView.visiable = true
+    },
+    handleschoolViewClose () {
+      this.schoolView.visiable = false
     },
     editStatus (row, status) {
-      this.$post('/cos/discipline-info/account/status', { staffId: row.id, status }).then((r) => {
+      this.$post('/cos/school-info/account/status', { staffId: row.id, status }).then((r) => {
         this.$message.success('修改成功')
         this.fetch()
       })
@@ -221,25 +247,25 @@ export default {
       this.advanced = !this.advanced
     },
     add () {
-      this.disciplineAdd.visiable = true
+      this.schoolAdd.visiable = true
     },
-    handledisciplineAddClose () {
-      this.disciplineAdd.visiable = false
+    handleschoolAddClose () {
+      this.schoolAdd.visiable = false
     },
-    handledisciplineAddSuccess () {
-      this.disciplineAdd.visiable = false
-      this.$message.success('新增专业成功')
+    handleschoolAddSuccess () {
+      this.schoolAdd.visiable = false
+      this.$message.success('新增学校成功')
       this.search()
     },
     edit (record) {
-      this.$refs.disciplineEdit.setFormValues(record)
-      this.disciplineEdit.visiable = true
+      this.$refs.schoolEdit.setFormValues(record)
+      this.schoolEdit.visiable = true
     },
-    handledisciplineEditClose () {
-      this.disciplineEdit.visiable = false
+    handleschoolEditClose () {
+      this.schoolEdit.visiable = false
     },
-    handledisciplineEditSuccess () {
-      this.disciplineEdit.visiable = false
+    handleschoolEditSuccess () {
+      this.schoolEdit.visiable = false
       this.$message.success('修改产品成功')
       this.search()
     },
@@ -258,7 +284,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/discipline-info/' + ids).then(() => {
+          that.$delete('/cos/sys-school/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -331,7 +357,7 @@ export default {
       if (params.type === undefined) {
         delete params.type
       }
-      this.$get('/cos/discipline-info/page', {
+      this.$get('/cos/sys-school/page', {
         ...params
       }).then((r) => {
         let data = r.data.data
@@ -349,13 +375,4 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "../../../../static/less/Common";
-
-:global {
-  .odd {
-    background-color: #fff;
-  }
-  .even {
-    background-color: rgba(250, 250, 250, 1);
-  }
-}
 </style>

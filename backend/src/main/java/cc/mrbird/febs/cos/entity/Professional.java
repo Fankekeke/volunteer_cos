@@ -51,5 +51,14 @@ public class Professional implements Serializable {
      */
     private Integer schoolId;
 
+    /**
+     * 专业类型编号
+     */
+    private String disciplineTypeCode;
+
+    /**
+     * 专业编号
+     */
+    private String disciplineCode;
 
 }

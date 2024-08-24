@@ -13,16 +13,16 @@
         <if test="sysSchool.name != null and sysSchool.name != ''">
             AND name LIKE CONCAT('%',#{sysSchool.name},'%')
         </if>
-        <if test="sysSchool.area != null and sysSchool.area != ''">
-            AND area LIKE CONCAT('%',#{sysSchool.area},'%')
+        <if test="sysSchool.type != null and sysSchool.type != ''">
+            AND type LIKE CONCAT('%',#{sysSchool.type},'%')
         </if>
         <if test="sysSchool.manage != null and sysSchool.manage != ''">
             AND manage LIKE CONCAT('%',#{sysSchool.manage},'%')
         </if>
-        <if test="sysSchool.type != null and sysSchool.type != ''">
-            AND type LIKE CONCAT('%',#{sysSchool.type},'%')
+        <if test="sysSchool.schoolType != null and sysSchool.schoolType != ''">
+            AND school_type LIKE CONCAT('%',#{sysSchool.schoolType},'%')
         </if>
         order by
-        city_id desc
+        province desc
     </select>
 </mapper>

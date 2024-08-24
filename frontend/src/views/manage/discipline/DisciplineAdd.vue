@@ -19,6 +19,27 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
+          <a-form-item label='专业名称' v-bind="formItemLayout">
+            <a-select @change="handleChange" v-decorator="[
+                  'type',
+                  { rules: [{ required: true, message: '请输入类型!' }] }
+                  ]">
+              <a-select-option value="1">专业类型</a-select-option>
+              <a-select-option value="2">专业名称</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12" v-if="typeValue == 2">
+          <a-form-item label='所属上级' v-bind="formItemLayout">
+            <a-select v-decorator="[
+                  'parentCode',
+                  { rules: [{ required: true, message: '请输入所属上级!' }] }
+                  ]">
+              <a-select-option v-for="(item, index) in disciplineTopList" :key="index" :value="item.code">{{ item.name }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
           <a-form-item label='排序' v-bind="formItemLayout">
             <a-input-number style="width: 100%"
                             v-decorator="[
@@ -88,10 +109,23 @@ export default {
       loading: false,
       fileList: [],
       previewVisible: false,
-      previewImage: ''
+      previewImage: '',
+      typeValue: null,
+      disciplineTopList: []
     }
   },
+  mounted () {
+    this.selectDisciplineTopList()
+  },
   methods: {
+    selectDisciplineTopList () {
+      this.$get('/cos/discipline-info/selectDisciplineTopList').then((r) => {
+        this.disciplineTopList = r.data.data
+      })
+    },
+    handleChange (value) {
+      this.typeValue = value
+    },
     handleCancel () {
       this.previewVisible = false
     },
@@ -116,6 +150,9 @@ export default {
     handleSubmit () {
       this.form.validateFields((err, values) => {
         if (!err) {
+          if (this.typeValue === '1') {
+            values.parentCode = '0'
+          }
           this.loading = true
           this.$post('/cos/discipline-info', {
             ...values

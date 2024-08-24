@@ -22,5 +22,5 @@ public interface DisciplineInfoMapper extends BaseMapper<DisciplineInfo> {
      * @param disciplineInfo 专业信息
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> selectDisciplinePage(Page<DisciplineInfo> page, @Param("disciplineInfo") DisciplineInfo disciplineInfo);
+    IPage<DisciplineInfo> selectDisciplinePage(Page<DisciplineInfo> page, @Param("disciplineInfo") DisciplineInfo disciplineInfo);
 }

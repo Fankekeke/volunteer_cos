@@ -44,12 +44,12 @@ public class SysSchoolController {
      * @param sysSchool 学校信息
      * @return 结果
      */
-    @Async
     @GetMapping("/page")
     public R page(Page<SysSchool> page, SysSchool sysSchool) {
         return R.ok(sysSchoolService.selectSchoolPage(page, sysSchool));
     }
 
+    @Async
     @GetMapping("/test")
     public R test() {
         List<SysSchool> schools = sysSchoolService.list();

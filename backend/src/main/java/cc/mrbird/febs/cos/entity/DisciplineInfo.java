@@ -2,8 +2,10 @@ package cc.mrbird.febs.cos.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +33,16 @@ public class DisciplineInfo implements Serializable {
      * 专业编号
      */
     private String code;
+
+    /**
+     * 父级编号
+     */
+    private String parentCode;
+
+    /**
+     * 类型（1.专业类型 2.专业名称）
+     */
+    private String type;
 
     /**
      * 专业名称
@@ -62,5 +74,6 @@ public class DisciplineInfo implements Serializable {
      */
     private Integer indexNo;
 
-
+    @TableField(exist = false)
+    private List<DisciplineInfo> children;
 }
