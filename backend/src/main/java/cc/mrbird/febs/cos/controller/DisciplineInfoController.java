@@ -3,9 +3,11 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.DisciplineInfo;
+import cc.mrbird.febs.cos.entity.SysSchool;
 import cc.mrbird.febs.cos.service.IDisciplineInfoService;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,16 @@ public class DisciplineInfoController {
     @GetMapping("/selectDisciplineTopList")
     public R selectDisciplineTopList() {
         return R.ok(disciplineInfoService.list(Wrappers.<DisciplineInfo>lambdaQuery().eq(DisciplineInfo::getType, "1")));
+    }
+
+    /**
+     * 查询学校信息列表
+     *
+     * @return 结果
+     */
+    @GetMapping("/listLikeByKey/{name}")
+    public R listLikeByKey(@PathVariable("name") String name) {
+        return R.ok(disciplineInfoService.list(Wrappers.<DisciplineInfo>lambdaQuery().eq(DisciplineInfo::getType, "2").last("LIMIT 10")));
     }
 
     /**

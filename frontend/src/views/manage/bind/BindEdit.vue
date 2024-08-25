@@ -10,89 +10,61 @@
     </template>
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
-        <a-col :span="12">
-          <a-form-item label='企业姓名' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入企业姓名!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='类型' v-bind="formItemLayout">
-            <a-select v-decorator="[
-                  'type',
-                  { rules: [{ required: true, message: '请输入类型!' }] }
-                  ]">
-              <a-select-option value="1">经销商</a-select-option>
-              <a-select-option value="2">批发商</a-select-option>
-              <a-select-option value="3">散客</a-select-option>
-              <a-select-option value="4">代理商</a-select-option>
+        <a-col :span="24">
+          <a-form-item label='选择学校' v-bind="formItemLayout">
+            <a-select
+              v-decorator="[
+              'schoolId',
+              { rules: [{ required: true, message: '请输入学校!' }] }
+              ]"
+              show-search
+              placeholder="请选择学校..."
+              style="width: 100%"
+              :default-active-first-option="false"
+              :show-arrow="false"
+              :filter-option="false"
+              :not-found-content="null"
+              @search="handleSearch">
+              <a-select-option v-for="d in schoolList" :value="d.id" :key="d.id">
+                {{ d.name }}
+              </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :span="12">
-          <a-form-item label='性别' v-bind="formItemLayout">
-            <a-select v-decorator="[
-                  'sex',
-                  ]">
-              <a-select-option value="1">男</a-select-option>
-              <a-select-option value="2">女</a-select-option>
+        <a-col :span="24">
+          <a-form-item label='选择专业' v-bind="formItemLayout">
+            <a-select
+              v-decorator="[
+              'disciplineCode',
+              { rules: [{ required: true, message: '请输入专业!' }] }
+              ]"
+              show-search
+              placeholder="请选择专业..."
+              style="width: 100%"
+              :default-active-first-option="false"
+              :show-arrow="false"
+              :filter-option="false"
+              :not-found-content="null"
+              @search="disciplineHandleSearch">
+              <a-select-option v-for="d in disciplineList" :value="d.code" :key="d.code">
+                {{ d.name }}
+              </a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :span="12">
-          <a-form-item label='联系人' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'contact',
-            { rules: [{ required: true, message: '请输入联系人!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='联系方式' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'phone',
-            { rules: [{ required: true, message: '请输入联系方式!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='邮箱地址' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'email',
-            { rules: [{ required: true, message: '请输入邮箱地址!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
         <a-col :span="24">
-          <a-form-item label='备注' v-bind="formItemLayout">
-            <a-textarea :rows="4" v-decorator="[
-            'remark',
-            { rules: [{ required: true, message: '请输入备注!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
-          <a-form-item label='头像' v-bind="formItemLayout">
-            <a-upload
-              name="avatar"
-              action="http://127.0.0.1:9527/file/fileUpload/"
-              list-type="picture-card"
-              :file-list="fileList"
-              @preview="handlePreview"
-              @change="picHandleChange"
-            >
-              <div v-if="fileList.length < 1">
-                <a-icon type="plus" />
-                <div class="ant-upload-text">
-                  Upload
-                </div>
-              </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
-            </a-modal>
+          <a-form-item label='是否特色专业' v-bind="formItemLayout">
+            <a-radio-group default-value="否" button-style="solid" v-decorator="[
+              'featureFlag',
+              { rules: [{ required: true, message: '是否特色专业!' }] }
+              ]">
+              <a-radio-button value="是">
+                是
+              </a-radio-button>
+              <a-radio-button value="否">
+                否
+              </a-radio-button>
+            </a-radio-group>
           </a-form-item>
         </a-col>
       </a-row>
@@ -142,11 +114,29 @@ export default {
       form: this.$form.createForm(this),
       loading: false,
       fileList: [],
+      schoolList: [],
+      disciplineList: [],
       previewVisible: false,
       previewImage: ''
     }
   },
   methods: {
+    handleSearch (value) {
+      this.schoolList = []
+      if (value !== '' && value !== null) {
+        this.$get(`/cos/sys-school/listLikeByKey/${value}`).then((r) => {
+          this.schoolList = r.data.data
+        })
+      }
+    },
+    disciplineHandleSearch (value) {
+      this.disciplineList = []
+      if (value !== '' && value !== null) {
+        this.$get(`/cos/discipline-info/listLikeByKey/${value}`).then((r) => {
+          this.disciplineList = r.data.data
+        })
+      }
+    },
     handleCancel () {
       this.previewVisible = false
     },
@@ -171,16 +161,19 @@ export default {
     },
     setFormValues ({...bind}) {
       this.rowId = bind.id
-      let fields = ['name', 'email', 'phone', 'type', 'sex', 'contact', 'remark']
+      let fields = ['schoolId', 'disciplineCode', 'featureFlag', 'schoolName', 'disciplineName']
       let obj = {}
       Object.keys(bind).forEach((key) => {
         if (key === 'images') {
           this.fileList = []
           this.imagesInit(bind['images'])
         }
-        // if (key === 'birthday' && bind[key] != null) {
-        //   bind[key] = moment(bind[key])
-        // }
+        if (key === 'schoolName' && bind[key] != null) {
+          this.handleSearch(bind[key])
+        }
+        if (key === 'disciplineName' && bind[key] != null) {
+          this.disciplineHandleSearch(bind[key])
+        }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)
           obj[key] = bind[key]

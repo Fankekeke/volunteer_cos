@@ -2,4 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cc.mrbird.febs.cos.dao.ProfessionalMapper">
 
+    <!-- 分页获取学校专业信息 -->
+    <select id="selectProfessionalPage" resultType="java.util.LinkedHashMap">
+        select
+        pf.discipline_type,
+        pf.feature_flag,
+        pf.school_id,
+        pf.id,
+        pf.discipline_type_code,
+        pf.discipline_code,
+        ss.name as school_name,
+        ss.address,
+        ss.school_type,
+        di.name as discipline_name,
+        di.employment
+        from
+        professional pf
+        left join sys_school ss on
+        (ss.id = pf.school_id)
+        left join discipline_info di on
+        (di.code = pf.discipline_code)
+        where
+        1 = 1
+        <if test="professional.schoolName != null and professional.schoolName != ''">
+            AND school_name LIKE CONCAT('%',#{professional.schoolName},'%')
+        </if>
+        <if test="professional.disciplineName != null and professional.disciplineName != ''">
+            AND discipline_name LIKE CONCAT('%',#{professional.disciplineName},'%')
+        </if>
+        <if test="professional.disciplineType != null and professional.disciplineType != ''">
+            AND discipline_type LIKE CONCAT('%',#{professional.disciplineType},'%')
+        </if>
+        order by
+        pf.school_id
+    </select>
 </mapper>

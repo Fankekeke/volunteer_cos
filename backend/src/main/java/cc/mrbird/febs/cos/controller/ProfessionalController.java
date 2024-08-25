@@ -1,15 +1,19 @@
 package cc.mrbird.febs.cos.controller;
 
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.DisciplineInfo;
 import cc.mrbird.febs.cos.entity.Professional;
+import cc.mrbird.febs.cos.entity.SysSchool;
 import cc.mrbird.febs.cos.service.IDisciplineInfoService;
 import cc.mrbird.febs.cos.service.IProfessionalService;
+import cc.mrbird.febs.cos.service.ISysSchoolService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,8 @@ public class ProfessionalController {
     private final IProfessionalService professionalService;
 
     private final IDisciplineInfoService disciplineInfoService;
+
+    private final ISysSchoolService sysSchoolService;
 
     @Async
     @GetMapping("/test")
@@ -109,7 +115,7 @@ public class ProfessionalController {
      */
     @GetMapping("/page")
     public R page(Page<Professional> page, Professional professional) {
-        return R.ok();
+        return R.ok(professionalService.selectProfessionalPage(page, professional));
     }
 
     /**
@@ -140,7 +146,22 @@ public class ProfessionalController {
      * @return 结果
      */
     @PostMapping
-    public R save(Professional professional) {
+    public R save(Professional professional) throws FebsException {
+        int total = professionalService.count(Wrappers.<Professional>lambdaQuery().eq(Professional::getSchoolId, professional.getSchoolId()).eq(Professional::getDisciplineCode, professional.getDisciplineCode()));
+        if (total > 0) {
+            throw new FebsException("此学校已绑定专业");
+        }
+        // 获取专业类型
+        DisciplineInfo disciplineInfo = disciplineInfoService.getOne(Wrappers.<DisciplineInfo>lambdaQuery().eq(DisciplineInfo::getCode, professional.getDisciplineCode()));
+        if (disciplineInfo != null) {
+            professional.setDisciplineTypeCode(disciplineInfo.getParentCode());
+            professional.setDisciplineName(disciplineInfo.getName());
+        }
+
+        SysSchool sysSchool = sysSchoolService.getById(professional.getSchoolId());
+        if (sysSchool != null) {
+            professional.setSchoolName(sysSchool.getName());
+        }
         return R.ok(professionalService.save(professional));
     }
 
@@ -151,7 +172,22 @@ public class ProfessionalController {
      * @return 结果
      */
     @PutMapping
-    public R edit(Professional professional) {
+    public R edit(Professional professional) throws FebsException {
+        List<Professional> list = professionalService.list(Wrappers.<Professional>lambdaQuery().eq(Professional::getSchoolId, professional.getSchoolId()).eq(Professional::getDisciplineCode, professional.getDisciplineCode()));
+        if (list.size() > 1 || !list.get(0).getId().equals(professional.getId())) {
+            throw new FebsException("此学校已绑定专业");
+        }
+        // 获取专业类型
+        DisciplineInfo disciplineInfo = disciplineInfoService.getOne(Wrappers.<DisciplineInfo>lambdaQuery().eq(DisciplineInfo::getCode, professional.getDisciplineCode()));
+        if (disciplineInfo != null) {
+            professional.setDisciplineTypeCode(disciplineInfo.getParentCode());
+            professional.setDisciplineName(disciplineInfo.getName());
+        }
+
+        SysSchool sysSchool = sysSchoolService.getById(professional.getSchoolId());
+        if (sysSchool != null) {
+            professional.setSchoolName(sysSchool.getName());
+        }
         return R.ok(professionalService.updateById(professional));
     }
 

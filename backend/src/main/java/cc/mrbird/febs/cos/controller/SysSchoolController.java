@@ -90,6 +90,16 @@ public class SysSchoolController {
     }
 
     /**
+     * 查询学校信息列表
+     *
+     * @return 结果
+     */
+    @GetMapping("/listLikeByKey/{name}")
+    public R listLikeByKey(@PathVariable("name") String name) {
+        return R.ok(sysSchoolService.list(Wrappers.<SysSchool>lambdaQuery().like(StrUtil.isNotEmpty(name), SysSchool::getName, name).last("LIMIT 10")));
+    }
+
+    /**
      * 新增学校信息
      *
      * @param sysSchool 学校信息
