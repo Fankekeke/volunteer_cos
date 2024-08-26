@@ -58,7 +58,7 @@ public class DisciplineInfoController {
      */
     @GetMapping("/listLikeByKey/{name}")
     public R listLikeByKey(@PathVariable("name") String name) {
-        return R.ok(disciplineInfoService.list(Wrappers.<DisciplineInfo>lambdaQuery().eq(DisciplineInfo::getType, "2").last("LIMIT 10")));
+        return R.ok(disciplineInfoService.list(Wrappers.<DisciplineInfo>lambdaQuery().eq(DisciplineInfo::getType, "2").like(StrUtil.isNotEmpty(name), DisciplineInfo::getName, name).last("LIMIT 10")));
     }
 
     /**
