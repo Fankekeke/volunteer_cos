@@ -35,7 +35,7 @@ public class ScoreLineInfo implements Serializable {
     /**
      * 所属专业
      */
-    private Integer disciplineId;
+    private String disciplineCode;
 
     /**
      * 类型（1.文科 2.理科）

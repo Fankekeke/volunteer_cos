@@ -2,15 +2,22 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.Professional;
 import cc.mrbird.febs.cos.entity.ScoreLineInfo;
+import cc.mrbird.febs.cos.service.IProfessionalService;
 import cc.mrbird.febs.cos.service.IScoreLineInfoService;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 分数线 控制层
@@ -24,6 +31,8 @@ public class ScoreLineInfoController {
 
     private final IScoreLineInfoService scoreLineInfoService;
 
+    private final IProfessionalService professionalService;
+
     /**
      * 分页获取分数线信息
      *
@@ -34,6 +43,39 @@ public class ScoreLineInfoController {
     @GetMapping("/page")
     public R page(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) {
         return R.ok(scoreLineInfoService.selectScoreLinePage(page, scoreLineInfo));
+    }
+
+    @Async
+    @GetMapping("/generateScoreLine")
+    public R generateScoreLine() {
+        List<Professional> professionalList = professionalService.list();
+//        Map<Integer, List<Professional>> professionalMap = professionalList.stream().collect(Collectors.groupingBy(Professional::getSchoolId));
+
+        List<ScoreLineInfo> addList = new ArrayList<>();
+
+        for (Professional professional : professionalList) {
+            ScoreLineInfo scoreLineInfo = new ScoreLineInfo();
+            scoreLineInfo.setSchoolId(professional.getSchoolId());
+            scoreLineInfo.setDisciplineCode(professional.getDisciplineCode());
+            scoreLineInfo.setType("1");
+            scoreLineInfo.setScore(350);
+            scoreLineInfo.setTemplateFlag("0");
+            scoreLineInfo.setYear("2024");
+            scoreLineInfo.setAdmissions(50);
+
+            ScoreLineInfo scoreLineInfo1 = new ScoreLineInfo();
+            scoreLineInfo1.setSchoolId(professional.getSchoolId());
+            scoreLineInfo1.setDisciplineCode(professional.getDisciplineCode());
+            scoreLineInfo1.setType("2");
+            scoreLineInfo1.setScore(350);
+            scoreLineInfo1.setTemplateFlag("0");
+            scoreLineInfo1.setYear("2024");
+            scoreLineInfo1.setAdmissions(50);
+            addList.add(scoreLineInfo);
+            addList.add(scoreLineInfo1);
+        }
+        scoreLineInfoService.saveBatch(addList);
+        return R.ok(true);
     }
 
     /**

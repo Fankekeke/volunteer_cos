@@ -121,7 +121,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
 
         // 默认分数线
         List<ScoreLineVo> defaultList = baseMapper.selectScoreLineDefaultFix();
-        Map<String, List<ScoreLineVo>> defaultScoreLineMap = defaultList.stream().collect(Collectors.groupingBy(e -> e.getDisciplineId() + "|" + e.getType()));
+        Map<String, List<ScoreLineVo>> defaultScoreLineMap = defaultList.stream().collect(Collectors.groupingBy(e -> e.getDisciplineCode() + "|" + e.getType()));
 
         for (SysSchool school : schoolList) {
 
@@ -132,7 +132,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
             List<ScoreLineVo> disciplineScoreLineList;
 
             if (CollectionUtil.isNotEmpty(currentList)) {
-                Map<String, List<ScoreLineVo>> currentScoreLineMap = currentList.stream().collect(Collectors.groupingBy(e -> e.getDisciplineId() + "|" + e.getType()));
+                Map<String, List<ScoreLineVo>> currentScoreLineMap = currentList.stream().collect(Collectors.groupingBy(e -> e.getDisciplineCode() + "|" + e.getType()));
                 disciplineScoreLineList = currentScoreLineMap.get(disciplineId + "|" + type);
             } else {
                 disciplineScoreLineList = defaultScoreLineMap.get(disciplineId + "|" + type);
