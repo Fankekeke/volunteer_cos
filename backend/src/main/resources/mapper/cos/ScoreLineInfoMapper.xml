@@ -7,13 +7,14 @@
         select
         sli.id,
         sli.school_id,
-        sli.discipline_id,
+        sli.discipline_code,
         sli.`type`,
         sli.score,
         sli.template_flag,
         sli.`year`,
         sli.admissions,
         ss.name as schoolName,
+        ss.address,
         ss.city,
         ss.province,
         ss.manage,
@@ -25,10 +26,10 @@
         left join sys_school ss on
         (ss.id = sli.school_id)
         left join discipline_info di on
-        (di.id = sli.discipline_id)
+        (di.code = sli.discipline_code)
         where
         1 = 1
-        AND sli.templateFlag = '0'
+        AND sli.template_flag = '0'
         <if test="scoreLineInfo.schoolName != null and scoreLineInfo.schoolName != ''">
             AND ss.name LIKE CONCAT('%',#{scoreLineInfo.schoolName},'%')
         </if>
@@ -50,7 +51,7 @@
         select
         sli.id,
         sli.school_id,
-        sli.discipline_id,
+        sli.discipline_code,
         sli.`type`,
         sli.score,
         sli.template_flag,
@@ -67,11 +68,11 @@
         left join sys_school ss on
         (ss.id = sli.school_id)
         left join discipline_info di on
-        (di.id = sli.discipline_id)
+        (di.code = sli.discipline_code)
         where
         1 = 1
         AND sli.school_id = #{schoolId}
-        AND sli.templateFlag = '0'
+        AND sli.template_flag = '0'
         <if test="year != null and year != ''">
             AND sli.year = #{year}
         </if>
@@ -84,7 +85,7 @@
         select
         sli.id,
         sli.school_id,
-        sli.discipline_id,
+        sli.discipline_code,
         sli.`type`,
         sli.score,
         sli.template_flag,
@@ -101,7 +102,7 @@
         left join sys_school ss on
         (ss.id = sli.school_id)
         left join discipline_info di on
-        (di.id = sli.discipline_id)
+        (di.code = sli.discipline_code)
         where
         1 = 1
         <if test="schoolIds != null and schoolIds.size > 0">
@@ -110,7 +111,7 @@
                 #{id}
             </foreach>
         </if>
-        AND sli.templateFlag = '0'
+        AND sli.template_flag = '0'
         <if test="year != null and year != ''">
             AND sli.year = #{year}
         </if>
@@ -123,7 +124,7 @@
         select
         sli.id,
         sli.school_id,
-        sli.discipline_id,
+        sli.discipline_code,
         sli.`type`,
         sli.score,
         sli.template_flag,
@@ -140,10 +141,10 @@
         left join sys_school ss on
         (ss.id = sli.school_id)
         left join discipline_info di on
-        (di.id = sli.discipline_id)
+        (di.code = sli.discipline_code)
         where
         1 = 1
-        AND sli.templateFlag = '1'
+        AND sli.template_flag = '1'
         order by
         sli.`year` desc
     </select>
@@ -153,7 +154,7 @@
         select
             sli.id,
             sli.school_id,
-            sli.discipline_id,
+            sli.discipline_code,
             sli.`type`,
             sli.score,
             sli.template_flag,
@@ -170,10 +171,10 @@
                 left join sys_school ss on
                 (ss.id = sli.school_id)
                 left join discipline_info di on
-                (di.id = sli.discipline_id)
+                (di.code = sli.discipline_code)
         where
             1 = 1
-          AND sli.templateFlag = '1'
+          AND sli.template_flag = '1'
         order by
             sli.`year` desc
     </select>

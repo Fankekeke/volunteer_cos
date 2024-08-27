@@ -8,77 +8,55 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="scoreData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">分数线信息</span></a-col>
-        <a-col :span="8"><b>企业名称：</b>
-          {{ scoreData.name }}
+        <a-col :span="8"><b>学校名称：</b>
+          {{ scoreData.schoolName }}
         </a-col>
-        <a-col :span="8"><b>分数线编号：</b>
-          {{ scoreData.code }}
+        <a-col :span="8"><b>学校省份：</b>
+          {{ scoreData.province }}
         </a-col>
-        <a-col :span="8"><b>联系方式：</b>
-          {{ scoreData.phone }}
+        <a-col :span="8"><b>城市：</b>
+          {{ scoreData.city }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>类型：</b>
-          <a-tag v-if="scoreData.type == 1">经销商</a-tag>
-          <a-tag v-if="scoreData.type == 2">批发商</a-tag>
-          <a-tag v-if="scoreData.type == 3">散客</a-tag>
-          <a-tag v-if="scoreData.type == 4">代理商</a-tag>
+        <a-col :span="8"><b>归属：</b>
+          {{ scoreData.manage }}
         </a-col>
-        <a-col :span="8"><b>联系人：</b>
-          {{ scoreData.contact }}
+        <a-col :span="8"><b>水平层次：</b>
+          {{ scoreData.level }}
         </a-col>
+        <a-col :span="8"><b>专业名称：</b>
+          {{ scoreData.disciplineName }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>性别：</b>
-          <a-tag v-if="scoreData.sex == 1" color="blue">男</a-tag>
-          <a-tag v-if="scoreData.sex == 2" color="pink">女</a-tag>
+          <a-tag v-if="scoreData.type == 1" color="blue">文科</a-tag>
+          <a-tag v-if="scoreData.type == 2" color="pink">理科</a-tag>
+        </a-col>
+        <a-col :span="8"><b>招生分数：</b>
+          {{ scoreData.score }}
+        </a-col>
+        <a-col :span="8"><b>所属年份：</b>
+          {{ scoreData.year }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>邮箱地址：</b>
-          {{ scoreData.email }}
-        </a-col>
-        <a-col :span="8"><b>审核状态：</b>
-          <a-tag v-if="scoreData.status == 0">未审核</a-tag>
-          <a-tag v-if="scoreData.status == 1" color="red">审核驳回</a-tag>
-          <a-tag v-if="scoreData.status == 2" color="green">已审核</a-tag>
-        </a-col>
-        <a-col :span="8"><b>创建时间：</b>
-          {{ scoreData.createDate ? scoreData.createDate : '- -'}}
+        <a-col :span="8"><b>招生人数：</b>
+          {{ scoreData.admissions }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>审核时间：</b>
-          {{ scoreData.auditDate ? scoreData.auditDate : '- -'}}
-        </a-col>
-        <a-col :span="8"><b>消费金额：</b>
-          {{ scoreData.price ? scoreData.price : '- -'}}
-        </a-col>
-      </a-row>
-      <br/>
-      <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">备注</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">就业方向</span></a-col>
         <a-col :span="24">
-          {{ scoreData.remark ? scoreData.remark : '- -'}}
+          {{ scoreData.employment ? scoreData.employment : '暂无数据'}}
         </a-col>
       </a-row>
       <br/>
-      <a-col :span="24">
-        <a-upload
-          name="avatar"
-          action="http://127.0.0.1:9527/file/fileUpload/"
-          list-type="picture-card"
-          :file-list="fileList"
-          @preview="handlePreview"
-          @change="picHandleChange">
-        </a-upload>
-        <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-          <img alt="example" style="width: 100%" :src="previewImage" />
-        </a-modal>
-      </a-col>
     </div>
   </a-modal>
 </template>
