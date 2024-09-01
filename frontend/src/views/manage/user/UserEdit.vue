@@ -11,7 +11,7 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="12">
-          <a-form-item label='企业姓名' v-bind="formItemLayout">
+          <a-form-item label='学生姓名' v-bind="formItemLayout">
             <a-input v-decorator="[
             'name',
             { rules: [{ required: true, message: '请输入企业姓名!' }] }
@@ -24,10 +24,8 @@
                   'type',
                   { rules: [{ required: true, message: '请输入类型!' }] }
                   ]">
-              <a-select-option value="1">经销商</a-select-option>
-              <a-select-option value="2">批发商</a-select-option>
-              <a-select-option value="3">散客</a-select-option>
-              <a-select-option value="4">代理商</a-select-option>
+              <a-select-option value="1">文科</a-select-option>
+              <a-select-option value="2">理科</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
@@ -42,18 +40,26 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='联系人' v-bind="formItemLayout">
+          <a-form-item label='身份证号' v-bind="formItemLayout">
             <a-input v-decorator="[
-            'contact',
-            { rules: [{ required: true, message: '请输入联系人!' }] }
+            'idCard',
+            { rules: [{ required: true, message: '请输入身份证号!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='联系方式' v-bind="formItemLayout">
+          <a-form-item label='籍贯' v-bind="formItemLayout">
             <a-input v-decorator="[
-            'phone',
-            { rules: [{ required: true, message: '请输入联系方式!' }] }
+            'nativePlace',
+            { rules: [{ required: true, message: '请输入籍贯' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='详细地址' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'address',
+            { rules: [{ required: true, message: '请输入详细地址' }] }
             ]"/>
           </a-form-item>
         </a-col>
@@ -171,16 +177,16 @@ export default {
     },
     setFormValues ({...user}) {
       this.rowId = user.id
-      let fields = ['name', 'email', 'phone', 'type', 'sex', 'contact', 'remark']
+      let fields = ['name', 'email', 'address', 'type', 'sex', 'idCard', 'remark', 'nativePlace']
       let obj = {}
       Object.keys(user).forEach((key) => {
         if (key === 'images') {
           this.fileList = []
           this.imagesInit(user['images'])
         }
-        // if (key === 'birthday' && user[key] != null) {
-        //   user[key] = moment(user[key])
-        // }
+        if (key === 'birthday' && user[key] != null) {
+          user[key] = moment(user[key])
+        }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)
           obj[key] = user[key]
@@ -209,6 +215,7 @@ export default {
       this.form.validateFields((err, values) => {
         values.id = this.rowId
         values.images = images.length > 0 ? images.join(',') : null
+        values.birthday = moment(values.birthday).format('YYYY-MM-DD')
         if (!err) {
           this.loading = true
           this.$put('/cos/user-info', {

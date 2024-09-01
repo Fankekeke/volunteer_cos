@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="用户详情" @cancel="onClose" :width="850">
+  <a-modal v-model="show" title="学生详情" @cancel="onClose" :width="850">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
@@ -7,27 +7,25 @@
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="userData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">用户信息</span></a-col>
-        <a-col :span="8"><b>企业名称：</b>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">学生信息</span></a-col>
+        <a-col :span="8"><b>学生姓名：</b>
           {{ userData.name }}
         </a-col>
-        <a-col :span="8"><b>用户编号：</b>
+        <a-col :span="8"><b>学生编号：</b>
           {{ userData.code }}
         </a-col>
-        <a-col :span="8"><b>联系方式：</b>
-          {{ userData.phone }}
+        <a-col :span="8"><b>出生日期：</b>
+          {{ userData.birthday }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>类型：</b>
-          <a-tag v-if="userData.type == 1">经销商</a-tag>
-          <a-tag v-if="userData.type == 2">批发商</a-tag>
-          <a-tag v-if="userData.type == 3">散客</a-tag>
-          <a-tag v-if="userData.type == 4">代理商</a-tag>
+          <a-tag v-if="userData.type == 1">文科</a-tag>
+          <a-tag v-if="userData.type == 2">理科</a-tag>
         </a-col>
-        <a-col :span="8"><b>联系人：</b>
-          {{ userData.contact }}
+        <a-col :span="8"><b>身份证号：</b>
+          {{ userData.idCard }}
         </a-col>
         <a-col :span="8"><b>性别：</b>
           <a-tag v-if="userData.sex == 1" color="blue">男</a-tag>
@@ -39,22 +37,17 @@
         <a-col :span="8"><b>邮箱地址：</b>
           {{ userData.email }}
         </a-col>
-        <a-col :span="8"><b>审核状态：</b>
-          <a-tag v-if="userData.status == 0">未审核</a-tag>
-          <a-tag v-if="userData.status == 1" color="red">审核驳回</a-tag>
-          <a-tag v-if="userData.status == 2" color="green">已审核</a-tag>
+        <a-col :span="8"><b>籍贯：</b>
+          {{ userData.nativePlace ? userData.nativePlace : '- -'}}
         </a-col>
-        <a-col :span="8"><b>创建时间：</b>
-          {{ userData.createDate ? userData.createDate : '- -'}}
+        <a-col :span="8"><b>详细地址：</b>
+          {{ userData.address ? userData.address : '- -'}}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>审核时间：</b>
-          {{ userData.auditDate ? userData.auditDate : '- -'}}
-        </a-col>
-        <a-col :span="8"><b>消费金额：</b>
-          {{ userData.price ? userData.price : '- -'}}
+        <a-col :span="8"><b>创建时间：</b>
+          {{ userData.createDate ? userData.createDate : '- -'}}
         </a-col>
       </a-row>
       <br/>
@@ -62,7 +55,7 @@
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">备注</span></a-col>
         <a-col :span="24">
-          {{ userData.remark ? userData.remark : '- -'}}
+          {{ userData.remark ? userData.remark : '暂无信息'}}
         </a-col>
       </a-row>
       <br/>

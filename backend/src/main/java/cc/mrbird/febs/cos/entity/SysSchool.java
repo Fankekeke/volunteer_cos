@@ -1,6 +1,7 @@
 package cc.mrbird.febs.cos.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -87,4 +88,14 @@ public class SysSchool implements Serializable {
     private String linkUrl;
 
     private Integer userId;
+
+    /**
+     * 经度
+     */
+    private BigDecimal longitude;
+
+    /**
+     * 纬度
+     */
+    private BigDecimal latitude;
 }

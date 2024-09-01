@@ -19,16 +19,16 @@
               <a-col :span="4"></a-col>
               <a-col :span="4"></a-col>
               <a-col :span="4">
-                <head-info title="总订单" :content="titleData.registerNum" :center="false" :bordered="false"/>
+                <head-info title="学生数量" :content="titleData.userNum" :center="false" :bordered="false"/>
               </a-col>
               <a-col :span="4">
-                <head-info title="总收益" :content="titleData.orderPrice" :center="false" :bordered="false"/>
+                <head-info title="学校数量" :content="titleData.schoolNum" :center="false" :bordered="false"/>
               </a-col>
               <a-col :span="4">
-                <head-info title="出库数量" :content="titleData.outNum" :center="false" :bordered="false"/>
+                <head-info title="专业数量" :content="titleData.disciplineNum" :center="false" :bordered="false"/>
               </a-col>
               <a-col :span="4">
-                <head-info title="入库数量" :content="titleData.putNum" :center="false"/>
+                <head-info title="申请单总量" :content="titleData.billNum" :center="false"/>
               </a-col>
             </a-row>
           </div>
@@ -60,10 +60,10 @@ export default {
   data () {
     return {
       titleData: {
-        outNum: 0,
-        putNum: 0,
-        orderPrice: 0,
-        registerNum: 0
+        userNum: 0,
+        schoolNum: 0,
+        disciplineNum: 0,
+        billNum: 0
       },
       series: [],
       chartOptions: {

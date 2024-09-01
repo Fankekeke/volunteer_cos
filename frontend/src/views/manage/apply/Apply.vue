@@ -72,7 +72,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="cloud" @click="handleapplyViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
+<!--          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>-->
         </template>
       </a-table>
     </div>
@@ -146,7 +146,8 @@ export default {
     columns () {
       return [{
         title: '申请单号',
-        dataIndex: 'code'
+        dataIndex: 'code',
+        ellipsis: true
       }, {
         title: '学生姓名',
         dataIndex: 'userName'
@@ -190,7 +191,8 @@ export default {
         }
       }, {
         title: '学校名称',
-        dataIndex: 'schoolName'
+        dataIndex: 'schoolName',
+        ellipsis: true
       }, {
         title: '主管部门',
         dataIndex: 'manage',
@@ -235,7 +237,8 @@ export default {
           } else {
             return '- -'
           }
-        }
+        },
+        ellipsis: true
       }, {
         title: '操作',
         dataIndex: 'operation',

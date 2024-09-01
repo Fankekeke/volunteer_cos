@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="学生名称"
+                label="学生姓名"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.name"/>
@@ -23,7 +23,7 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="联系方式"
+                label="身份证号"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.idCard"/>
@@ -138,26 +138,11 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户编号',
+        title: '学生编号',
         dataIndex: 'code'
       }, {
-        title: '企业名称',
+        title: '学生姓名',
         dataIndex: 'name'
-      }, {
-        title: '审核状态',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '0':
-              return <a-tag>未审核</a-tag>
-            case '1':
-              return <a-tag color="red">审核驳回</a-tag>
-            case '2':
-              return <a-tag color="green">已审核</a-tag>
-            default:
-              return '- -'
-          }
-        }
       }, {
         title: '用户头像',
         dataIndex: 'images',
@@ -171,28 +156,24 @@ export default {
           </a-popover>
         }
       }, {
-        title: '联系方式',
-        dataIndex: 'phone'
+        title: '出生日期',
+        dataIndex: 'birthday'
       }, {
         title: '类型',
         dataIndex: 'type',
         customRender: (text, row, index) => {
           switch (text) {
             case '1':
-              return <a-tag>经销商</a-tag>
+              return <a-tag>文科</a-tag>
             case '2':
-              return <a-tag>批发商</a-tag>
-            case '3':
-              return <a-tag>散客</a-tag>
-            case '4':
-              return <a-tag>代理商</a-tag>
+              return <a-tag>理科</a-tag>
             default:
               return '- -'
           }
         }
       }, {
         title: '联系人',
-        dataIndex: 'contact',
+        dataIndex: 'address',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text

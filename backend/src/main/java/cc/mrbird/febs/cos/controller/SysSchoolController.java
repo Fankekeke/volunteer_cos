@@ -49,6 +49,29 @@ public class SysSchoolController {
         return R.ok(sysSchoolService.selectSchoolPage(page, sysSchool));
     }
 
+    /**
+     * 获取首页统计数据
+     *
+     * @return 结果
+     */
+    @GetMapping("/homeData")
+    public R homeData() {
+        return R.ok(sysSchoolService.homeData());
+    }
+
+    /**
+     * 逆地址解析
+     *
+     * @return 结果
+     */
+    @Async
+    @GetMapping("/addressResolve")
+    public R addressResolve() {
+        sysSchoolService.addressResolve();
+        return R.ok(true);
+    }
+
+
     @Async
     @GetMapping("/test")
     public R test() {

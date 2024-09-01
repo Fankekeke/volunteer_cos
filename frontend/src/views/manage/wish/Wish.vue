@@ -7,26 +7,26 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="企业名称"
+                label="学生姓名"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
+                <a-input v-model="queryParams.userName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="志愿编号"
+                label="学校名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.code"/>
+                <a-input v-model="queryParams.schoolName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="联系方式"
+                label="专业名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.phone"/>
+                <a-input v-model="queryParams.disciplineName"/>
               </a-form-item>
             </a-col>
           </div>
@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add">新增</a-button>
+<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -64,7 +64,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="cloud" @click="handlewishViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
+<!--          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>-->
         </template>
       </a-table>
     </div>
@@ -137,95 +137,95 @@ export default {
     }),
     columns () {
       return [{
-        title: '志愿编号',
-        dataIndex: 'code'
-      }, {
-        title: '企业名称',
-        dataIndex: 'name'
-      }, {
-        title: '审核状态',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '0':
-              return <a-tag>未审核</a-tag>
-            case '1':
-              return <a-tag color="red">审核驳回</a-tag>
-            case '2':
-              return <a-tag color="green">已审核</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '志愿头像',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="wish" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="wish" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="wish" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '联系方式',
-        dataIndex: 'phone'
+        title: '学生姓名',
+        dataIndex: 'userName',
+        ellipsis: true
       }, {
         title: '类型',
         dataIndex: 'type',
         customRender: (text, row, index) => {
           switch (text) {
             case '1':
-              return <a-tag>经销商</a-tag>
+              return <a-tag>文科</a-tag>
             case '2':
-              return <a-tag>批发商</a-tag>
-            case '3':
-              return <a-tag>散客</a-tag>
-            case '4':
-              return <a-tag>代理商</a-tag>
+              return <a-tag >理科</a-tag>
             default:
               return '- -'
           }
         }
       }, {
-        title: '联系人',
-        dataIndex: 'contact',
+        title: '头像',
+        dataIndex: 'images',
+        customRender: (text, record, index) => {
+          if (!record.images) return <a-avatar shape="square" icon="apply" />
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="apply" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+            </template>
+            <a-avatar shape="square" icon="apply" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
+          </a-popover>
+        }
+      }, {
+        title: '学校名称',
+        dataIndex: 'schoolName',
+        ellipsis: true
+      }, {
+        title: '地区',
+        dataIndex: 'city',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
           } else {
             return '- -'
           }
-        }
+        },
+        ellipsis: true
       }, {
-        title: '性别',
-        dataIndex: 'sex',
+        title: '详细地址',
+        dataIndex: 'address',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
+      }, {
+        title: '专业名称',
+        dataIndex: 'disciplineName',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
+      }, {
+        title: '状态',
+        dataIndex: 'status',
         customRender: (text, row, index) => {
           switch (text) {
+            case '0':
+              return <a-tag color="blue">未提交</a-tag>
             case '1':
-              return <a-tag color="blue">男</a-tag>
-            case '2':
-              return <a-tag color="pink">女</a-tag>
+              return <a-tag color="pink">已提交</a-tag>
             default:
               return '- -'
           }
         }
       }, {
-        title: '注册时间',
-        dataIndex: 'createDate',
+        title: '就业方向',
+        dataIndex: 'employment',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
           } else {
             return '- -'
           }
-        }
-      }, {
-        title: '操作',
-        dataIndex: 'operation',
-        scopedSlots: {customRender: 'operation'}
+        },
+        ellipsis: true
       }]
     }
   },

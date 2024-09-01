@@ -87,5 +87,10 @@ public class UserInfo implements Serializable {
      */
     private Integer userId;
 
+    /**
+     * 备注
+     */
+    private String remark;
+
 
 }

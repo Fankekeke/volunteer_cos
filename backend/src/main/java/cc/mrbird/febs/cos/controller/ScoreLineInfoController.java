@@ -89,6 +89,16 @@ public class ScoreLineInfoController {
     }
 
     /**
+     * 校院统计
+     *
+     * @return 结果
+     */
+    @GetMapping("/selectSchoolRate/type/{type}")
+    public R selectSchoolRateByType(@PathVariable("type") String type) {
+        return R.ok(scoreLineInfoService.selectSchoolRateByType(type));
+    }
+
+    /**
      * 招生统计
      *
      * @param year 年份

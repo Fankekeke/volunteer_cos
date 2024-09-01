@@ -18,11 +18,14 @@
         ss.province,
         ss.manage,
         ss.`level`,
+        ss.school_type,
         ui.name as userName,
         ui.id_card,
+        ui.birthday,
         ui.`type`,
         ui.sex,
-        ui.images
+        ui.images,
+        ui.remark
         from
         apply_bill_info abi
         left join sys_school ss on
@@ -45,5 +48,128 @@
         </if>
         order by
         abi.create_date desc
+    </select>
+
+    <!-- 本月订单信息 -->
+    <select id="selectOrderByMonth" resultType="cc.mrbird.febs.cos.entity.ApplyBillInfo">
+        select
+        oi.id,
+        oi.school_id,
+        oi.code,
+        oi.user_id,
+        oi.status,
+        oi.create_date,
+        oi.user_confirm_date,
+        oi.school_confirm_date
+        from
+        apply_bill_info oi
+        where 1 = 1
+        <if test="schoolId != null">
+            AND oi.school_id = #{schoolId}
+        </if>
+        and DATE_FORMAT( oi.create_date, '%Y%m' ) = DATE_FORMAT(
+        CURDATE(),
+        '%Y%m')
+    </select>
+
+    <!-- 本年订单信息 -->
+    <select id="selectOrderByYear" resultType="cc.mrbird.febs.cos.entity.ApplyBillInfo">
+        select
+        oi.id,
+        oi.school_id,
+        oi.code,
+        oi.user_id,
+        oi.status,
+        oi.create_date,
+        oi.user_confirm_date,
+        oi.school_confirm_date
+        from
+        apply_bill_info oi
+        where 1 = 1
+        <if test="schoolId != null">
+            AND oi.school_id = #{schoolId}
+        </if>
+        and DATE_FORMAT( oi.create_date, '%Y' ) = DATE_FORMAT(
+        CURDATE(),
+        '%Y')
+    </select>
+
+    <!-- 十天内订单数量统计 -->
+    <select id="selectOrderNumWithinDays" resultType="java.util.LinkedHashMap">
+        SELECT
+        DATE_FORMAT( spo.days, '%m-%d' ) AS days,
+        IFNULL(COUNT(oi.id), 0) AS count
+        FROM
+        (
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 0 DAY ) days UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 1 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 2 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 3 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 4 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 5 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 6 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 7 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 8 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 9 DAY )) spo
+        LEFT JOIN apply_bill_info oi ON (
+        DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
+        <if test="schoolId != null">
+            AND oi.school_id = #{schoolId}
+        </if>
+        AND oi.status != '0'
+        )
+        GROUP BY
+        days
+        ORDER BY
+        days ASC
+    </select>
+
+    <!-- 十天内订单收益统计 -->
+    <select id="selectOrderPriceWithinDays" resultType="java.util.LinkedHashMap">
+        SELECT
+        DATE_FORMAT( spo.days, '%m-%d' ) AS days,
+        IFNULL(COUNT(oi.id), 0) AS count
+        FROM
+        (
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 0 DAY ) days UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 1 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 2 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 3 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 4 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 5 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 6 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 7 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 8 DAY ) UNION
+        SELECT
+        DATE_SUB( curdate(), INTERVAL + 9 DAY )) spo
+        LEFT JOIN apply_bill_info oi ON (
+        DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( spo.days, '%Y-%m-%d' )
+        <if test="schoolId != null">
+            AND oi.school_id = #{schoolId}
+        </if>
+        )
+        GROUP BY
+        days
+        ORDER BY
+        days ASC
     </select>
 </mapper>

@@ -5,7 +5,7 @@
     <!-- 分页获取学生信息 -->
     <select id="selectUserPage" resultType="java.util.LinkedHashMap">
         select
-        `int`,
+        `id`,
         code,
         name,
         sex,
@@ -17,6 +17,7 @@
         `type`,
         images,
         create_date,
+        remark,
         user_id
         from
         user_info

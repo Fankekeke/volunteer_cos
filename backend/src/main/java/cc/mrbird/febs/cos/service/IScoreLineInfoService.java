@@ -50,7 +50,7 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
      * @param score        分数
      * @param disciplineId 专业ID
      * @param type         类型
-     * @return
+     * @return 结果
      */
     List<ScoreLineVo> selectRecommendSchool(Integer score, Integer disciplineId, String type);
 
@@ -60,6 +60,14 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
      * @return 结果
      */
     LinkedHashMap<String, Object> selectSchoolRate();
+
+    /**
+     * 校院统计
+     *
+     * @param type 类型
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectSchoolRateByType(String type);
 
     /**
      * 招生统计

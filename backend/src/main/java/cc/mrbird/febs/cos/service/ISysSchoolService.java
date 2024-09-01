@@ -23,4 +23,16 @@ public interface ISysSchoolService extends IService<SysSchool> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectSchoolPage(Page<SysSchool> page, SysSchool sysSchool);
+
+    /**
+     * 获取首页统计数据
+     *
+     * @return 结果
+     */
+    LinkedHashMap<String, Object> homeData();
+
+    /**
+     * 逆地址解析
+     */
+    void addressResolve();
 }

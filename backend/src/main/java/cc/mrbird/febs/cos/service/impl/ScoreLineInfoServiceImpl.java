@@ -34,7 +34,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
     /**
      * 分页获取学校专业绑定信息
      *
-     * @param page                 分页对象
+     * @param page          分页对象
      * @param scoreLineInfo 学校专业绑定信息
      * @return 结果
      */
@@ -102,7 +102,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
      * @param score        分数
      * @param disciplineId 专业ID
      * @param type         类型
-     * @return
+     * @return 结果
      */
     @Override
     public List<ScoreLineVo> selectRecommendSchool(Integer score, Integer disciplineId, String type) {
@@ -173,15 +173,52 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
         List<SysSchool> schoolList = sysSchoolService.list();
 
         // 按地区分类
-        Map<String, List<SysSchool>> areaMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getProvince));
+        Map<String, List<SysSchool>> areaMap = schoolList.stream().filter(e -> StrUtil.isNotEmpty(e.getProvince())).collect(Collectors.groupingBy(SysSchool::getProvince));
         // 按主管部门分类
-        Map<String, List<SysSchool>> manageMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getManage));
+        Map<String, List<SysSchool>> manageMap = schoolList.stream().filter(e -> StrUtil.isNotEmpty(e.getManage())).collect(Collectors.groupingBy(SysSchool::getManage));
         // 按层次分类
-        Map<String, List<SysSchool>> levelMap = schoolList.stream().collect(Collectors.groupingBy(SysSchool::getLevel));
+        Map<String, List<SysSchool>> levelMap = schoolList.stream().filter(e -> StrUtil.isNotEmpty(e.getType())).collect(Collectors.groupingBy(SysSchool::getType));
 
         result.put("area", areaMap);
         result.put("manage", manageMap);
         result.put("level", levelMap);
+        return result;
+    }
+
+    /**
+     * 校院统计
+     *
+     * @param type 类型
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> selectSchoolRateByType(String type) {
+        List<LinkedHashMap<String, Object>> result = new ArrayList<>();
+
+        // 校院信息
+        List<SysSchool> schoolList = sysSchoolService.list();
+
+        Map<String, List<SysSchool>> schoolMap = new HashMap<>();
+        if ("1".equals(type)) {
+            // 按地区分类
+            schoolMap = schoolList.stream().filter(e -> StrUtil.isNotEmpty(e.getProvince())).collect(Collectors.groupingBy(SysSchool::getProvince));
+        } else if ("2".equals(type)) {
+            // 按主管部门分类
+            schoolMap = schoolList.stream().filter(e -> StrUtil.isNotEmpty(e.getManage())).collect(Collectors.groupingBy(SysSchool::getManage));
+        } else if ("3".equals(type)) {
+            // 按层次分类
+            schoolMap = schoolList.stream().filter(e -> StrUtil.isNotEmpty(e.getType())).collect(Collectors.groupingBy(SysSchool::getType));
+        }
+
+        schoolMap.forEach((key, value) -> {
+            LinkedHashMap<String, Object> item = new LinkedHashMap<String, Object>() {
+                {
+                    put("name", key);
+                    put("data", value);
+                }
+            };
+            result.add(item);
+        });
         return result;
     }
 

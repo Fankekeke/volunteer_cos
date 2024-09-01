@@ -8,26 +8,24 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="applyData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">志愿申请信息</span></a-col>
-        <a-col :span="8"><b>企业名称：</b>
-          {{ applyData.name }}
+        <a-col :span="8"><b>学生姓名：</b>
+          {{ applyData.userName }}
         </a-col>
         <a-col :span="8"><b>志愿申请编号：</b>
           {{ applyData.code }}
         </a-col>
-        <a-col :span="8"><b>联系方式：</b>
-          {{ applyData.phone }}
+        <a-col :span="8"><b>身份证号码：</b>
+          {{ applyData.idCard }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="8"><b>类型：</b>
-          <a-tag v-if="applyData.type == 1">经销商</a-tag>
-          <a-tag v-if="applyData.type == 2">批发商</a-tag>
-          <a-tag v-if="applyData.type == 3">散客</a-tag>
-          <a-tag v-if="applyData.type == 4">代理商</a-tag>
+          <a-tag v-if="applyData.type == 1">文科</a-tag>
+          <a-tag v-if="applyData.type == 2">理科</a-tag>
         </a-col>
-        <a-col :span="8"><b>联系人：</b>
-          {{ applyData.contact }}
+        <a-col :span="8"><b>出生日期：</b>
+          {{ applyData.birthday }}
         </a-col>
         <a-col :span="8"><b>性别：</b>
           <a-tag v-if="applyData.sex == 1" color="blue">男</a-tag>
@@ -36,13 +34,13 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>邮箱地址：</b>
-          {{ applyData.email }}
+        <a-col :span="8"><b>学校名称：</b>
+          {{ applyData.schoolName }}
         </a-col>
         <a-col :span="8"><b>审核状态：</b>
-          <a-tag v-if="applyData.status == 0">未审核</a-tag>
-          <a-tag v-if="applyData.status == 1" color="red">审核驳回</a-tag>
-          <a-tag v-if="applyData.status == 2" color="green">已审核</a-tag>
+          <a-tag v-if="applyData.status == 0">发送申请</a-tag>
+          <a-tag v-if="applyData.status == 1" color="red">用户确认</a-tag>
+          <a-tag v-if="applyData.status == 2" color="green">学校确认</a-tag>
         </a-col>
         <a-col :span="8"><b>创建时间：</b>
           {{ applyData.createDate ? applyData.createDate : '- -'}}
@@ -50,11 +48,26 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>审核时间：</b>
-          {{ applyData.auditDate ? applyData.auditDate : '- -'}}
+        <a-col :span="8"><b>所在省份：</b>
+          {{ applyData.province ? applyData.province : '- -'}}
         </a-col>
-        <a-col :span="8"><b>消费金额：</b>
-          {{ applyData.price ? applyData.price : '- -'}}
+        <a-col :span="8"><b>城市：</b>
+          {{ applyData.city ? applyData.city : '- -'}}
+        </a-col>
+        <a-col :span="8"><b>主管部门：</b>
+          {{ applyData.manage ? applyData.manage : '- -'}}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>层级：</b>
+          {{ applyData.level ? applyData.level : '- -'}}
+        </a-col>
+        <a-col :span="8"><b>学生确认时间：</b>
+          {{ applyData.userConfirmDate ? applyData.userConfirmDate : '- -'}}
+        </a-col>
+        <a-col :span="8"><b>学校确认时间：</b>
+          {{ applyData.schoolConfirmDate ? applyData.schoolConfirmDate : '- -'}}
         </a-col>
       </a-row>
       <br/>
@@ -66,19 +79,22 @@
         </a-col>
       </a-row>
       <br/>
-      <a-col :span="24">
-        <a-upload
-          name="avatar"
-          action="http://127.0.0.1:9527/file/fileUpload/"
-          list-type="picture-card"
-          :file-list="fileList"
-          @preview="handlePreview"
-          @change="picHandleChange">
-        </a-upload>
-        <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-          <img alt="example" style="width: 100%" :src="previewImage" />
-        </a-modal>
-      </a-col>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">学生头像</span></a-col>
+        <a-col :span="24">
+          <a-upload
+            name="avatar"
+            action="http://127.0.0.1:9527/file/fileUpload/"
+            list-type="picture-card"
+            :file-list="fileList"
+            @preview="handlePreview"
+            @change="picHandleChange">
+          </a-upload>
+          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+            <img alt="example" style="width: 100%" :src="previewImage" />
+          </a-modal>
+        </a-col>
+      </a-row>
     </div>
   </a-modal>
 </template>
