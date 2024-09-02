@@ -33,6 +33,9 @@ public class SchoolDisciplineBind implements Serializable {
      */
     private Integer schoolId;
 
+    @TableField(exist = false)
+    private Integer schoolIdFlag;
+
     /**
      * 专业ID
      */

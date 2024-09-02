@@ -11,27 +11,6 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="24">
-          <a-form-item label='选择学校' v-bind="formItemLayout">
-            <a-select
-              v-decorator="[
-              'schoolId',
-              { rules: [{ required: true, message: '请输入学校!' }] }
-              ]"
-              show-search
-              placeholder="请选择学校..."
-              style="width: 100%"
-              :default-active-first-option="false"
-              :show-arrow="false"
-              :filter-option="false"
-              :not-found-content="null"
-              @search="handleSearch">
-              <a-select-option v-for="d in schoolList" :value="d.id" :key="d.id">
-                {{ d.name }}
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
           <a-form-item label='选择专业' v-bind="formItemLayout">
             <a-select
               v-decorator="[

@@ -47,7 +47,7 @@
             AND uwi.status = #{userWishInfo.status}
         </if>
         <if test="userWishInfo.userId != null and userWishInfo.userId != ''">
-            AND ui.user_id LIKE CONCAT('%',#{userWishInfo.userId},'%')
+            AND ui.user_id = #{userWishInfo.userId}
         </if>
         order by
         uwi.user_id,

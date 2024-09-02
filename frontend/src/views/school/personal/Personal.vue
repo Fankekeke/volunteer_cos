@@ -9,93 +9,126 @@
           <a-form :form="form" layout="vertical">
             <a-row :gutter="20">
               <a-col :span="12">
-                <a-form-item label='企业姓名' v-bind="formItemLayout">
+                <a-form-item label='学校名称' v-bind="formItemLayout">
                   <a-input v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入企业姓名!' }] }
+            { rules: [{ required: true, message: '请输入学校名称!' }] }
             ]"/>
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label='类型' v-bind="formItemLayout">
-                  <a-select v-decorator="[
-                  'type',
-                  { rules: [{ required: true, message: '请输入类型!' }] }
-                  ]">
-                    <a-select-option value="1">经销商</a-select-option>
-                    <a-select-option value="2">批发商</a-select-option>
-                    <a-select-option value="3">散客</a-select-option>
-                    <a-select-option value="4">代理商</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item label='性别' v-bind="formItemLayout">
-                  <a-select v-decorator="[
-                  'sex',
-                  ]">
-                    <a-select-option value="1">男</a-select-option>
-                    <a-select-option value="2">女</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item label='联系人' v-bind="formItemLayout">
+                <a-form-item label='省份' v-bind="formItemLayout">
                   <a-input v-decorator="[
-            'contact',
-            { rules: [{ required: true, message: '请输入联系人!' }] }
+            'province',
+            { rules: [{ required: true, message: '请输入省份!' }] }
             ]"/>
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label='联系方式' v-bind="formItemLayout">
+                <a-form-item label='城市' v-bind="formItemLayout">
                   <a-input v-decorator="[
-            'phone',
-            { rules: [{ required: true, message: '请输入联系方式!' }] }
+            'city',
+            { rules: [{ required: true, message: '请输入城市!' }] }
             ]"/>
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label='邮箱地址' v-bind="formItemLayout">
+                <a-form-item label='地址' v-bind="formItemLayout">
                   <a-input v-decorator="[
-            'email',
-            { rules: [{ required: true, message: '请输入邮箱地址!' }] }
+            'address',
+            { rules: [{ required: true, message: '请输入地址!' }] }
+            ]"/>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label='水平层次' v-bind="formItemLayout">
+                  <a-input v-decorator="[
+            'level',
+            { rules: [{ required: true, message: '请输入水平层次!' }] }
+            ]"/>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label='办学类别' v-bind="formItemLayout">
+                  <a-input v-decorator="[
+            'type',
+            { rules: [{ required: true, message: '请输入办学类别!' }] }
+            ]"/>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label='办学类型' v-bind="formItemLayout">
+                  <a-input v-decorator="[
+            'schoolType',
+            { rules: [{ required: true, message: '请输入办学类型!' }] }
+            ]"/>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label='归属' v-bind="formItemLayout">
+                  <a-input v-decorator="[
+            'manage',
+            { rules: [{ required: true, message: '请输入是归属!' }] }
             ]"/>
                 </a-form-item>
               </a-col>
               <a-col :span="24">
-                <a-form-item label='备注' v-bind="formItemLayout">
-                  <a-textarea :rows="4" v-decorator="[
-            'remark',
-            { rules: [{ required: true, message: '请输入备注!' }] }
+                <a-form-item label='开设专业链接' v-bind="formItemLayout">
+                  <a-input v-decorator="[
+            'linkUrl',
+            { rules: [{ required: true, message: '请输入是开设专业链接!' }] }
             ]"/>
                 </a-form-item>
               </a-col>
-              <a-col :span="24">
-                <a-form-item label='头像' v-bind="formItemLayout">
-                  <a-upload
-                    name="avatar"
-                    action="http://127.0.0.1:9527/file/fileUpload/"
-                    list-type="picture-card"
-                    :file-list="fileList"
-                    @preview="handlePreview"
-                    @change="picHandleChange"
-                  >
-                    <div v-if="fileList.length < 1">
-                      <a-icon type="plus" />
-                      <div class="ant-upload-text">
-                        Upload
-                      </div>
-                    </div>
-                  </a-upload>
-                  <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-                    <img alt="example" style="width: 100%" :src="previewImage" />
-                  </a-modal>
+              <a-col :span="24"></a-col>
+              <a-col :span="8">
+                <a-form-item label='是否985' v-bind="formItemLayout">
+                  <a-radio-group default-value="否" button-style="solid" v-decorator="[
+              'nineFlag',
+              { rules: [{ required: true, message: '请输入是否985!' }] }
+              ]">
+                    <a-radio-button value="是">
+                      是
+                    </a-radio-button>
+                    <a-radio-button value="否">
+                      否
+                    </a-radio-button>
+                  </a-radio-group>
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item label='是否211' v-bind="formItemLayout">
+                  <a-radio-group default-value="否" button-style="solid" v-decorator="[
+              'twoFlag',
+              { rules: [{ required: true, message: '请输入是否211!' }] }
+              ]">
+                    <a-radio-button value="是">
+                      是
+                    </a-radio-button>
+                    <a-radio-button value="否">
+                      否
+                    </a-radio-button>
+                  </a-radio-group>
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item label='是否双一流' v-bind="formItemLayout">
+                  <a-radio-group default-value="否" button-style="solid" v-decorator="[
+              'twoFlag',
+              { rules: [{ required: true, message: '请输入是否双一流!' }] }
+              ]">
+                    <a-radio-button value="是">
+                      是
+                    </a-radio-button>
+                    <a-radio-button value="否">
+                      否
+                    </a-radio-button>
+                  </a-radio-group>
                 </a-form-item>
               </a-col>
             </a-row>
           </a-form>
-          <a-button key="submit" type="primary" :loading="loading" @click="handleSubmit">
+          <a-button key="submit" type="primary" :loading="loading" @click="handleSubmit" style="margin-top: 20px">
             修改
           </a-button>
         </a-card>
@@ -187,23 +220,23 @@ export default {
       let listData = []
       this.courseInfo.forEach(item => {
         if ((moment(value).format('YYYY-MM-DD')) === (moment(item.registerDate).format('YYYY-MM-DD'))) {
-          listData.push({type: 'success', content: "✔"})
+          listData.push({type: 'success', content: '✔'})
         }
       })
       return listData || []
     },
     dataInit () {
       this.dataLoading = true
-      this.$get(`/cos/user-info/selectDetailByUserId/${this.currentUser.userId}`).then((r) => {
-        this.rowId = r.data.user.id
-        this.setFormValues(r.data.user)
-        this.courseInfo = r.data.order
+      this.$get(`/cos/sys-school/selectSchoolBulletin/${this.currentUser.userId}`).then((r) => {
+        this.rowId = r.data.school.id
+        this.setFormValues(r.data.school)
+        this.courseInfo = r.data.bulletin
         this.dataLoading = false
       })
     },
     setFormValues ({...user}) {
       this.rowId = user.id
-      let fields = ['name', 'email', 'phone', 'type', 'sex', 'contact', 'remark']
+      let fields = ['name', 'province', 'city', 'address', 'level', 'type', 'schoolType', 'nineFlag', 'twoFlag', 'doubleFirstClass', 'manage', 'linkUrl']
       let obj = {}
       Object.keys(user).forEach((key) => {
         if (key === 'images') {

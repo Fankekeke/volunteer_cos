@@ -47,10 +47,10 @@
             AND ui.id_card LIKE CONCAT('%',#{applyBillInfo.idCard},'%')
         </if>
         <if test="applyBillInfo.schoolId != null and applyBillInfo.schoolId != ''">
-            AND ss.user_id LIKE CONCAT('%',#{applyBillInfo.schoolId},'%')
+            AND ss.user_id = #{applyBillInfo.schoolId}
         </if>
         <if test="applyBillInfo.userId != null and applyBillInfo.userId != ''">
-            AND ui.user_id LIKE CONCAT('%',#{applyBillInfo.userId},'%')
+            AND ui.user_id = #{applyBillInfo.userId}
         </if>
         order by
         abi.create_date desc

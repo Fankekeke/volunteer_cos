@@ -43,7 +43,7 @@
             AND sli.year = #{scoreLineInfo.year}
         </if>
         <if test="scoreLineInfo.schoolId != null and scoreLineInfo.schoolId != ''">
-            AND ss.user_id LIKE CONCAT('%',#{scoreLineInfo.schoolId},'%')
+            AND ss.user_id = #{scoreLineInfo.schoolId}
         </if>
         order by
         sli.`year` desc

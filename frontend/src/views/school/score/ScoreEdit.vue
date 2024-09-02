@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="修改分数线" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="修改分数线" @cancel="onClose" :width="900">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -8,95 +8,67 @@
         修改
       </a-button>
     </template>
-    <a-form :form="form" layout="vertical">
-      <a-row :gutter="20">
-        <a-col :span="12">
-          <a-form-item label='企业姓名' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'name',
-            { rules: [{ required: true, message: '请输入企业姓名!' }] }
-            ]"/>
-          </a-form-item>
+    <div style="font-size: 13px;font-family: SimHei" v-if="scoreData !== null">
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">分数线信息</span></a-col>
+        <a-col :span="8"><b>学校名称：</b>
+          {{ scoreData.schoolName }}
         </a-col>
-        <a-col :span="12">
-          <a-form-item label='类型' v-bind="formItemLayout">
-            <a-select v-decorator="[
-                  'type',
-                  { rules: [{ required: true, message: '请输入类型!' }] }
-                  ]">
-              <a-select-option value="1">经销商</a-select-option>
-              <a-select-option value="2">批发商</a-select-option>
-              <a-select-option value="3">散客</a-select-option>
-              <a-select-option value="4">代理商</a-select-option>
-            </a-select>
-          </a-form-item>
+        <a-col :span="8"><b>学校省份：</b>
+          {{ scoreData.province }}
         </a-col>
-        <a-col :span="12">
-          <a-form-item label='性别' v-bind="formItemLayout">
-            <a-select v-decorator="[
-                  'sex',
-                  ]">
-              <a-select-option value="1">男</a-select-option>
-              <a-select-option value="2">女</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='联系人' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'contact',
-            { rules: [{ required: true, message: '请输入联系人!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='联系方式' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'phone',
-            { rules: [{ required: true, message: '请输入联系方式!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="12">
-          <a-form-item label='邮箱地址' v-bind="formItemLayout">
-            <a-input v-decorator="[
-            'email',
-            { rules: [{ required: true, message: '请输入邮箱地址!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
-          <a-form-item label='备注' v-bind="formItemLayout">
-            <a-textarea :rows="4" v-decorator="[
-            'remark',
-            { rules: [{ required: true, message: '请输入备注!' }] }
-            ]"/>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
-          <a-form-item label='头像' v-bind="formItemLayout">
-            <a-upload
-              name="avatar"
-              action="http://127.0.0.1:9527/file/fileUpload/"
-              list-type="picture-card"
-              :file-list="fileList"
-              @preview="handlePreview"
-              @change="picHandleChange"
-            >
-              <div v-if="fileList.length < 1">
-                <a-icon type="plus" />
-                <div class="ant-upload-text">
-                  Upload
-                </div>
-              </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
-            </a-modal>
-          </a-form-item>
+        <a-col :span="8"><b>城市：</b>
+          {{ scoreData.city }}
         </a-col>
       </a-row>
-    </a-form>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>归属：</b>
+          {{ scoreData.manage }}
+        </a-col>
+        <a-col :span="8"><b>水平层次：</b>
+          {{ scoreData.level }}
+        </a-col>
+        <a-col :span="8"><b>专业名称：</b>
+          {{ scoreData.disciplineName }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="8"><b>类型：</b>
+          <a-tag v-if="scoreData.type == 1" color="blue">文科</a-tag>
+          <a-tag v-if="scoreData.type == 2" color="pink">理科</a-tag>
+        </a-col>
+        <a-col :span="8"><b>所属年份：</b>
+          {{ scoreData.year }}
+        </a-col>
+      </a-row>
+      <br/>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">修改招生信息</span></a-col>
+        <a-form :form="form" layout="vertical">
+          <a-row :gutter="20">
+            <a-col :span="12">
+              <a-form-item label='招生人数' v-bind="formItemLayout">
+                <a-input-number :max="100" :step="1" style="width: 100%" v-decorator="[
+                'admissions',
+                { rules: [{ required: true, message: '请输入招生人数!' }] }
+                ]"/>
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label='招生分数' v-bind="formItemLayout">
+                <a-input-number :max="750" :step="1" style="width: 100%" v-decorator="[
+                'score',
+                { rules: [{ required: true, message: '请输入招生分数!' }] }
+                ]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </a-row>
+    </div>
   </a-modal>
 </template>
 
@@ -141,6 +113,7 @@ export default {
       formItemLayout,
       form: this.$form.createForm(this),
       loading: false,
+      scoreData: null,
       fileList: [],
       previewVisible: false,
       previewImage: ''
@@ -170,8 +143,9 @@ export default {
       }
     },
     setFormValues ({...score}) {
+      this.scoreData = score
       this.rowId = score.id
-      let fields = ['name', 'email', 'phone', 'type', 'sex', 'contact', 'remark']
+      let fields = ['admissions', 'score']
       let obj = {}
       Object.keys(score).forEach((key) => {
         if (key === 'images') {
@@ -208,7 +182,6 @@ export default {
       })
       this.form.validateFields((err, values) => {
         values.id = this.rowId
-        values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
           this.$put('/cos/score-line-info', {

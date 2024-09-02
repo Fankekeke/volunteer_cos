@@ -32,7 +32,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>性别：</b>
+        <a-col :span="8"><b>类型：</b>
           <a-tag v-if="scoreData.type == 1" color="blue">文科</a-tag>
           <a-tag v-if="scoreData.type == 2" color="pink">理科</a-tag>
         </a-col>
