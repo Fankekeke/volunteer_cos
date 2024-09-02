@@ -3,9 +3,12 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.ApplyBillInfo;
+import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.service.IApplyBillInfoService;
+import cc.mrbird.febs.cos.service.IUserInfoService;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ import java.util.List;
 public class ApplyBillInfoController {
 
     private final IApplyBillInfoService applyBillInfoService;
+
+    private final IUserInfoService userInfoService;
 
     /**
      * 分页获取志愿申请信息
@@ -46,6 +51,11 @@ public class ApplyBillInfoController {
      */
     @PostMapping("/addApplyBill")
     public R addApplyBill(ApplyBillInfo applyBillInfo) {
+        // 获取学生信息
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, applyBillInfo.getUserId()));
+        if (null != userInfo) {
+            applyBillInfo.setUserId(userInfo.getId());
+        }
         return R.ok(applyBillInfoService.addApplyBill(applyBillInfo));
     }
 

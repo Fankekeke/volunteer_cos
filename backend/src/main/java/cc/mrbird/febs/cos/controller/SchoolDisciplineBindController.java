@@ -77,6 +77,7 @@ public class SchoolDisciplineBindController {
      */
     @PostMapping
     public R save(SchoolDisciplineBind schoolDisciplineBind) {
+
         // 获取绑定信息
         List<SchoolDisciplineBind> bindList = schoolDisciplineBind.getBinds();
         // 删除旧数据

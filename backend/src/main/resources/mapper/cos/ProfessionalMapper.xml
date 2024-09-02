@@ -33,6 +33,9 @@
         <if test="professional.disciplineType != null and professional.disciplineType != ''">
             AND discipline_type LIKE CONCAT('%',#{professional.disciplineType},'%')
         </if>
+        <if test="professional.schoolId != null and professional.schoolId != ''">
+            AND ss.user_id LIKE CONCAT('%',#{professional.schoolId},'%')
+        </if>
         order by
         pf.school_id
     </select>

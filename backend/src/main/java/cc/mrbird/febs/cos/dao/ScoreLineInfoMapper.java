@@ -27,6 +27,14 @@ public interface ScoreLineInfoMapper extends BaseMapper<ScoreLineInfo> {
     IPage<LinkedHashMap<String, Object>> selectScoreLinePage(Page<ScoreLineInfo> page, @Param("scoreLineInfo") ScoreLineInfo scoreLineInfo);
 
     /**
+     * 根据学校ID获取招生信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectScoreLineBySchoolId(@Param("schoolId") Integer schoolId);
+
+    /**
      * 根据学校获取分数线
      *
      * @param schoolId 学校ID

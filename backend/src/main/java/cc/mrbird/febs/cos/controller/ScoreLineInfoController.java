@@ -45,6 +45,17 @@ public class ScoreLineInfoController {
         return R.ok(scoreLineInfoService.selectScoreLinePage(page, scoreLineInfo));
     }
 
+    /**
+     * 根据学校ID获取招生信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    @GetMapping("/selectScoreLineBySchoolId/{schoolId}")
+    public R selectScoreLineBySchoolId(@PathVariable("schoolId") Integer schoolId) {
+        return R.ok(scoreLineInfoService.selectScoreLineBySchoolId(schoolId));
+    }
+
     @Async
     @GetMapping("/generateScoreLine")
     public R generateScoreLine() {

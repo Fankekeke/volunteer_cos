@@ -33,6 +33,9 @@
         <if test="schoolDisciplineBind.employment != null and schoolDisciplineBind.employment != ''">
             AND di.employment LIKE CONCAT('%',#{schoolDisciplineBind.employment},'%')
         </if>
+        <if test="schoolDisciplineBind.schoolId != null and schoolDisciplineBind.schoolId != ''">
+            AND ss.user_id LIKE CONCAT('%',#{schoolDisciplineBind.schoolId},'%')
+        </if>
         order by
         sdb.school_id,
         sdb.index_no desc

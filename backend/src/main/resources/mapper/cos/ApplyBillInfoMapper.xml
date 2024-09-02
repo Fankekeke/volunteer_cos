@@ -46,6 +46,12 @@
         <if test="applyBillInfo.idCard != null and applyBillInfo.idCard != ''">
             AND ui.id_card LIKE CONCAT('%',#{applyBillInfo.idCard},'%')
         </if>
+        <if test="applyBillInfo.schoolId != null and applyBillInfo.schoolId != ''">
+            AND ss.user_id LIKE CONCAT('%',#{applyBillInfo.schoolId},'%')
+        </if>
+        <if test="applyBillInfo.userId != null and applyBillInfo.userId != ''">
+            AND ui.user_id LIKE CONCAT('%',#{applyBillInfo.userId},'%')
+        </if>
         order by
         abi.create_date desc
     </select>

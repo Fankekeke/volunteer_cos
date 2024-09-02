@@ -147,6 +147,12 @@ public class ProfessionalController {
      */
     @PostMapping
     public R save(Professional professional) throws FebsException {
+        // 获取学校信息
+        SysSchool school = sysSchoolService.getOne(Wrappers.<SysSchool>lambdaQuery().eq(SysSchool::getUserId, professional.getSchoolId()));
+        if (school != null) {
+            professional.setSchoolId(school.getId());
+        }
+
         int total = professionalService.count(Wrappers.<Professional>lambdaQuery().eq(Professional::getSchoolId, professional.getSchoolId()).eq(Professional::getDisciplineCode, professional.getDisciplineCode()));
         if (total > 0) {
             throw new FebsException("此学校已绑定专业");

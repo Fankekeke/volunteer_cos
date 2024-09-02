@@ -32,6 +32,9 @@
         <if test="userWishDiscipline.disciplineName != null and userWishDiscipline.disciplineName != ''">
             AND di.name LIKE CONCAT('%',#{userWishDiscipline.disciplineName},'%')
         </if>
+        <if test="userWishDiscipline.userId != null and userWishDiscipline.userId != ''">
+            AND ui.user_id LIKE CONCAT('%',#{userWishDiscipline.userId},'%')
+        </if>
         order by
         uwd.user_id desc
     </select>

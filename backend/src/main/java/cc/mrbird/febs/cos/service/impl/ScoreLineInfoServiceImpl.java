@@ -44,6 +44,17 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
     }
 
     /**
+     * 根据学校ID获取招生信息
+     *
+     * @param schoolId 学校ID
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> selectScoreLineBySchoolId(Integer schoolId) {
+        return baseMapper.selectScoreLineBySchoolId(schoolId);
+    }
+
+    /**
      * 根据学校获取分数线
      *
      * @param schoolId 学校ID

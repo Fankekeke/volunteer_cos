@@ -38,6 +38,12 @@
         <if test="replyInfo.userName != null and replyInfo.userName != ''">
             AND ui.name LIKE CONCAT('%',#{replyInfo.userName},'%')
         </if>
+        <if test="replyInfo.schoolId != null and replyInfo.schoolId != ''">
+            AND ss.user_id LIKE CONCAT('%',#{replyInfo.schoolId},'%')
+        </if>
+        <if test="replyInfo.userId != null and replyInfo.userId != ''">
+            AND ui.user_id LIKE CONCAT('%',#{replyInfo.userId},'%')
+        </if>
         order by
         ri.create_date desc
     </select>
