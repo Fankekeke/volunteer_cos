@@ -103,7 +103,7 @@
             </foreach>
         </if>
         order by
-        sli.sli.`school_id` desc
+        sli.`school_id` desc
     </select>
 
     <!-- 根据学校ID获取招生信息 -->

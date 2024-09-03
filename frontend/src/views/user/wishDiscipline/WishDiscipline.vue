@@ -47,7 +47,7 @@
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="cloud" @click="handlewishDisciplineViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
+<!--          <a-icon type="cloud" @click="handlewishDisciplineViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>-->
           <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
         </template>
       </a-table>
@@ -188,6 +188,10 @@ export default {
           }
         },
         ellipsis: true
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: {customRender: 'operation'}
       }]
     }
   },

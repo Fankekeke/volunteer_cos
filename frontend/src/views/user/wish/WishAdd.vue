@@ -35,20 +35,15 @@
         <a-col :span="24">
           <a-form-item label='选择专业' v-bind="formItemLayout">
             <a-select
-              :disabled="!form.schoolId"
+              :disabled="!schoolFlag"
               v-decorator="[
-              'disciplineCode',
+              'disciplineId',
               { rules: [{ required: true, message: '请输入专业!' }] }
               ]"
-              show-search
               placeholder="请选择专业..."
-              style="width: 100%"
-              :default-active-first-option="false"
-              :show-arrow="false"
-              :filter-option="false"
-              :not-found-content="null">
-              <a-select-option v-for="d in disciplineList" :value="d.code" :key="d.code">
-                {{ d.name }}
+              style="width: 100%">
+              <a-select-option v-for="d in disciplineList" :value="d.disciplineId" :key="d.disciplineId">
+                {{ d.disciplineName }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -60,6 +55,21 @@
             'indexNo',
             { rules: [{ required: true, message: '请输入排序!' }] }
             ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="24">
+          <a-form-item label='状态' v-bind="formItemLayout">
+            <a-radio-group default-value="1" button-style="solid" v-decorator="[
+              'status',
+              { rules: [{ required: true, message: '状态!' }] }
+              ]">
+              <a-radio-button value="0">
+                未提交
+              </a-radio-button>
+              <a-radio-button value="1">
+                已提交
+              </a-radio-button>
+            </a-radio-group>
           </a-form-item>
         </a-col>
       </a-row>
@@ -109,6 +119,7 @@ export default {
       fileList: [],
       schoolList: [],
       disciplineList: [],
+      schoolFlag: null,
       previewVisible: false,
       previewImage: ''
     }
@@ -124,11 +135,12 @@ export default {
     },
     handleChange (value) {
       if (value) {
+        this.schoolFlag = value
         this.selectDiscipline(value)
       }
     },
     selectDiscipline (schoolId) {
-      this.$get(`/cos/school-discipline-bind/selectBindBySchool`).then((r) => {
+      this.$get(`/cos/school-discipline-bind/selectBindBySchool`, {schoolId}).then((r) => {
         this.disciplineList = r.data.data
       })
     },

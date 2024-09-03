@@ -86,6 +86,7 @@ export default {
   watch: {
     checkFlag: function (value) {
       this.page.current = 1
+      this.page.size = 36
       this.selectSchoolRate(value)
     }
   },

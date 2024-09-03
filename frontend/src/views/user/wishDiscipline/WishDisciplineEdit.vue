@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="修改志愿专业" @cancel="onClose" :width="400">
+  <a-modal v-model="show" title="修改志愿专业" @cancel="onClose" :width="450">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -14,7 +14,7 @@
           <a-form-item label='选择专业' v-bind="formItemLayout">
             <a-select
               v-decorator="[
-              'disciplineCode',
+              'disciplineId',
               { rules: [{ required: true, message: '请输入专业!' }] }
               ]"
               show-search
@@ -25,7 +25,7 @@
               :filter-option="false"
               :not-found-content="null"
               @search="disciplineHandleSearch">
-              <a-select-option v-for="d in disciplineList" :value="d.code" :key="d.code">
+              <a-select-option v-for="d in disciplineList" :value="d.id" :key="d.id">
                 {{ d.name }}
               </a-select-option>
             </a-select>
@@ -132,8 +132,8 @@ export default {
           this.fileList = []
           this.imagesInit(wishDiscipline['images'])
         }
-        if (key === 'disciplineName' && bind[key] != null) {
-          this.disciplineHandleSearch(bind[key])
+        if (key === 'disciplineName' && wishDiscipline[key] != null) {
+          this.disciplineHandleSearch(wishDiscipline[key])
         }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)

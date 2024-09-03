@@ -8,6 +8,7 @@ import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.entity.UserWishDiscipline;
 import cc.mrbird.febs.cos.service.IUserInfoService;
 import cc.mrbird.febs.cos.service.IUserWishDisciplineService;
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -101,7 +102,8 @@ public class UserWishDisciplineController {
     @PutMapping
     public R edit(UserWishDiscipline userWishDiscipline) throws FebsException {
         List<UserWishDiscipline> list = userWishDisciplineService.list(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, userWishDiscipline.getUserId()).eq(UserWishDiscipline::getDisciplineId, userWishDiscipline.getDisciplineId()));
-        if (list.size() > 1 || !list.get(0).getId().equals(userWishDiscipline.getId())) {
+
+        if (CollectionUtil.isNotEmpty(list) && (list.size() > 1 || !list.get(0).getId().equals(userWishDiscipline.getId()))) {
             throw new FebsException("已填报此专业");
         }
         return R.ok(userWishDisciplineService.updateById(userWishDiscipline));

@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="新增志愿专业" @cancel="onClose" :width="400">
+  <a-modal v-model="show" title="新增志愿专业" @cancel="onClose" :width="450">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -25,7 +25,7 @@
               :filter-option="false"
               :not-found-content="null"
               @search="disciplineHandleSearch">
-              <a-select-option v-for="d in disciplineList" :value="d.code" :key="d.code">
+              <a-select-option v-for="d in disciplineList" :value="d.id" :key="d.id">
                 {{ d.name }}
               </a-select-option>
             </a-select>

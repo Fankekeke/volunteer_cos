@@ -1,7 +1,7 @@
 <template>
   <a-modal v-model="show" title="志愿申请详情" @cancel="onClose" :width="850">
     <template slot="footer">
-      <a-button key="pass" @click="onAudit" v-if="applyData.status == 1">
+      <a-button key="pass" @click="onAudit" v-if="applyData.status == 1" type="primary">
         审核通过
       </a-button>
       <a-button key="back" @click="onClose" type="danger">

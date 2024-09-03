@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="修改志愿" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="修改志愿" @cancel="onClose" :width="600">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -35,20 +35,15 @@
         <a-col :span="24">
           <a-form-item label='选择专业' v-bind="formItemLayout">
             <a-select
-              :disabled="!form.schoolId"
+              :disabled="!schoolFlag"
               v-decorator="[
-              'disciplineCode',
+              'disciplineId',
               { rules: [{ required: true, message: '请输入专业!' }] }
               ]"
-              show-search
               placeholder="请选择专业..."
-              style="width: 100%"
-              :default-active-first-option="false"
-              :show-arrow="false"
-              :filter-option="false"
-              :not-found-content="null">
-              <a-select-option v-for="d in disciplineList" :value="d.code" :key="d.code">
-                {{ d.name }}
+              style="width: 100%">
+              <a-select-option v-for="d in disciplineList" :value="d.disciplineId" :key="d.disciplineId">
+                {{ d.disciplineName }}
               </a-select-option>
             </a-select>
           </a-form-item>
@@ -110,6 +105,7 @@ export default {
       loading: false,
       fileList: [],
       schoolList: [],
+      schoolFlag: null,
       disciplineList: [],
       previewVisible: false,
       previewImage: ''
@@ -130,7 +126,7 @@ export default {
       }
     },
     selectDiscipline (schoolId) {
-      this.$get(`/cos/school-discipline-bind/selectBindBySchool`).then((r) => {
+      this.$get(`/cos/school-discipline-bind/selectBindBySchool`, {schoolId}).then((r) => {
         this.disciplineList = r.data.data
       })
     },
@@ -169,16 +165,16 @@ export default {
       let fields = ['indexNo', 'schoolId', 'disciplineId']
       let obj = {}
       Object.keys(wish).forEach((key) => {
-        if (key === 'images') {
-          this.fileList = []
-          this.imagesInit(wish['images'])
+        if (key === 'schoolId' && wish[key] != null) {
+          this.schoolFlag = wish[key]
+          this.selectDiscipline(wish[key])
         }
-        if (key === 'schoolId' && bind[key] != null) {
-          this.selectDiscipline(bind[key])
+        if (key === 'schoolName' && wish[key] != null) {
+          this.handleSearch(wish[key])
         }
-        if (key === 'schoolName' && bind[key] != null) {
-          this.handleSearch(bind[key])
-        }
+        // if (key === 'disciplineId' && wish[key] != null) {
+        //   wish[key] = wish[key].toString()
+        // }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)
           obj[key] = wish[key]

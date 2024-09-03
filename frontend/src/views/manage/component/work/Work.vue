@@ -1,31 +1,11 @@
 <template>
   <a-card :bordered="false" class="card-area">
-    <a-row :gutter="30" v-if="userInfo != null">
-      <a-col :span="12" style="margin-top: 65px;text-align: center">
-        <img alt="example" style="width: 500px;height: 500px;" src="/static/img/Search_SVG.png"/>
-      </a-col>
-      <a-col :span="6" style="margin-top: 80px">
+    <a-row :gutter="30">
+      <a-col :span="6" style="margin-top: 30px">
         <p style="font-size: 30px;font-family: SimHei;font-weight: 500">欢迎使用高考志愿填报系统</p>
-        <a-card :bordered="false">
-          <span slot="title">
-            <a-icon type="user" style="margin-right: 10px" />
-            <span>用户信息</span>
-          </span>
-          <div>
-            <a-avatar :src="'http://127.0.0.1:9527/imagesWeb/' + userInfo.images" shape="square" style="width: 100px;height: 100px;float: left;margin: 10px 0 10px 10px" />
-            <div style="float: left;margin-left: 15px;margin-top: 8px">
-              <span style="font-size: 20px;font-family: SimHei">{{ userInfo.name }}</span>
-              <span style="font-size: 14px;font-family: SimHei">{{ userInfo.code }}</span>
-            </div>
-            <br/>
-            <div style="float: left;margin-left: 15px;margin-top: 8px">
-              <span style="font-size: 14px;font-family: SimHei">邮箱：{{ userInfo.email == null ? '- -' : userInfo.email }}</span>
-            </div>
-            <div style="float: left;margin-left: 15px;margin-top: 8px">
-              <span style="font-size: 14px;font-family: SimHei">电话：{{ userInfo.phone == null ? '- -' : userInfo.phone }}</span>
-            </div>
-          </div>
-        </a-card>
+      </a-col>
+      <a-col :span="24" style="margin-top: 25px;text-align: center">
+        <img alt="example" style="height: 500px;" src="/static/img/manage.png"/>
       </a-col>
     </a-row>
   </a-card>
@@ -64,7 +44,6 @@ export default {
     })
   },
   mounted () {
-    this.selectBulletinDetail()
   },
   methods: {
     newsNext () {

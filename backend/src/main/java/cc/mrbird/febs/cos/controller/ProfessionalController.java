@@ -177,7 +177,7 @@ public class ProfessionalController {
     @PutMapping
     public R edit(Professional professional) throws FebsException {
         List<Professional> list = professionalService.list(Wrappers.<Professional>lambdaQuery().eq(Professional::getSchoolId, professional.getSchoolId()).eq(Professional::getDisciplineCode, professional.getDisciplineCode()));
-        if (list.size() > 1 || !list.get(0).getId().equals(professional.getId())) {
+        if (CollectionUtil.isNotEmpty(list) && (list.size() > 1 || !list.get(0).getId().equals(professional.getId()))) {
             throw new FebsException("此学校已绑定专业");
         }
         // 获取专业类型

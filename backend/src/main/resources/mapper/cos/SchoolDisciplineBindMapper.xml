@@ -52,7 +52,6 @@
         pf.discipline_type_code,
         pf.discipline_code,
         ss.name as schoolName,
-        ss.area,
         ss.manage,
         ss.address,
         ss.longitude,
@@ -66,12 +65,9 @@
         left join sys_school ss on
         (ss.id = pf.school_id)
         left join discipline_info di on
-        (di.code = pf.discipline_id)
+        (di.code = pf.discipline_code)
         where
         1 = 1
-        AND di.school_id = #{schoolId}
-        order by
-        sdb.school_id,
-        sdb.index_no desc
+        AND pf.school_id = #{schoolId}
     </select>
 </mapper>

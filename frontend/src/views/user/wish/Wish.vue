@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="operator">
-<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -63,8 +63,8 @@
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="cloud" @click="handlewishViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
-<!--          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>-->
+<!--          <a-icon type="cloud" @click="handlewishViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>-->
+          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
         </template>
       </a-table>
     </div>
@@ -226,6 +226,10 @@ export default {
           }
         },
         ellipsis: true
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: {customRender: 'operation'}
       }]
     }
   },
@@ -278,7 +282,7 @@ export default {
     },
     handlewishEditSuccess () {
       this.wishEdit.visiable = false
-      this.$message.success('修改产品成功')
+      this.$message.success('修改志愿成功')
       this.search()
     },
     handleDeptChange (value) {
