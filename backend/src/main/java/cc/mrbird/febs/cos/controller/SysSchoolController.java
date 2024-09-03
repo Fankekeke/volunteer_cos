@@ -8,6 +8,7 @@ import cc.mrbird.febs.cos.entity.SysSchool;
 import cc.mrbird.febs.cos.service.IBulletinInfoService;
 import cc.mrbird.febs.cos.service.IProfessionalService;
 import cc.mrbird.febs.cos.service.ISysSchoolService;
+import cc.mrbird.febs.system.service.UserService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -36,6 +37,8 @@ public class SysSchoolController {
     private final IBulletinInfoService bulletinInfoService;
 
     private final IProfessionalService professionalService;
+
+    private final UserService userService;
 
     /**
      * 分页获取学校信息
@@ -129,8 +132,10 @@ public class SysSchoolController {
      * @return 结果
      */
     @PostMapping
-    public R save(SysSchool sysSchool) {
-        return R.ok(sysSchoolService.save(sysSchool));
+    public R save(SysSchool sysSchool) throws Exception {
+        sysSchool.setCode("SCH-" + System.currentTimeMillis());
+        userService.registSchool(sysSchool.getCode(), "1234qwer", sysSchool);
+        return R.ok(true);
     }
 
     /**

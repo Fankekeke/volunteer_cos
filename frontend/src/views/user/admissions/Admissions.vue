@@ -1,6 +1,16 @@
 <template>
   <div style="width: 100%">
     <a-row style="margin-top: 25px">
+      <a-col :span="24">
+        <a-radio-group button-style="solid" v-model="checkFlag" style="width: 100%">
+          <a-radio-button value="1" style="width: 25%;text-align: center">
+            全部招生信息
+          </a-radio-button>
+          <a-radio-button value="2" style="width: 25%;text-align: center">
+            学校专业推荐
+          </a-radio-button>
+        </a-radio-group>
+      </a-col>
       <a-col :span="24" style="margin-top: 25px">
         <div style="background:#ECECEC; padding:30px">
           <a-skeleton :loading="loading" active :paragraph="{ rows: 10 }"/>
@@ -75,6 +85,7 @@ export default {
   },
   watch: {
     checkFlag: function (value) {
+      this.page.current = 1
       this.selectSchoolRate(value)
     }
   },
@@ -84,10 +95,32 @@ export default {
   methods: {
     selectSchoolRate (type) {
       this.loading = true
-      this.$get(`/cos/score-line-info/selectSchoolRate/type/${type}`).then((r) => {
-        this.dataList = r.data.data
-        this.loading = false
-      })
+      let params = {}
+      params.size = this.page.size
+      params.current = this.page.current
+      if (type == 1) {
+        this.$get(`/cos/score-line-info/page`, {...params}).then((r) => {
+          let data = r.data.data
+          const pagination = {...this.pagination}
+          pagination.total = data.total
+          this.dataList = data.records
+          this.page = pagination
+          console.log(this.page)
+          // 数据加载完毕，关闭loading
+          this.loading = false
+        })
+      } else {
+        this.$get(`/cos/score-line-info/selectRecommendSchool`, params).then((r) => {
+          let data = r.data.data
+          const pagination = {...this.pagination}
+          pagination.total = data.total
+          this.dataList = data.records
+          this.page = pagination
+          console.log(this.page)
+          // 数据加载完毕，关闭loading
+          this.loading = false
+        })
+      }
     },
     pageChange (page, pageSize) {
       this.page.size = pageSize

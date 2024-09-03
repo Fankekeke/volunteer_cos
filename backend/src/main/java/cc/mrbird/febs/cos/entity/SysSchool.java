@@ -28,6 +28,11 @@ public class SysSchool implements Serializable {
     private Integer id;
 
     /**
+     * 编号
+     */
+    private String code;
+
+    /**
      * 学校
      */
     private String name;
