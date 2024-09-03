@@ -49,6 +49,60 @@
         sli.`year` desc
     </select>
 
+    <!-- 分页获取推荐学校专业绑定信息 -->
+    <select id="selectScoreLineRecommendPage" resultType="java.util.LinkedHashMap">
+        select
+        sli.id,
+        sli.school_id,
+        sli.discipline_code,
+        sli.`type`,
+        sli.score,
+        sli.template_flag,
+        sli.`year`,
+        sli.admissions,
+        ss.name as schoolName,
+        ss.address,
+        ss.city,
+        ss.province,
+        ss.manage,
+        ss.`level`,
+        di.id as disciplineId,
+        di.name as disciplineName,
+        di.employment
+        from
+        score_line_info sli
+        left join sys_school ss on
+        (ss.id = sli.school_id)
+        left join discipline_info di on
+        (di.code = sli.discipline_code)
+        where
+        1 = 1
+        AND sli.template_flag = '0'
+        <if test="scoreLineInfo.type != null and scoreLineInfo.type != ''">
+            AND sli.type = #{scoreLineInfo.type}
+        </if>
+        <if test="scoreLineInfo.score != null and scoreLineInfo.score != ''">
+            AND sli.score &lt;= #{scoreLineInfo.score}
+        </if>
+        <if test="scoreLineInfo.year != null and scoreLineInfo.year != ''">
+            AND sli.year = #{scoreLineInfo.year}
+        </if>
+        <if test="schoolIdList !=null and schoolIdList.size() > 0">
+            and sli.school_id in
+            <foreach collection="schoolIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="disciplineIdList !=null and disciplineIdList.size() > 0">
+            and di.id in
+            <foreach collection="disciplineIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by
+        sli.sli.`school_id` desc
+    </select>
+
     <!-- 根据学校ID获取招生信息 -->
     <select id="selectScoreLineBySchoolId" resultType="java.util.LinkedHashMap">
         select sli.id,

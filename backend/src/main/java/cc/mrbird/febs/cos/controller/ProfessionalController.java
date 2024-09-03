@@ -151,6 +151,8 @@ public class ProfessionalController {
         SysSchool school = sysSchoolService.getOne(Wrappers.<SysSchool>lambdaQuery().eq(SysSchool::getUserId, professional.getSchoolId()));
         if (school != null) {
             professional.setSchoolId(school.getId());
+            professional.setSchoolName(school.getName());
+
         }
 
         int total = professionalService.count(Wrappers.<Professional>lambdaQuery().eq(Professional::getSchoolId, professional.getSchoolId()).eq(Professional::getDisciplineCode, professional.getDisciplineCode()));
@@ -162,11 +164,6 @@ public class ProfessionalController {
         if (disciplineInfo != null) {
             professional.setDisciplineTypeCode(disciplineInfo.getParentCode());
             professional.setDisciplineName(disciplineInfo.getName());
-        }
-
-        SysSchool sysSchool = sysSchoolService.getById(professional.getSchoolId());
-        if (sysSchool != null) {
-            professional.setSchoolName(sysSchool.getName());
         }
         return R.ok(professionalService.save(professional));
     }

@@ -8,6 +8,7 @@
         uwd.id,
         uwd.user_id,
         uwd.discipline_id,
+        uwd.index_no,
         ui.name as userName,
         ui.id_card,
         ui.`type`,
@@ -36,6 +37,6 @@
             AND ui.user_id = #{userWishDiscipline.userId}
         </if>
         order by
-        uwd.user_id desc
+        uwd.index_no ASC
     </select>
 </mapper>

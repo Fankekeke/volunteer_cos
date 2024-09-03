@@ -1,7 +1,9 @@
 package cc.mrbird.febs.cos.controller;
 
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.Professional;
 import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.entity.UserWishDiscipline;
 import cc.mrbird.febs.cos.service.IUserInfoService;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 学生志愿专业志愿专业 控制层
+ * 学生志愿专业 控制层
  *
  * @author FanK
  */
@@ -68,19 +70,26 @@ public class UserWishDisciplineController {
      * @return 结果
      */
     @PostMapping
-    public R save(UserWishDiscipline userWishDiscipline) {
+    public R save(UserWishDiscipline userWishDiscipline) throws FebsException {
         // 获取学生信息
         UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userWishDiscipline.getUserId()));
         if (userInfo != null) {
             userWishDiscipline.setUserId(userInfo.getId());
         }
-        List<UserWishDiscipline> disciplineList = userWishDiscipline.getDisciplineList();
-        // 删除旧数据
-        userWishDisciplineService.remove(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, userWishDiscipline.getUserId()));
-        for (UserWishDiscipline wishDiscipline : disciplineList) {
-            wishDiscipline.setUserId(userWishDiscipline.getUserId());
+        // 校验是否已经绑定
+        int count = userWishDisciplineService.count(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, userWishDiscipline.getUserId())
+                .eq(UserWishDiscipline::getDisciplineId, userWishDiscipline.getDisciplineId()));
+        if (count > 0) {
+            throw new FebsException("已填报此专业");
         }
-        return R.ok(userWishDisciplineService.saveBatch(disciplineList));
+        return R.ok(userWishDisciplineService.save(userWishDiscipline));
+//        List<UserWishDiscipline> disciplineList = userWishDiscipline.getDisciplineList();
+//        // 删除旧数据
+//        userWishDisciplineService.remove(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, userWishDiscipline.getUserId()));
+//        for (UserWishDiscipline wishDiscipline : disciplineList) {
+//            wishDiscipline.setUserId(userWishDiscipline.getUserId());
+//        }
+//        return R.ok(userWishDisciplineService.saveBatch(disciplineList));
     }
 
     /**
@@ -90,7 +99,11 @@ public class UserWishDisciplineController {
      * @return 结果
      */
     @PutMapping
-    public R edit(UserWishDiscipline userWishDiscipline) {
+    public R edit(UserWishDiscipline userWishDiscipline) throws FebsException {
+        List<UserWishDiscipline> list = userWishDisciplineService.list(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, userWishDiscipline.getUserId()).eq(UserWishDiscipline::getDisciplineId, userWishDiscipline.getDisciplineId()));
+        if (list.size() > 1 || !list.get(0).getId().equals(userWishDiscipline.getId())) {
+            throw new FebsException("已填报此专业");
+        }
         return R.ok(userWishDisciplineService.updateById(userWishDiscipline));
     }
 

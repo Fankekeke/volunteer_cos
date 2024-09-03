@@ -133,14 +133,13 @@ public class ScoreLineInfoController {
     /**
      * 获取推荐学校
      *
-     * @param score        分数
-     * @param disciplineId 专业ID
-     * @param type         类型
-     * @return
+     * @param page          分页对象
+     * @param scoreLineInfo 参数
+     * @return 结果
      */
     @GetMapping("/selectRecommendSchool")
-    public R selectRecommendSchool(Integer score, Integer disciplineId, String type) {
-        return R.ok(scoreLineInfoService.selectRecommendSchool(score, disciplineId, type));
+    public R selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) {
+        return R.ok(scoreLineInfoService.selectRecommendSchool(page, scoreLineInfo));
     }
 
     /**

@@ -7,34 +7,10 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="学校名称"
+                label="专业名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.schoolName"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="层次"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.level"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="学生姓名"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.userName"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="身份证号"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.idCard"/>
+                <a-input v-model="queryParams.disciplineName"/>
               </a-form-item>
             </a-col>
           </div>
@@ -71,53 +47,53 @@
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="cloud" @click="handleapplyViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
-<!--          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>-->
+          <a-icon type="cloud" @click="handlewishDisciplineViewOpen(record)" title="详 情" style="margin-right: 10px"></a-icon>
+          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改" style="margin-right: 10px"></a-icon>
         </template>
       </a-table>
     </div>
-    <apply-add
-      v-if="applyAdd.visiable"
-      @close="handleapplyAddClose"
-      @success="handleapplyAddSuccess"
-      :applyAddVisiable="applyAdd.visiable">
-    </apply-add>
-    <apply-edit
-      ref="applyEdit"
-      @close="handleapplyEditClose"
-      @success="handleapplyEditSuccess"
-      :applyEditVisiable="applyEdit.visiable">
-    </apply-edit>
-    <apply-view
-      @close="handleapplyViewClose"
-      :applyShow="applyView.visiable"
-      :applyData="applyView.data">
-    </apply-view>
+    <wishDiscipline-add
+      v-if="wishDisciplineAdd.visiable"
+      @close="handlewishDisciplineAddClose"
+      @success="handlewishDisciplineAddSuccess"
+      :wishDisciplineAddVisiable="wishDisciplineAdd.visiable">
+    </wishDiscipline-add>
+    <wishDiscipline-edit
+      ref="wishDisciplineEdit"
+      @close="handlewishDisciplineEditClose"
+      @success="handlewishDisciplineEditSuccess"
+      :wishDisciplineEditVisiable="wishDisciplineEdit.visiable">
+    </wishDiscipline-edit>
+    <wishDiscipline-view
+      @close="handlewishDisciplineViewClose"
+      :wishDisciplineShow="wishDisciplineView.visiable"
+      :wishDisciplineData="wishDisciplineView.data">
+    </wishDiscipline-view>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
 import {mapState} from 'vuex'
-import applyAdd from './ApplyAdd.vue'
-import applyEdit from './ApplyEdit.vue'
-import applyView from './ApplyView.vue'
+import wishDisciplineAdd from './WishDisciplineAdd.vue'
+import wishDisciplineEdit from './WishDisciplineEdit.vue'
+import wishDisciplineView from './WishDisciplineView.vue'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 export default {
-  name: 'apply',
-  components: {RangeDate, applyAdd, applyEdit, applyView},
+  name: 'wishDiscipline',
+  components: {RangeDate, wishDisciplineAdd, wishDisciplineEdit, wishDisciplineView},
   data () {
     return {
       advanced: false,
-      applyAdd: {
+      wishDisciplineAdd: {
         visiable: false
       },
-      applyEdit: {
+      wishDisciplineEdit: {
         visiable: false
       },
-      applyView: {
+      wishDisciplineView: {
         visiable: false,
         data: null
       },
@@ -136,21 +112,18 @@ export default {
         showSizeChanger: true,
         showTotal: (total, range) => `显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
       },
-      applyList: []
+      wishDisciplineList: []
     }
   },
   computed: {
     ...mapState({
-      currentapply: state => state.account.apply
+      currentUser: state => state.account.user
     }),
     columns () {
       return [{
-        title: '申请单号',
-        dataIndex: 'code',
-        ellipsis: true
-      }, {
         title: '学生姓名',
-        dataIndex: 'userName'
+        dataIndex: 'userName',
+        ellipsis: true
       }, {
         title: '性别',
         dataIndex: 'sex',
@@ -178,6 +151,17 @@ export default {
           }
         }
       }, {
+        title: '身份证号',
+        dataIndex: 'idCard',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
+      }, {
         title: '头像',
         dataIndex: 'images',
         customRender: (text, record, index) => {
@@ -190,47 +174,12 @@ export default {
           </a-popover>
         }
       }, {
-        title: '学校名称',
-        dataIndex: 'schoolName',
+        title: '专业名称',
+        dataIndex: 'disciplineName',
         ellipsis: true
       }, {
-        title: '主管部门',
-        dataIndex: 'manage',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '层次',
-        dataIndex: 'level',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '状态',
-        dataIndex: 'status',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '1':
-              return <a-tag>发送申请</a-tag>
-            case '2':
-              return <a-tag >学校确认</a-tag>
-            case '3':
-              return <a-tag >用户确认</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '申请时间',
-        dataIndex: 'createDate',
+        title: '就业方向',
+        dataIndex: 'employment',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -239,10 +188,6 @@ export default {
           }
         },
         ellipsis: true
-      }, {
-        title: '操作',
-        dataIndex: 'operation',
-        scopedSlots: {customRender: 'operation'}
       }]
     }
   },
@@ -250,15 +195,21 @@ export default {
     this.fetch()
   },
   methods: {
-    handleapplyViewOpen (row) {
-      this.applyView.data = row
-      this.applyView.visiable = true
+    audit (wishDisciplineId, flag) {
+      this.$post('/cos/wishDiscipline-info/wishDiscipline/audit', {wishDisciplineId, flag}).then((r) => {
+        this.$message.success('修改成功！')
+        this.fetch()
+      })
     },
-    handleapplyViewClose () {
-      this.applyView.visiable = false
+    handlewishDisciplineViewOpen (row) {
+      this.wishDisciplineView.data = row
+      this.wishDisciplineView.visiable = true
+    },
+    handlewishDisciplineViewClose () {
+      this.wishDisciplineView.visiable = false
     },
     editStatus (row, status) {
-      this.$post('/cos/apply-info/account/status', { staffId: row.id, status }).then((r) => {
+      this.$post('/cos/wishDiscipline-info/account/status', { staffId: row.id, status }).then((r) => {
         this.$message.success('修改成功')
         this.fetch()
       })
@@ -270,25 +221,25 @@ export default {
       this.advanced = !this.advanced
     },
     add () {
-      this.applyAdd.visiable = true
+      this.wishDisciplineAdd.visiable = true
     },
-    handleapplyAddClose () {
-      this.applyAdd.visiable = false
+    handlewishDisciplineAddClose () {
+      this.wishDisciplineAdd.visiable = false
     },
-    handleapplyAddSuccess () {
-      this.applyAdd.visiable = false
-      this.$message.success('新增志愿申请成功')
+    handlewishDisciplineAddSuccess () {
+      this.wishDisciplineAdd.visiable = false
+      this.$message.success('新增志愿专业成功')
       this.search()
     },
     edit (record) {
-      this.$refs.applyEdit.setFormValues(record)
-      this.applyEdit.visiable = true
+      this.$refs.wishDisciplineEdit.setFormValues(record)
+      this.wishDisciplineEdit.visiable = true
     },
-    handleapplyEditClose () {
-      this.applyEdit.visiable = false
+    handlewishDisciplineEditClose () {
+      this.wishDisciplineEdit.visiable = false
     },
-    handleapplyEditSuccess () {
-      this.applyEdit.visiable = false
+    handlewishDisciplineEditSuccess () {
+      this.wishDisciplineEdit.visiable = false
       this.$message.success('修改产品成功')
       this.search()
     },
@@ -307,7 +258,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/apply-bill-info/' + ids).then(() => {
+          that.$delete('/cos/user-wish-discipline/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -380,7 +331,8 @@ export default {
       if (params.type === undefined) {
         delete params.type
       }
-      this.$get('/cos/apply-bill-info/page', {
+      params.userId = this.currentUser.userId
+      this.$get('/cos/user-wish-discipline/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

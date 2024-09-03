@@ -1,6 +1,9 @@
 <template>
   <a-modal v-model="show" title="志愿申请详情" @cancel="onClose" :width="850">
     <template slot="footer">
+      <a-button key="pass" @click="onAudit" v-if="applyData.status == 1">
+        审核通过
+      </a-button>
       <a-button key="back" @click="onClose" type="danger">
         关闭
       </a-button>
@@ -39,8 +42,8 @@
         </a-col>
         <a-col :span="8"><b>审核状态：</b>
           <a-tag v-if="applyData.status == 1">发送申请</a-tag>
-          <a-tag v-if="applyData.status == 2" color="red">用户确认</a-tag>
-          <a-tag v-if="applyData.status == 3" color="green">学校确认</a-tag>
+          <a-tag v-if="applyData.status == 2" color="red">学校确认</a-tag>
+          <a-tag v-if="applyData.status == 3" color="green">用户确认</a-tag>
         </a-col>
         <a-col :span="8"><b>创建时间：</b>
           {{ applyData.createDate ? applyData.createDate : '- -'}}
@@ -147,6 +150,12 @@ export default {
     }
   },
   methods: {
+    onAudit () {
+      let params = { id: this.applyData.id, status: 2}
+      this.$put('/cos/apply-bill-info', params).then((r) => {
+        this.$emit('success')
+      })
+    },
     imagesInit (images) {
       if (images !== null && images !== '') {
         let imageList = []

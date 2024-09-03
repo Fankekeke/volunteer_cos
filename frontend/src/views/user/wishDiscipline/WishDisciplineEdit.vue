@@ -1,41 +1,18 @@
 <template>
-  <a-modal v-model="show" title="新增志愿" @cancel="onClose" :width="600">
+  <a-modal v-model="show" title="修改志愿专业" @cancel="onClose" :width="400">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
       </a-button>
       <a-button key="submit" type="primary" :loading="loading" @click="handleSubmit">
-        提交
+        修改
       </a-button>
     </template>
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="24">
-          <a-form-item label='选择学校' v-bind="formItemLayout">
-            <a-select
-              v-decorator="[
-              'schoolId',
-              { rules: [{ required: true, message: '请输入学校!' }] }
-              ]"
-              @change="handleChange"
-              show-search
-              placeholder="请选择学校..."
-              style="width: 100%"
-              :default-active-first-option="false"
-              :show-arrow="false"
-              :filter-option="false"
-              :not-found-content="null"
-              @search="handleSearch">
-              <a-select-option v-for="d in schoolList" :value="d.id" :key="d.id">
-                {{ d.name }}
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
           <a-form-item label='选择专业' v-bind="formItemLayout">
             <a-select
-              :disabled="!form.schoolId"
               v-decorator="[
               'disciplineCode',
               { rules: [{ required: true, message: '请输入专业!' }] }
@@ -46,7 +23,8 @@
               :default-active-first-option="false"
               :show-arrow="false"
               :filter-option="false"
-              :not-found-content="null">
+              :not-found-content="null"
+              @search="disciplineHandleSearch">
               <a-select-option v-for="d in disciplineList" :value="d.code" :key="d.code">
                 {{ d.name }}
               </a-select-option>
@@ -69,7 +47,8 @@
 
 <script>
 import {mapState} from 'vuex'
-import moment from "moment";
+import moment from 'moment'
+moment.locale('zh-cn')
 function getBase64 (file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -83,19 +62,19 @@ const formItemLayout = {
   wrapperCol: { span: 24 }
 }
 export default {
-  name: 'wishAdd',
+  name: 'wishDisciplineEdit',
   props: {
-    wishAddVisiable: {
+    wishDisciplineEditVisiable: {
       default: false
     }
   },
   computed: {
     ...mapState({
-      currentUser: state => state.account.user
+      currentwishDiscipline: state => state.account.wishDiscipline
     }),
     show: {
       get: function () {
-        return this.wishAddVisiable
+        return this.wishDisciplineEditVisiable
       },
       set: function () {
       }
@@ -103,35 +82,17 @@ export default {
   },
   data () {
     return {
+      rowId: null,
       formItemLayout,
       form: this.$form.createForm(this),
       loading: false,
       fileList: [],
-      schoolList: [],
       disciplineList: [],
       previewVisible: false,
       previewImage: ''
     }
   },
   methods: {
-    handleSearch (value) {
-      this.schoolList = []
-      if (value !== '' && value !== null) {
-        this.$get(`/cos/sys-school/listLikeByKey/${value}`).then((r) => {
-          this.schoolList = r.data.data
-        })
-      }
-    },
-    handleChange (value) {
-      if (value) {
-        this.selectDiscipline(value)
-      }
-    },
-    selectDiscipline (schoolId) {
-      this.$get(`/cos/school-discipline-bind/selectBindBySchool`).then((r) => {
-        this.disciplineList = r.data.data
-      })
-    },
     disciplineHandleSearch (value) {
       this.disciplineList = []
       if (value !== '' && value !== null) {
@@ -153,6 +114,34 @@ export default {
     picHandleChange ({ fileList }) {
       this.fileList = fileList
     },
+    imagesInit (images) {
+      if (images !== null && images !== '') {
+        let imageList = []
+        images.split(',').forEach((image, index) => {
+          imageList.push({uid: index, name: image, status: 'done', url: 'http://127.0.0.1:9527/imagesWeb/' + image})
+        })
+        this.fileList = imageList
+      }
+    },
+    setFormValues ({...wishDiscipline}) {
+      this.rowId = wishDiscipline.id
+      let fields = ['indexNo', 'disciplineId', 'disciplineName']
+      let obj = {}
+      Object.keys(wishDiscipline).forEach((key) => {
+        if (key === 'images') {
+          this.fileList = []
+          this.imagesInit(wishDiscipline['images'])
+        }
+        if (key === 'disciplineName' && bind[key] != null) {
+          this.disciplineHandleSearch(bind[key])
+        }
+        if (fields.indexOf(key) !== -1) {
+          this.form.getFieldDecorator(key)
+          obj[key] = wishDiscipline[key]
+        }
+      })
+      this.form.setFieldsValue(obj)
+    },
     reset () {
       this.loading = false
       this.form.resetFields()
@@ -165,13 +154,17 @@ export default {
       // 获取图片List
       let images = []
       this.fileList.forEach(image => {
-        images.push(image.response)
+        if (image.response !== undefined) {
+          images.push(image.response)
+        } else {
+          images.push(image.name)
+        }
       })
       this.form.validateFields((err, values) => {
+        values.id = this.rowId
         if (!err) {
-          values.userId = this.currentUser.userId
           this.loading = true
-          this.$post('/cos/user-wish-info', {
+          this.$put('/cos/user-wish-discipline', {
             ...values
           }).then((r) => {
             this.reset()

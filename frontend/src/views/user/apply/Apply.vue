@@ -222,9 +222,9 @@ export default {
             case '1':
               return <a-tag>发送申请</a-tag>
             case '2':
-              return <a-tag >用户确认</a-tag>
-            case '3':
               return <a-tag >学校确认</a-tag>
+            case '3':
+              return <a-tag >用户确认</a-tag>
             default:
               return '- -'
           }

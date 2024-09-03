@@ -1,19 +1,5 @@
 <template>
   <a-card :bordered="false" class="card-area">
-    <div style="width: 100%">
-      <a-col :span="22" v-if="newsList.length > 0">
-        <a-alert
-          banner
-          :message="newsContent"
-          type="info"
-        />
-      </a-col>
-      <a-col :span="2">
-        <a-button type="primary" style="margin-top: 2px;margin-left: 10px" @click="newsNext">下一页</a-button>
-      </a-col>
-    </div>
-    <br/>
-    <br/>
     <a-row :gutter="30" v-if="userInfo != null">
       <a-col :span="12" style="margin-top: 65px;text-align: center">
         <img alt="example" style="width: 500px;height: 500px;" src="/static/img/Search_SVG.png"/>

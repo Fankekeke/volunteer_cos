@@ -44,22 +44,29 @@
     <!-- 根据学校ID获取绑定信息 -->
     <select id="selectBindBySchool" resultType="java.util.LinkedHashMap">
         select
-        sdb.id,
-        sdb.school_id,
-        sdb.discipline_id,
-        sdb.index_no,
+        pf.id,
+        pf.discipline_type,
+        pf.feature_flag,
+        pf.school_id,
+        pf.id,
+        pf.discipline_type_code,
+        pf.discipline_code,
         ss.name as schoolName,
         ss.area,
         ss.manage,
+        ss.address,
+        ss.longitude,
+        ss.latitude,
         ss.`level`,
+        di.id as disciplineId,
         di.name as disciplineName,
         di.employment
         from
-        school_discipline_bind sdb
+        professional pf
         left join sys_school ss on
-        (ss.id = sdb.school_id)
+        (ss.id = pf.school_id)
         left join discipline_info di on
-        (di.id = sdb.discipline_id)
+        (di.code = pf.discipline_id)
         where
         1 = 1
         AND di.school_id = #{schoolId}

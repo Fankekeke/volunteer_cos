@@ -67,4 +67,7 @@ public class ScoreLineInfo implements Serializable {
 
     @TableField(exist = false)
     private String disciplineName;
+
+    @TableField(exist = false)
+    private Integer userId;
 }

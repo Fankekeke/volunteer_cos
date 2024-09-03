@@ -14,7 +14,7 @@
           <a-form-item label='学生姓名' v-bind="formItemLayout">
             <a-input v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入企业姓名!' }] }
+            { rules: [{ required: true, message: '请输入学生姓名!' }] }
             ]"/>
           </a-form-item>
         </a-col>

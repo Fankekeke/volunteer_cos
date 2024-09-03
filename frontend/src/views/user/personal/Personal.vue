@@ -9,10 +9,10 @@
           <a-form :form="form" layout="vertical">
             <a-row :gutter="20">
               <a-col :span="12">
-                <a-form-item label='企业姓名' v-bind="formItemLayout">
+                <a-form-item label='学生姓名' v-bind="formItemLayout">
                   <a-input v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入企业姓名!' }] }
+            { rules: [{ required: true, message: '请输入学生姓名!' }] }
             ]"/>
                 </a-form-item>
               </a-col>
@@ -22,10 +22,8 @@
                   'type',
                   { rules: [{ required: true, message: '请输入类型!' }] }
                   ]">
-                    <a-select-option value="1">经销商</a-select-option>
-                    <a-select-option value="2">批发商</a-select-option>
-                    <a-select-option value="3">散客</a-select-option>
-                    <a-select-option value="4">代理商</a-select-option>
+                    <a-select-option value="1">文科</a-select-option>
+                    <a-select-option value="2">理科</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -40,18 +38,26 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label='联系人' v-bind="formItemLayout">
+                <a-form-item label='身份证号' v-bind="formItemLayout">
                   <a-input v-decorator="[
-            'contact',
-            { rules: [{ required: true, message: '请输入联系人!' }] }
+            'idCard',
+            { rules: [{ required: true, message: '请输入身份证号!' }] }
             ]"/>
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item label='联系方式' v-bind="formItemLayout">
+                <a-form-item label='籍贯' v-bind="formItemLayout">
                   <a-input v-decorator="[
-            'phone',
-            { rules: [{ required: true, message: '请输入联系方式!' }] }
+            'nativePlace',
+            { rules: [{ required: true, message: '请输入籍贯' }] }
+            ]"/>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label='详细地址' v-bind="formItemLayout">
+                  <a-input v-decorator="[
+            'address',
+            { rules: [{ required: true, message: '请输入详细地址' }] }
             ]"/>
                 </a-form-item>
               </a-col>
@@ -105,13 +111,23 @@
       <div style="background:#ECECEC; padding:30px;margin-top: 30px">
         <a-card :bordered="false">
           <a-spin :spinning="dataLoading">
-            <a-calendar>
-              <ul slot="dateCellRender" slot-scope="value" class="events">
-                <li v-for="item in getListData(value)" :key="item.content">
-                  <a-badge :status="item.type" :text="item.content" />
-                </li>
-              </ul>
-            </a-calendar>
+            <a-card hoverable :loading="loading" :bordered="false" title="公告信息" style="margin-top: 15px">
+              <div style="padding: 0 22px">
+                <a-list item-layout="vertical" :pagination="pagination" :data-source="courseInfo">
+                  <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
+                    <template slot="actions">
+                      <span key="message">
+                        <a-icon type="message" style="margin-right: 8px" />
+                        {{ item.date }}
+                      </span>
+                    </template>
+                    <a-list-item-meta :description="item.content" style="font-size: 14px">
+                      <a slot="title">{{ item.title }}</a>
+                    </a-list-item-meta>
+                  </a-list-item>
+                </a-list>
+              </div>
+            </a-card>
           </a-spin>
         </a-card>
       </div>
@@ -136,6 +152,12 @@ export default {
   },
   data () {
     return {
+      pagination: {
+        onChange: page => {
+          console.log(page)
+        },
+        pageSize: 5
+      },
       rowId: null,
       formItemLayout,
       form: this.$form.createForm(this),
@@ -194,25 +216,25 @@ export default {
     },
     dataInit () {
       this.dataLoading = true
-      this.$get(`/cos/user-info/selectDetailByUserId/${this.currentUser.userId}`).then((r) => {
+      this.$get(`/cos/user-info/selectUserBulletin/${this.currentUser.userId}`).then((r) => {
         this.rowId = r.data.user.id
         this.setFormValues(r.data.user)
-        this.courseInfo = r.data.order
+        this.courseInfo = r.data.bulletin
         this.dataLoading = false
       })
     },
     setFormValues ({...user}) {
       this.rowId = user.id
-      let fields = ['name', 'email', 'phone', 'type', 'sex', 'contact', 'remark']
+      let fields = ['name', 'email', 'address', 'type', 'sex', 'idCard', 'remark', 'nativePlace']
       let obj = {}
       Object.keys(user).forEach((key) => {
         if (key === 'images') {
           this.fileList = []
           this.imagesInit(user['images'])
         }
-        // if (key === 'birthday' && user[key] != null) {
-        //   user[key] = moment(user[key])
-        // }
+        if (key === 'birthday' && user[key] != null) {
+          user[key] = moment(user[key])
+        }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)
           obj[key] = user[key]

@@ -3,7 +3,7 @@
     <a-col :span="8">
       <div style="background:#ECECEC; padding:30px;margin-top: 30px">
         <a-card :bordered="false">
-          <b style="font-size: 15px">我的信息</b>
+          <b style="font-size: 15px">学校信息</b>
         </a-card>
         <a-card :bordered="false">
           <a-form :form="form" layout="vertical">
@@ -138,13 +138,23 @@
       <div style="background:#ECECEC; padding:30px;margin-top: 30px">
         <a-card :bordered="false">
           <a-spin :spinning="dataLoading">
-            <a-calendar>
-              <ul slot="dateCellRender" slot-scope="value" class="events">
-                <li v-for="item in getListData(value)" :key="item.content">
-                  <a-badge :status="item.type" :text="item.content" />
-                </li>
-              </ul>
-            </a-calendar>
+            <a-card hoverable :loading="loading" :bordered="false" title="公告信息" style="margin-top: 15px">
+              <div style="padding: 0 22px">
+                <a-list item-layout="vertical" :pagination="pagination" :data-source="courseInfo">
+                  <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
+                    <template slot="actions">
+                      <span key="message">
+                        <a-icon type="message" style="margin-right: 8px" />
+                        {{ item.date }}
+                      </span>
+                    </template>
+                    <a-list-item-meta :description="item.content" style="font-size: 14px">
+                      <a slot="title">{{ item.title }}</a>
+                    </a-list-item-meta>
+                  </a-list-item>
+                </a-list>
+              </div>
+            </a-card>
           </a-spin>
         </a-card>
       </div>
@@ -169,6 +179,12 @@ export default {
   },
   data () {
     return {
+      pagination: {
+        onChange: page => {
+          console.log(page)
+        },
+        pageSize: 5
+      },
       rowId: null,
       formItemLayout,
       form: this.$form.createForm(this),

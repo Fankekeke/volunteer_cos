@@ -32,4 +32,12 @@ public interface ISchoolDisciplineBindService extends IService<SchoolDisciplineB
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> selectBindBySchool(Integer schoolId);
+
+    /**
+     * 根据学校账户ID获取绑定信息
+     *
+     * @param userId 学校账户ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectBindBySchoolUserId(Integer userId);
 }

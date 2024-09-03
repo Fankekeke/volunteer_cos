@@ -90,6 +90,7 @@
     </apply-edit>
     <apply-view
       @close="handleapplyViewClose"
+      @success="handleapplyViewSuccess"
       :applyShow="applyView.visiable"
       :applyData="applyView.data">
     </apply-view>
@@ -222,9 +223,9 @@ export default {
             case '1':
               return <a-tag>发送申请</a-tag>
             case '2':
-              return <a-tag >用户确认</a-tag>
-            case '3':
               return <a-tag >学校确认</a-tag>
+            case '3':
+              return <a-tag >用户确认</a-tag>
             default:
               return '- -'
           }
@@ -257,6 +258,11 @@ export default {
     },
     handleapplyViewClose () {
       this.applyView.visiable = false
+    },
+    handleapplyViewSuccess () {
+      this.applyView.visiable = false
+      this.$message.success('审核成功')
+      this.fetch()
     },
     editStatus (row, status) {
       this.$post('/cos/apply-info/account/status', { staffId: row.id, status }).then((r) => {

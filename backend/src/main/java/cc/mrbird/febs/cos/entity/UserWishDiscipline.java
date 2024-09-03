@@ -38,6 +38,11 @@ public class UserWishDiscipline implements Serializable {
      */
     private Integer disciplineId;
 
+    /**
+     * 排序
+     */
+    private Integer indexNo;
+
     @TableField(exist = false)
     private String userName;
 

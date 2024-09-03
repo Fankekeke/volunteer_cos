@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="新增志愿" @cancel="onClose" :width="600">
+  <a-modal v-model="show" title="新增志愿专业" @cancel="onClose" :width="400">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -11,31 +11,8 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="24">
-          <a-form-item label='选择学校' v-bind="formItemLayout">
-            <a-select
-              v-decorator="[
-              'schoolId',
-              { rules: [{ required: true, message: '请输入学校!' }] }
-              ]"
-              @change="handleChange"
-              show-search
-              placeholder="请选择学校..."
-              style="width: 100%"
-              :default-active-first-option="false"
-              :show-arrow="false"
-              :filter-option="false"
-              :not-found-content="null"
-              @search="handleSearch">
-              <a-select-option v-for="d in schoolList" :value="d.id" :key="d.id">
-                {{ d.name }}
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="24">
           <a-form-item label='选择专业' v-bind="formItemLayout">
             <a-select
-              :disabled="!form.schoolId"
               v-decorator="[
               'disciplineCode',
               { rules: [{ required: true, message: '请输入专业!' }] }
@@ -46,7 +23,8 @@
               :default-active-first-option="false"
               :show-arrow="false"
               :filter-option="false"
-              :not-found-content="null">
+              :not-found-content="null"
+              @search="disciplineHandleSearch">
               <a-select-option v-for="d in disciplineList" :value="d.code" :key="d.code">
                 {{ d.name }}
               </a-select-option>
@@ -83,9 +61,9 @@ const formItemLayout = {
   wrapperCol: { span: 24 }
 }
 export default {
-  name: 'wishAdd',
+  name: 'wishDisciplineAdd',
   props: {
-    wishAddVisiable: {
+    wishDisciplineAddVisiable: {
       default: false
     }
   },
@@ -95,7 +73,7 @@ export default {
     }),
     show: {
       get: function () {
-        return this.wishAddVisiable
+        return this.wishDisciplineAddVisiable
       },
       set: function () {
       }
@@ -107,31 +85,12 @@ export default {
       form: this.$form.createForm(this),
       loading: false,
       fileList: [],
-      schoolList: [],
-      disciplineList: [],
       previewVisible: false,
+      disciplineList: [],
       previewImage: ''
     }
   },
   methods: {
-    handleSearch (value) {
-      this.schoolList = []
-      if (value !== '' && value !== null) {
-        this.$get(`/cos/sys-school/listLikeByKey/${value}`).then((r) => {
-          this.schoolList = r.data.data
-        })
-      }
-    },
-    handleChange (value) {
-      if (value) {
-        this.selectDiscipline(value)
-      }
-    },
-    selectDiscipline (schoolId) {
-      this.$get(`/cos/school-discipline-bind/selectBindBySchool`).then((r) => {
-        this.disciplineList = r.data.data
-      })
-    },
     disciplineHandleSearch (value) {
       this.disciplineList = []
       if (value !== '' && value !== null) {
@@ -168,10 +127,11 @@ export default {
         images.push(image.response)
       })
       this.form.validateFields((err, values) => {
+        // values.birthday = moment(values.birthday).format('YYYY-MM-DD')
         if (!err) {
-          values.userId = this.currentUser.userId
           this.loading = true
-          this.$post('/cos/user-wish-info', {
+          values.userId = this.currentUser.userId
+          this.$post('/cos/user-wish-discipline', {
             ...values
           }).then((r) => {
             this.reset()

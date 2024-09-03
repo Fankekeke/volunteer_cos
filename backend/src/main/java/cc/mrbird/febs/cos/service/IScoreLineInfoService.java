@@ -55,12 +55,11 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
     /**
      * 获取推荐学校
      *
-     * @param score        分数
-     * @param disciplineId 专业ID
-     * @param type         类型
+     * @param page          分页对象
+     * @param scoreLineInfo 参数
      * @return 结果
      */
-    List<ScoreLineVo> selectRecommendSchool(Integer score, Integer disciplineId, String type);
+    IPage<LinkedHashMap<String, Object>> selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo);
 
     /**
      * 校院统计

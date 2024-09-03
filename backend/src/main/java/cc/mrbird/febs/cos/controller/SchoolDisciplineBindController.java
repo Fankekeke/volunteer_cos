@@ -53,6 +53,17 @@ public class SchoolDisciplineBindController {
     }
 
     /**
+     * 根据学校账户ID获取绑定信息
+     *
+     * @param userId 学校账户ID
+     * @return 结果
+     */
+    @GetMapping("/selectBindBySchoolUserId")
+    public R selectBindBySchoolUserId(Integer userId) {
+        return R.ok(schoolDisciplineBindService.selectBindBySchoolUserId(userId));
+    }
+
+    /**
      * 查询学校专业绑定信息详情
      *
      * @param id 主键ID
