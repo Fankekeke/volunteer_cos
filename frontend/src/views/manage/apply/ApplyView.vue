@@ -38,9 +38,9 @@
           {{ applyData.schoolName }}
         </a-col>
         <a-col :span="8"><b>审核状态：</b>
-          <a-tag v-if="applyData.status == 0">发送申请</a-tag>
-          <a-tag v-if="applyData.status == 1" color="red">用户确认</a-tag>
-          <a-tag v-if="applyData.status == 2" color="green">学校确认</a-tag>
+          <a-tag v-if="applyData.status == 1">发送申请</a-tag>
+          <a-tag v-if="applyData.status == 2" color="red">用户确认</a-tag>
+          <a-tag v-if="applyData.status == 3" color="green">学校确认</a-tag>
         </a-col>
         <a-col :span="8"><b>创建时间：</b>
           {{ applyData.createDate ? applyData.createDate : '- -'}}
