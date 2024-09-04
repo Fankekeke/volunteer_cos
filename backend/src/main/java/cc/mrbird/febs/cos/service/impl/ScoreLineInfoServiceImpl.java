@@ -1,5 +1,6 @@
 package cc.mrbird.febs.cos.service.impl;
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.cos.entity.*;
 import cc.mrbird.febs.cos.dao.ScoreLineInfoMapper;
 import cc.mrbird.febs.cos.entity.vo.ScoreLineVo;
@@ -120,8 +121,11 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
      * @return 结果
      */
     @Override
-    public IPage<LinkedHashMap<String, Object>> selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) {
+    public IPage<LinkedHashMap<String, Object>> selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) throws FebsException {
 
+        if (scoreLineInfo.getScore() == null) {
+            throw new FebsException("请填写分数值");
+        }
         // 获取用户志愿专业与志愿学校
         UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, scoreLineInfo.getUserId()));
         if (userInfo != null) {

@@ -1,5 +1,6 @@
 package cc.mrbird.febs.cos.service;
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.cos.entity.ScoreLineInfo;
 import cc.mrbird.febs.cos.entity.vo.ScoreLineVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -59,7 +60,7 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
      * @param scoreLineInfo 参数
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo);
+    IPage<LinkedHashMap<String, Object>> selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) throws FebsException;
 
     /**
      * 校院统计
