@@ -47,7 +47,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add">新增</a-button>
+<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -90,6 +90,7 @@
     </apply-edit>
     <apply-view
       @close="handleapplyViewClose"
+      @success="handleapplyViewSuccess"
       :applyShow="applyView.visiable"
       :applyData="applyView.data">
     </apply-view>
@@ -257,6 +258,11 @@ export default {
     },
     handleapplyViewClose () {
       this.applyView.visiable = false
+    },
+    handleapplyViewSuccess () {
+      this.applyView.visiable = false
+      this.$message.success('接收成功')
+      this.fetch()
     },
     editStatus (row, status) {
       this.$post('/cos/apply-info/account/status', { staffId: row.id, status }).then((r) => {

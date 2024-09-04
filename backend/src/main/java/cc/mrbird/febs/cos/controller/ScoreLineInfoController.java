@@ -1,6 +1,7 @@
 package cc.mrbird.febs.cos.controller;
 
 
+import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.Professional;
 import cc.mrbird.febs.cos.entity.ScoreLineInfo;
@@ -138,7 +139,7 @@ public class ScoreLineInfoController {
      * @return 结果
      */
     @GetMapping("/selectRecommendSchool")
-    public R selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) {
+    public R selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) throws FebsException {
         return R.ok(scoreLineInfoService.selectRecommendSchool(page, scoreLineInfo));
     }
 

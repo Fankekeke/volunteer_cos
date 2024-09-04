@@ -151,7 +151,7 @@ export default {
   },
   methods: {
     onAudit () {
-      let params = { id: this.applyData.id, status: 2}
+      let params = { id: this.applyData.id, status: 2 }
       this.$put('/cos/apply-bill-info', params).then((r) => {
         this.$emit('success')
       })

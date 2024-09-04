@@ -1,6 +1,9 @@
 <template>
   <a-modal v-model="show" title="志愿申请详情" @cancel="onClose" :width="850">
     <template slot="footer">
+      <a-button key="pass" @click="onAudit" v-if="applyData.status == 2" type="primary">
+        通知确认
+      </a-button>
       <a-button key="back" @click="onClose" type="danger">
         关闭
       </a-button>
@@ -147,6 +150,12 @@ export default {
     }
   },
   methods: {
+    onAudit () {
+      let params = { id: this.applyData.id, status: 3 }
+      this.$put('/cos/apply-bill-info', params).then((r) => {
+        this.$emit('success')
+      })
+    },
     imagesInit (images) {
       if (images !== null && images !== '') {
         let imageList = []
