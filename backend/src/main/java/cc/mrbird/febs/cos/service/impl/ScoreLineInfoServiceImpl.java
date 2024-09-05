@@ -123,14 +123,12 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
     @Override
     public IPage<LinkedHashMap<String, Object>> selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) throws FebsException {
 
-        if (scoreLineInfo.getScore() == null) {
-            throw new FebsException("请填写分数值");
-        }
         // 获取用户志愿专业与志愿学校
         UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, scoreLineInfo.getUserId()));
         if (userInfo != null) {
             scoreLineInfo.setUserId(userInfo.getId());
             scoreLineInfo.setType(userInfo.getType());
+            scoreLineInfo.setScore(userInfo.getScore() == null ? 0 : userInfo.getScore());
         }
 
         List<UserWishDiscipline> wishDisciplineList = userWishDispatcherService.list(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, scoreLineInfo.getUserId()));
@@ -184,7 +182,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
 //
 //            result.addAll(passLine);
 //        }
-        return baseMapper.selectScoreLineRecommendPage(page, scoreLineInfo, disciplineIdList, schoolIdList);
+        return baseMapper.selectScoreLineRecommendPage(page, scoreLineInfo, schoolIdList, disciplineIdList);
     }
 
     /**

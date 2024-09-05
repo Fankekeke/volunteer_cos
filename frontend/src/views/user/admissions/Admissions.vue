@@ -11,6 +11,16 @@
           </a-radio-button>
         </a-radio-group>
       </a-col>
+<!--      <a-col :span="12">-->
+<!--        <div>-->
+<!--          <a-input-search-->
+<!--            style="margin-top: 30px"-->
+<!--            placeholder="学校搜索"-->
+<!--            enter-button="搜索"-->
+<!--            @search="onSearch"-->
+<!--          />-->
+<!--        </div>-->
+<!--      </a-col>-->
       <a-col :span="24" style="margin-top: 25px">
         <div style="background:#ECECEC; padding:30px">
           <a-skeleton :loading="loading" active :paragraph="{ rows: 10 }"/>
@@ -53,10 +63,13 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: 'House',
   data () {
     return {
+      currentTab: 1,
       page: {
         current: 1,
         total: 0,
@@ -83,22 +96,37 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      currentUser: state => state.account.user
+    })
+  },
   watch: {
     checkFlag: function (value) {
+      this.currentTab = value
       this.page.current = 1
       this.page.size = 36
       this.selectSchoolRate(value)
     }
   },
   mounted () {
-    this.fetch()
+    this.selectSchoolRate(1)
   },
   methods: {
-    selectSchoolRate (type) {
+    onSearch (value) {
+      this.page.size = 36
+      this.page.current = 1
+      this.selectSchoolRate(this.currentTab, value)
+    },
+    selectSchoolRate (type, schoolName) {
       this.loading = true
       let params = {}
       params.size = this.page.size
       params.current = this.page.current
+      if (schoolName) {
+        params.schoolName = schoolName
+      }
+      params.userId = this.currentUser.userId
       if (type == 1) {
         this.$get(`/cos/score-line-info/page`, {...params}).then((r) => {
           let data = r.data.data
@@ -126,7 +154,7 @@ export default {
     pageChange (page, pageSize) {
       this.page.size = pageSize
       this.page.current = page
-      this.fetch()
+      this.selectSchoolRate(this.currentTab)
     },
     fetch (params = {}) {
       // 显示loading

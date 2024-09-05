@@ -92,5 +92,8 @@ public class UserInfo implements Serializable {
      */
     private String remark;
 
-
+    /**
+     *
+     */
+    private Integer score;
 }

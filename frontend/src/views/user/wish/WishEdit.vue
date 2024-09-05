@@ -57,6 +57,21 @@
             ]"/>
           </a-form-item>
         </a-col>
+        <a-col :span="24">
+          <a-form-item label='状态' v-bind="formItemLayout">
+            <a-radio-group button-style="solid" v-decorator="[
+              'status',
+              { rules: [{ required: true, message: '状态!' }] }
+              ]">
+              <a-radio-button value="0">
+                未提交
+              </a-radio-button>
+              <a-radio-button value="1">
+                已提交
+              </a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+        </a-col>
       </a-row>
     </a-form>
   </a-modal>
@@ -162,7 +177,7 @@ export default {
     },
     setFormValues ({...wish}) {
       this.rowId = wish.id
-      let fields = ['indexNo', 'schoolId', 'disciplineId']
+      let fields = ['indexNo', 'schoolId', 'disciplineId', 'status']
       let obj = {}
       Object.keys(wish).forEach((key) => {
         if (key === 'schoolId' && wish[key] != null) {

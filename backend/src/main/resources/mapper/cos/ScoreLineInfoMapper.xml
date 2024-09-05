@@ -84,20 +84,21 @@
         <if test="scoreLineInfo.type != null and scoreLineInfo.type != ''">
             AND sli.type = #{scoreLineInfo.type}
         </if>
-        <if test="scoreLineInfo.score != null and scoreLineInfo.score != ''">
+        <if test="scoreLineInfo.score != null">
             AND sli.score &lt;= #{scoreLineInfo.score}
         </if>
         <if test="scoreLineInfo.year != null and scoreLineInfo.year != ''">
             AND sli.year = #{scoreLineInfo.year}
         </if>
-        <if test="schoolIdList !=null and schoolIdList.size() > 0">
+        and 1 = 1
+        <if test="schoolIdList != null and schoolIdList.size() > 0">
             and sli.school_id in
             <foreach collection="schoolIdList" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
-        <if test="disciplineIdList !=null and disciplineIdList.size() > 0">
-            and di.id in
+        <if test="disciplineIdList != null and disciplineIdList.size() > 0">
+            or di.id in
             <foreach collection="disciplineIdList" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>

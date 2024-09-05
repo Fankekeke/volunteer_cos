@@ -18,6 +18,7 @@
         images,
         create_date,
         remark,
+        score,
         user_id
         from
         user_info

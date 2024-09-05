@@ -71,6 +71,14 @@
             ]"/>
           </a-form-item>
         </a-col>
+        <a-col :span="12">
+          <a-form-item label='分数' v-bind="formItemLayout">
+            <a-input-number :max="750" :step="1" :min="0" style="width: 100%" v-decorator="[
+                'score',
+                { rules: [{ required: true, message: '请输入分数!' }] }
+                ]"/>
+          </a-form-item>
+        </a-col>
         <a-col :span="24">
           <a-form-item label='备注' v-bind="formItemLayout">
             <a-textarea :rows="4" v-decorator="[
@@ -177,7 +185,7 @@ export default {
     },
     setFormValues ({...user}) {
       this.rowId = user.id
-      let fields = ['name', 'email', 'address', 'type', 'sex', 'idCard', 'remark', 'nativePlace']
+      let fields = ['name', 'email', 'address', 'type', 'sex', 'idCard', 'remark', 'nativePlace', 'score']
       let obj = {}
       Object.keys(user).forEach((key) => {
         if (key === 'images') {
