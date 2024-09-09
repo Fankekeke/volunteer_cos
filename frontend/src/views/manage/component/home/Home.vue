@@ -125,7 +125,7 @@ export default {
       },
       loading: false,
       series: [{
-        name: '收益',
+        name: '申请单',
         data: []
       }],
       chartOptions: {
@@ -153,7 +153,7 @@ export default {
         }
       },
       series1: [{
-        name: '收益',
+        name: '申请单',
         data: []
       }],
       chartOptions1: {
@@ -162,7 +162,7 @@ export default {
           height: 300
         },
         title: {
-          text: '近十天工单统计',
+          text: '近十天申请',
           align: 'left'
         },
         plotOptions: {
@@ -199,7 +199,7 @@ export default {
         }
       },
       series2: [{
-        name: '收益',
+        name: '申请单',
         data: []
       }],
       chartOptions2: {
@@ -217,7 +217,7 @@ export default {
           enabled: false
         },
         title: {
-          text: '近十天内入库统计',
+          text: '近十天申请通过',
           align: 'left'
         },
         markers: {
@@ -227,7 +227,7 @@ export default {
         }
       },
       series3: [{
-        name: '收益',
+        name: '申请单',
         data: []
       }],
       chartOptions3: {
@@ -305,22 +305,20 @@ export default {
         //   values.push(itemData)
         //   this.series1 = values
         // }
-        this.series1[0].data = r.data.orderNumWithinDays.map(obj => { return obj.count })
-        this.chartOptions1.xaxis.categories = r.data.orderNumWithinDays.map(obj => { return obj.days })
+        this.series1[0].data = r.data.orderNumDayList.map(obj => { return obj.count })
+        this.chartOptions1.xaxis.categories = r.data.orderNumDayList.map(obj => { return obj.days })
 
-        this.series[0].data = r.data.orderPriceWithinDays.map(obj => { return obj.price })
-        this.chartOptions.xaxis.categories = r.data.orderPriceWithinDays.map(obj => { return obj.days })
+        this.series[0].data = r.data.priceDayList.map(obj => { return obj.count })
+        this.chartOptions.xaxis.categories = r.data.priceDayList.map(obj => { return obj.days })
 
-        if (r.data.putNumWithinDays !== null && r.data.putNumWithinDays.length !== 0) {
-          if (this.chartOptions2.xaxis.categories.length === 0) {
-            this.chartOptions2.xaxis.categories = r.data.putNumWithinDays.map(obj => { return obj.days })
-          }
-          let itemData = { name: '出库统计', data: r.data.putNumWithinDays.map(obj => { return obj.count }) }
-          values.push(itemData)
-          this.series2 = values
-        }
-        this.series3[0].data = r.data.putPriceWithinDays.map(obj => { return obj.price })
-        this.chartOptions3.xaxis.categories = r.data.putPriceWithinDays.map(obj => { return obj.days })
+        // if (r.data.putNumWithinDays !== null && r.data.putNumWithinDays.length !== 0) {
+        //   if (this.chartOptions2.xaxis.categories.length === 0) {
+        //     this.chartOptions2.xaxis.categories = r.data.putNumWithinDays.map(obj => { return obj.days })
+        //   }
+        //   let itemData = { name: '出库统计', data: r.data.putNumWithinDays.map(obj => { return obj.count }) }
+        //   values.push(itemData)
+        //   this.series2 = values
+        // }
       })
     }
   }
