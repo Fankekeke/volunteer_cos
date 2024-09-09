@@ -48,7 +48,7 @@
                         <a-col :span="8">
                           <a-icon type="team" />招生人数：{{ item.admissions }}
                         </a-col>
-                        <a-col :span="24"><a-button type="primary" style="width: 100%;margin-top: 15px">志愿申请</a-button></a-col>
+                        <a-col :span="24"><a-button type="primary" style="width: 100%;margin-top: 15px" @click="apply(item)">志愿申请</a-button></a-col>
                       </a-row>
                     </div>
                   </a-col>
@@ -114,6 +114,12 @@ export default {
     this.selectSchoolRate(1)
   },
   methods: {
+    apply (row) {
+      let params = {schoolId: row.schoolId, userId: this.currentUser.userId}
+      this.$post('/cos/apply-bill-info/addApplyBill', params).then((r) => {
+        this.$message.success('申请成功')
+      })
+    },
     onSearch (value) {
       this.page.size = 36
       this.page.current = 1
