@@ -143,7 +143,7 @@ export default {
           enabled: false
         },
         title: {
-          text: '近十天内出库收益统计',
+          text: '近十天申请通过数量',
           align: 'left'
         },
         markers: {
@@ -162,7 +162,7 @@ export default {
           height: 300
         },
         title: {
-          text: '近十天申请',
+          text: '近十天申请数量',
           align: 'left'
         },
         plotOptions: {
@@ -236,7 +236,7 @@ export default {
           height: 300
         },
         title: {
-          text: '近十天内入库收益统计',
+          text: '近十天申请通过数量',
           align: 'left'
         },
         plotOptions: {
@@ -286,15 +286,15 @@ export default {
       this.$get('/cos/sys-school/homeData').then((r) => {
         let titleData = { userNum: r.data.userNum, schoolNum: r.data.schoolNum, disciplineNum: r.data.disciplineNum, billNum: r.data.billNum }
         this.$emit('setTitle', titleData)
-        this.titleData.monthOutNum = r.data.monthOutNum
+        this.titleData.monthOrderNum = r.data.monthOrderNum
         this.titleData.passMonthNum = r.data.passMonthNum
-        this.titleData.yearOutNum = r.data.yearOutNum
+        this.titleData.yearOrderNum = r.data.yearOrderNum
         this.titleData.passYearNum = r.data.passYearNum
 
-        this.titleData.monthPutNum = r.data.monthPutNum
-        this.titleData.monthPutPrice = r.data.monthPutPrice
-        this.titleData.yearPutNum = r.data.yearPutNum
-        this.titleData.yearPutPrice = r.data.yearPutPrice
+        // this.titleData.monthPutNum = r.data.monthPutNum
+        // this.titleData.monthPutPrice = r.data.monthPutPrice
+        // this.titleData.yearPutNum = r.data.yearPutNum
+        // this.titleData.yearPutPrice = r.data.yearPutPrice
         this.bulletinList = r.data.bulletin
         let values = []
         // if (r.data.orderNumWithinDays !== null && r.data.orderNumWithinDays.length !== 0) {

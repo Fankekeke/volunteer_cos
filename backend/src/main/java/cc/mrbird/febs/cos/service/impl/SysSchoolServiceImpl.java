@@ -100,7 +100,7 @@ public class SysSchoolServiceImpl extends ServiceImpl<SysSchoolMapper, SysSchool
         // 近十天申请通过
         result.put("priceDayList", applyBillInfoMapper.selectOrderPriceWithinDays(null));
         // 公告信息
-        result.put("bulletinInfoList", bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, 1)));
+        result.put("bulletin", bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getRackUp, 1)));
 
         return result;
     }
