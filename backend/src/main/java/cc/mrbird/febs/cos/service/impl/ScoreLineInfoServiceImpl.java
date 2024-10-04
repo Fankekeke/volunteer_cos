@@ -218,7 +218,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
     }
 
     /**
-     * 校院统计
+     * 校院统计1
      *
      * @param type 类型
      * @return 结果
