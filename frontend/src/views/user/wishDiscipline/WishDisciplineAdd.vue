@@ -14,7 +14,7 @@
           <a-form-item label='选择专业' v-bind="formItemLayout">
             <a-select
               v-decorator="[
-              'disciplineCode',
+              'disciplineId',
               { rules: [{ required: true, message: '请输入专业!' }] }
               ]"
               show-search
