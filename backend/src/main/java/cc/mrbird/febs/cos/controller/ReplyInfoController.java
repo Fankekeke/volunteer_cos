@@ -43,7 +43,7 @@ public class ReplyInfoController {
     }
 
     /**
-     * 根据学校ID获取评论信息
+     * 根据学校ID获取评论信息1
      *
      * @param schoolId 学校ID
      * @return 结果
