@@ -116,7 +116,7 @@
         <a-col :span="8">
           <a-form-item label='是否双一流' v-bind="formItemLayout">
             <a-radio-group default-value="否" button-style="solid" v-decorator="[
-              'twoFlag',
+              'doubleFirstClass',
               { rules: [{ required: true, message: '请输入是否双一流!' }] }
               ]">
               <a-radio-button value="是">
