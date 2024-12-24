@@ -129,4 +129,14 @@ public class SysSchoolServiceImpl extends ServiceImpl<SysSchoolMapper, SysSchool
         }
         this.updateBatchById(toupList);
     }
+
+    /**
+     * 获取省份信息
+     *
+     * @return 结果
+     */
+    @Override
+    public List<String> queryProvince() {
+        return baseMapper.queryProvince();
+    }
 }

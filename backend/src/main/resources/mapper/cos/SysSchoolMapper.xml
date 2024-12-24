@@ -25,4 +25,16 @@
         order by
         province desc
     </select>
+
+    <!-- 获取省份信息 -->
+    <select id="queryProvince" resultType="java.lang.String">
+        select
+            province
+        from
+            sys_school
+        where
+            1 = 1
+        and province is not null and province != ''
+        group by province
+    </select>
 </mapper>

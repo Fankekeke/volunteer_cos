@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 学校信息 mapper层
@@ -23,4 +24,11 @@ public interface SysSchoolMapper extends BaseMapper<SysSchool> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectSchoolPage(Page<SysSchool> page, @Param("sysSchool") SysSchool sysSchool);
+
+    /**
+     * 获取省份信息
+     *
+     * @return 结果
+     */
+    List<String> queryProvince();
 }

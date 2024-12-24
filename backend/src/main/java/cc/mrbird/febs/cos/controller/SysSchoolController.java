@@ -53,6 +53,16 @@ public class SysSchoolController {
     }
 
     /**
+     * 获取省份信息
+     *
+     * @return 结果
+     */
+    @GetMapping("/queryProvince")
+    public R queryProvince() {
+        return R.ok(sysSchoolService.queryProvince());
+    }
+
+    /**
      * 获取首页统计数据
      *
      * @return 结果

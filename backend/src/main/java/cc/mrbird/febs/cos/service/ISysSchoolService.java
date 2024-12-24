@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 学校信息 service层
@@ -35,4 +36,11 @@ public interface ISysSchoolService extends IService<SysSchool> {
      * 逆地址解析
      */
     void addressResolve();
+
+    /**
+     * 获取省份信息
+     *
+     * @return 结果
+     */
+    List<String> queryProvince();
 }
