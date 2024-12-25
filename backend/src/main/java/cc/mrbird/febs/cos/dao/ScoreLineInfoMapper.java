@@ -1,6 +1,7 @@
 package cc.mrbird.febs.cos.dao;
 
 import cc.mrbird.febs.cos.entity.ScoreLineInfo;
+import cc.mrbird.febs.cos.entity.vo.ScoreLineRecommendVo;
 import cc.mrbird.febs.cos.entity.vo.ScoreLineVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -36,6 +37,17 @@ public interface ScoreLineInfoMapper extends BaseMapper<ScoreLineInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectScoreLineRecommendPage(Page<ScoreLineInfo> page, @Param("scoreLineInfo") ScoreLineInfo scoreLineInfo, @Param("schoolIdList") List<Integer> schoolIdList, @Param("disciplineIdList") List<Integer> disciplineIdList);
+
+    /**
+     * 获取推荐学校专业绑定信息
+     *
+     * @param scoreLineInfo    学校专业绑定信息
+     * @param disciplineIdList 专业ID
+     * @param schoolIdList     学校ID
+     * @return 结果
+     */
+    List<ScoreLineRecommendVo> selectScoreLineRecommend(@Param("scoreLineInfo") ScoreLineInfo scoreLineInfo, @Param("schoolIdList") List<Integer> schoolIdList, @Param("disciplineIdList") List<Integer> disciplineIdList);
+
 
     /**
      * 根据学校ID获取招生信息

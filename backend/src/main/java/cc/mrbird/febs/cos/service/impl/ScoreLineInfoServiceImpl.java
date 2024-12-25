@@ -3,6 +3,7 @@ package cc.mrbird.febs.cos.service.impl;
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.cos.entity.*;
 import cc.mrbird.febs.cos.dao.ScoreLineInfoMapper;
+import cc.mrbird.febs.cos.entity.vo.ScoreLineRecommendVo;
 import cc.mrbird.febs.cos.entity.vo.ScoreLineVo;
 import cc.mrbird.febs.cos.service.*;
 import cn.hutool.core.collection.CollectionUtil;
@@ -193,7 +194,7 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
      * @throws FebsException 异常
      */
     @Override
-    public LinkedHashMap<String, Object> selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException {
+    public List<LinkedHashMap<String, Object>> selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException {
         // 获取用户志愿专业与志愿学校
         UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, scoreLineInfo.getUserId()));
         if (userInfo != null) {
@@ -213,8 +214,63 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
 
         int year = DateUtil.year(new Date());
         scoreLineInfo.setYear(String.valueOf(year));
-//        return baseMapper.selectScoreLineRecommendPage(page, scoreLineInfo, schoolIdList, disciplineIdList);
-        return null;
+        List<ScoreLineRecommendVo> scoreLineRecommendVoList = baseMapper.selectScoreLineRecommend(scoreLineInfo, schoolIdList, disciplineIdList);
+        if (CollectionUtil.isEmpty(scoreLineRecommendVoList)) {
+            return Collections.emptyList();
+        }
+        Map<String, List<ScoreLineRecommendVo>> map = scoreLineRecommendVoList.stream().filter(e -> StrUtil.isNotEmpty(e.getDisciplineName())).collect(Collectors.groupingBy(ScoreLineRecommendVo::getDisciplineName));
+        List<LinkedHashMap<String, Object>> result = new ArrayList<>();
+
+        map.forEach((key, value) -> {
+            LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<>();
+            linkedHashMap.put("name", key);
+            linkedHashMap.put("list", value);
+            result.add(linkedHashMap);
+        });
+        return result;
+    }
+
+    /**
+     * 根据省份获取推荐学校
+     * @param scoreLineInfo 参数
+     * @return 结果
+     * @throws FebsException 异常
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> selectRecommendProvinces(ScoreLineInfo scoreLineInfo) throws FebsException {
+        // 获取用户志愿专业与志愿学校
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, scoreLineInfo.getUserId()));
+        if (userInfo != null) {
+            scoreLineInfo.setUserId(userInfo.getId());
+            scoreLineInfo.setType(userInfo.getType());
+            scoreLineInfo.setScore(userInfo.getScore() == null ? 0 : userInfo.getScore());
+        }
+
+        List<UserWishDiscipline> wishDisciplineList = userWishDispatcherService.list(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, scoreLineInfo.getUserId()));
+        List<UserWishInfo> wishInfoList = userWishInfoService.list(Wrappers.<UserWishInfo>lambdaQuery().eq(UserWishInfo::getUserId, scoreLineInfo.getUserId()));
+
+        List<Integer> disciplineIdList = wishDisciplineList.stream().map(UserWishDiscipline::getDisciplineId).distinct().collect(Collectors.toList());
+
+        List<Integer> schoolIdList = wishInfoList.stream().map(UserWishInfo::getSchoolId).distinct().collect(Collectors.toList());
+        List<Integer> wishDisciplineIdList = wishInfoList.stream().map(UserWishInfo::getDisciplineId).distinct().collect(Collectors.toList());
+        CollectionUtil.addAll(disciplineIdList, wishDisciplineIdList);
+
+        int year = DateUtil.year(new Date());
+        scoreLineInfo.setYear(String.valueOf(year));
+        List<ScoreLineRecommendVo> scoreLineRecommendVoList = baseMapper.selectScoreLineRecommend(scoreLineInfo, schoolIdList, disciplineIdList);
+        if (CollectionUtil.isEmpty(scoreLineRecommendVoList)) {
+            return Collections.emptyList();
+        }
+        Map<String, List<ScoreLineRecommendVo>> map = scoreLineRecommendVoList.stream().filter(e -> StrUtil.isNotEmpty(e.getProvince())).collect(Collectors.groupingBy(ScoreLineRecommendVo::getProvince));
+        List<LinkedHashMap<String, Object>> result = new ArrayList<>();
+
+        map.forEach((key, value) -> {
+            LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<>();
+            linkedHashMap.put("name", key);
+            linkedHashMap.put("list", value);
+            result.add(linkedHashMap);
+        });
+        return result;
     }
 
     /**

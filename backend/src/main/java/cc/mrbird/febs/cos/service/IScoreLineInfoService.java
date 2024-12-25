@@ -2,15 +2,14 @@ package cc.mrbird.febs.cos.service;
 
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.cos.entity.ScoreLineInfo;
-import cc.mrbird.febs.cos.entity.vo.ScoreLineVo;
+import cc.mrbird.febs.cos.entity.vo.ScoreLineRecommendVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 分数线 service层
@@ -69,7 +68,15 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
      * @return 结果
      * @throws FebsException 异常
      */
-    LinkedHashMap<String, Object> selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException;
+    List<LinkedHashMap<String, Object>> selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException;
+
+    /**
+     * 根据省份获取推荐学校
+     * @param scoreLineInfo 参数
+     * @return 结果
+     * @throws FebsException 异常
+     */
+    List<LinkedHashMap<String, Object>> selectRecommendProvinces(ScoreLineInfo scoreLineInfo) throws FebsException;
 
     /**
      * 校院统计

@@ -152,7 +152,18 @@ public class ScoreLineInfoController {
      */
     @GetMapping("/selectRecommendByMaior")
     public R selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException {
-        return R.ok();
+        return R.ok(scoreLineInfoService.selectRecommendByMaior(scoreLineInfo));
+    }
+
+    /**
+     * 根据省份获取推荐学校
+     * @param scoreLineInfo 参数
+     * @return 结果
+     * @throws FebsException 异常
+     */
+    @GetMapping("/selectRecommendProvice")
+    public R selectRecommendProvinces(ScoreLineInfo scoreLineInfo) throws FebsException {
+        return R.ok(scoreLineInfoService.selectRecommendProvinces(scoreLineInfo));
     }
 
     /**
