@@ -186,6 +186,38 @@ public class ScoreLineInfoServiceImpl extends ServiceImpl<ScoreLineInfoMapper, S
     }
 
     /**
+     * 根据专业获取推荐学校
+     *
+     * @param scoreLineInfo 参数
+     * @return 结果
+     * @throws FebsException 异常
+     */
+    @Override
+    public LinkedHashMap<String, Object> selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException {
+        // 获取用户志愿专业与志愿学校
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, scoreLineInfo.getUserId()));
+        if (userInfo != null) {
+            scoreLineInfo.setUserId(userInfo.getId());
+            scoreLineInfo.setType(userInfo.getType());
+            scoreLineInfo.setScore(userInfo.getScore() == null ? 0 : userInfo.getScore());
+        }
+
+        List<UserWishDiscipline> wishDisciplineList = userWishDispatcherService.list(Wrappers.<UserWishDiscipline>lambdaQuery().eq(UserWishDiscipline::getUserId, scoreLineInfo.getUserId()));
+        List<UserWishInfo> wishInfoList = userWishInfoService.list(Wrappers.<UserWishInfo>lambdaQuery().eq(UserWishInfo::getUserId, scoreLineInfo.getUserId()));
+
+        List<Integer> disciplineIdList = wishDisciplineList.stream().map(UserWishDiscipline::getDisciplineId).distinct().collect(Collectors.toList());
+
+        List<Integer> schoolIdList = wishInfoList.stream().map(UserWishInfo::getSchoolId).distinct().collect(Collectors.toList());
+        List<Integer> wishDisciplineIdList = wishInfoList.stream().map(UserWishInfo::getDisciplineId).distinct().collect(Collectors.toList());
+        CollectionUtil.addAll(disciplineIdList, wishDisciplineIdList);
+
+        int year = DateUtil.year(new Date());
+        scoreLineInfo.setYear(String.valueOf(year));
+//        return baseMapper.selectScoreLineRecommendPage(page, scoreLineInfo, schoolIdList, disciplineIdList);
+        return null;
+    }
+
+    /**
      * 校院统计
      *
      * @return 结果

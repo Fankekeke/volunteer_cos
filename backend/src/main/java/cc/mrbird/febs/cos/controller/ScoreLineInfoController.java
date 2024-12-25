@@ -144,6 +144,18 @@ public class ScoreLineInfoController {
     }
 
     /**
+     * 根据专业获取推荐学校
+     *
+     * @param scoreLineInfo 参数
+     * @return 结果
+     * @throws FebsException 异常
+     */
+    @GetMapping("/selectRecommendByMaior")
+    public R selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException {
+        return R.ok();
+    }
+
+    /**
      * 根据学校获取分数线
      *
      * @param schoolId 学校ID

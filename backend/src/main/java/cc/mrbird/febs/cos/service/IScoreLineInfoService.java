@@ -63,6 +63,15 @@ public interface IScoreLineInfoService extends IService<ScoreLineInfo> {
     IPage<LinkedHashMap<String, Object>> selectRecommendSchool(Page<ScoreLineInfo> page, ScoreLineInfo scoreLineInfo) throws FebsException;
 
     /**
+     * 根据专业获取推荐学校
+     *
+     * @param scoreLineInfo 参数
+     * @return 结果
+     * @throws FebsException 异常
+     */
+    LinkedHashMap<String, Object> selectRecommendByMaior(ScoreLineInfo scoreLineInfo) throws FebsException;
+
+    /**
      * 校院统计
      *
      * @return 结果
