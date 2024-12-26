@@ -3,30 +3,27 @@
     <a-row style="margin-top: 25px">
       <a-col :span="24">
         <a-radio-group button-style="solid" v-model="checkFlag" style="width: 100%">
-          <a-radio-button value="1" style="width: 25%;text-align: center">
-            全部招生信息
-          </a-radio-button>
-          <a-radio-button value="2" style="width: 25%;text-align: center">
-            学校专业推荐
+          <a-radio-button :value="item" style="text-align: center" v-for="(item, index) in provinceList" :key="index">
+            {{ item }}
           </a-radio-button>
         </a-radio-group>
       </a-col>
-<!--      <a-col :span="12">-->
-<!--        <div>-->
-<!--          <a-input-search-->
-<!--            style="margin-top: 30px"-->
-<!--            placeholder="学校搜索"-->
-<!--            enter-button="搜索"-->
-<!--            @search="onSearch"-->
-<!--          />-->
-<!--        </div>-->
-<!--      </a-col>-->
+      <!--      <a-col :span="12">-->
+      <!--        <div>-->
+      <!--          <a-input-search-->
+      <!--            style="margin-top: 30px"-->
+      <!--            placeholder="学校搜索"-->
+      <!--            enter-button="搜索"-->
+      <!--            @search="onSearch"-->
+      <!--          />-->
+      <!--        </div>-->
+      <!--      </a-col>-->
       <a-col :span="24" style="margin-top: 25px">
         <div style="background:#ECECEC; padding:30px">
           <a-skeleton :loading="loading" active :paragraph="{ rows: 10 }"/>
           <a-alert v-if="!loading" message="此数据根据学校信息进行统计" type="info" close-text="Close Now" style="margin-bottom: 15px"/>
           <a-row :gutter="15" v-if="!loading">
-            <a-col :span="6" v-for="(item, index) in dataList" style="margin-bottom: 15px" :key="index">
+            <a-col :span="6" v-for="(item, index) in currentDataList" style="margin-bottom: 15px" :key="index">
               <a-card :bordered="false" hoverable :description="item.address">
                 <span slot="title">
                   <a-badge status="processing"/>
@@ -70,13 +67,15 @@ export default {
   name: 'House',
   data () {
     return {
-      currentTab: 1,
+      currentTab: '',
       page: {
         current: 1,
         total: 0,
         size: 36
       },
       dataList: [],
+      currentDataList: [],
+      provinceList: [],
       loading: false,
       checkFlag: '1',
       series: [{
@@ -105,13 +104,12 @@ export default {
   watch: {
     checkFlag: function (value) {
       this.currentTab = value
-      this.page.current = 1
-      this.page.size = 36
-      this.selectSchoolRate(value)
+      this.tabChange(value)
     }
   },
   mounted () {
-    this.selectSchoolRate(1)
+    this.selectSchoolRate()
+    // this.queryProvinces()
   },
   methods: {
     apply (row) {
@@ -128,40 +126,50 @@ export default {
     selectSchoolRate (type, schoolName) {
       this.loading = true
       let params = {}
-      params.size = this.page.size
-      params.current = this.page.current
       if (schoolName) {
         params.schoolName = schoolName
       }
       params.userId = this.currentUser.userId
-      if (type == 1) {
-        this.$get(`/cos/score-line-info/page`, {...params}).then((r) => {
-          let data = r.data.data
+      this.$get(`/cos/score-line-info/selectRecommendMajor`, params).then((r) => {
+        let data = r.data.data
+        this.dataList = data
+        if (this.dataList) {
+          this.provinceList = data.map(item => item.name)
+          this.currentDataList = data[0].list.slice((this.page.current - 1) * this.page.size, this.page.current * this.page.size)
           const pagination = {...this.pagination}
-          pagination.total = data.total
-          this.dataList = data.records
+          pagination.total = this.currentDataList.total
+          this.dataList = this.currentDataList.records
           this.page = pagination
-          console.log(this.page)
-          // 数据加载完毕，关闭loading
-          this.loading = false
-        })
-      } else {
-        this.$get(`/cos/score-line-info/selectRecommendSchool`, params).then((r) => {
-          let data = r.data.data
-          const pagination = {...this.pagination}
-          pagination.total = data.total
-          this.dataList = data.records
-          this.page = pagination
-          console.log(this.page)
-          // 数据加载完毕，关闭loading
-          this.loading = false
-        })
+        }
+        // 数据加载完毕，关闭loading
+        this.loading = false
+      })
+    },
+    tabChange (checkFlag) {
+      this.page.current = 1
+      this.page.size = 36
+      if (this.dataList) {
+        let result = this.dataList.filter(item => item.name === checkFlag)
+        if (result) {
+          this.currentDataList = result[0].list.slice((this.page.current - 1) * this.page.size, this.page.current * this.page.size)
+        }
       }
+    },
+    queryProvinces () {
+      this.$get('/cos/sys-school/queryProvince').then((r) => {
+        // 获取所有省份
+        this.provinceList = r.data.data
+      })
     },
     pageChange (page, pageSize) {
       this.page.size = pageSize
       this.page.current = page
-      this.selectSchoolRate(this.currentTab)
+      if (this.dataList) {
+        let result = this.dataList.filter(item => item.name === this.currentTab)
+        if (result) {
+          this.currentDataList = result[0].list.slice((this.page.current - 1) * this.page.size, this.page.current * this.page.size)
+        }
+      }
     },
     fetch (params = {}) {
       // 显示loading
