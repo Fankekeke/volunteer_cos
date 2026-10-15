@@ -1,17 +1,17 @@
-### 基于SpringBoot + Vue的高考志愿填报系统.
+![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-高考志愿辅助系统、智能志愿填报平台、高考择校填报系统
+![](https://img.shields.io/badge/Version-1.0.0-brightgreen.svg)
 
-#### 管理员功能模块介绍：
-###### 公告管理：发布高考政策、填报时间等重要通知公告。学校管理：维护全国高校基本信息，如名称、地区、类型等。专业管理：管理各高校开设的专业名称、代码及简介信息。学校专业绑定：配置每所高校对应开设的具体专业列表。学校评价：查看并审核学生对高校的评分与文字评价。学校专业分数线：录入并管理历年各专业录取最低/平均分。志愿信息：查看所有学生填报的志愿草表或历史记录。志愿申请：审核或导出学生正式提交的志愿填报申请。消息管理：向学生或学校发送系统通知与提醒消息。学生管理：管理考生账号、资料及填报状态权限。数据统计：分析热门院校、专业趋势、填报人数等数据。
+![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-#### 学校功能模块介绍：
-###### 校信息修改：更新本校招生简介、联系方式、办学特色等。学校专业绑定：维护本校当年招生专业及计划人数设置。学校评价管理：查看并回复学生对本校的公开评价内容。专业分数线变更：根据招办公布数据调整各专业录取分数。志愿审核：查看报考本校的学生志愿并配合招办审核。数据统计：统计本校志愿填报热度、专业选择分布等。帖子信息：发布或管理在平台社区中的招生宣传帖文。
+# 基于 SpringBoot + Vue 的高考志愿填报系统 (College Entrance Examination)
 
-#### 学生功能模块介绍：
-###### 用户注册：通过考生号或手机号完成系统实名注册。修改个人信息：完善或更正个人基本信息与联系方式。个人志愿管理：草拟、保存、修改或删除志愿填报方案。志愿申请：正式提交高考志愿填报申请至招办系统。学校评价：浏览或撰写对目标高校的真实体验与评价。志愿推荐：基于成绩、兴趣等获得智能匹配的院校专业建议。
+院校专业库 · 历年分数线 · 志愿申请 · 智能推荐 · 学校评价 · 数据统计
+
+本项目是一套面向高考考生、高校与平台管理员的高考志愿填报辅助系统，覆盖“院校专业查询、历年分数线对比、志愿填报申请、志愿智能推荐、学校评价、消息通知、数据统计”等核心业务。系统分为管理员、学校、学生三类角色：管理员负责公告、院校、专业、分数线、学生与志愿数据管理；学校负责本校信息维护、专业分数线更新、志愿审核与帖子管理；学生可注册登录、维护个人信息、管理个人志愿、提交志愿申请、评价学校并获取志愿推荐。
 
 #### 安装环境
+️**注意**：请确保您的开发环境已安装以下依赖。
 
 JAVA 环境 
 
@@ -19,33 +19,111 @@ Node.js环境 [https://nodejs.org/en/] 选择14.17
 
 Yarn 打开cmd， 输入npm install -g yarn !!!必须安装完毕nodejs
 
-Mysql 数据库 [https://blog.csdn.net/qq_40303031/article/details/88935262] 一定要把账户和密码记住
+Mysql 数据库 一定要把账户和密码记住
 
 redis
 
-Idea 编译器 [https://blog.csdn.net/weixin_44505194/article/details/104452880]
+Idea 编译器
 
-WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
+WebStorm OR VScode 编译器
 
 #### 采用技术及功能
 
 后端：SpringBoot、MybatisPlus、MySQL、Redis、
 前端：Vue、Apex、Antd、Axios
 
-平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件)
+平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件) + 百度地图 API
 
 平台后台：springboot(框架) + redis(缓存中间件) + shiro(权限中间件) + mybatisplus(orm) + restful风格接口 + mysql(数据库)
 
 开发环境：windows10 or windows7 ， vscode or webstorm ， idea + lambok
 
-##### 管理员：
-公告管理、学校管理、专业管理、学校专业绑定、学校评价、学校专业分数线、志愿信息、志愿申请、消息管理、学生管理、数据统计
+---
 
-##### 学校：
-校信息修改、学校专业绑定、学校评价管理、专业分数线变更、志愿审核、数据统计、帖子信息
+## 核心特性
 
-##### 学生：
-用户注册、修改个人信息、个人志愿管理、志愿申请、学校评价、志愿推荐
+- **院校专业库管理**：维护全国高校基本信息、专业目录、选科要求、招生计划与专业介绍，支持按省份、层次、专业门类筛选。
+- **学校专业绑定**：通过院校与专业关联表维护招生计划，支持按省份、批次、年份、科类管理招生专业。
+- **历年分数线管理**：维护院校分数线与专业分数线，支持按年份、省份、批次、科类查询与对比分析。
+- **志愿申请与审核**：学生提交志愿申请后，学校端可查看并审核志愿信息，管理员统一监管志愿数据。
+- **志愿智能推荐**：根据学生成绩、位次、选科、地域偏好与历年录取数据，生成推荐方案。
+- **学校评价与帖子管理**：学生可对学校进行评价，学校端可管理本校评价与帖子信息，管理员统一维护内容合规性。
+- **消息与公告管理**：管理员发布高考政策、填报通知与系统公告，支持站内消息或邮件通知学生。
+- **多角色权限控制**：管理员、学校账号、学生账号分别拥有不同菜单权限与数据访问范围。
+- **数据统计看板**：展示学生数量、志愿提交量、热门院校、热门专业、分数线趋势、审核进度等统计指标。
+---
+
+## 适用场景
+
+- 高考志愿辅助填报平台
+- 高校招生信息管理系统
+- 学校招生审核与宣传平台
+- 学生志愿模拟填报系统
+- 教育机构志愿填报辅助平台
+- 高考政策与分数线查询平台
+- 院校专业对比与推荐系统
+- 省级或校级招生数据管理平台
+---
+
+## 功能模块概览
+
+### 管理员端
+
+- **公告管理**：发布高考政策、填报时间、系统通知与招生公告，支持置顶、定时发布与状态管理。
+- **学校管理**：维护高校基本信息，包括学校名称、院校代码、省份、城市、办学层次、办学类型、招生网址等。
+- **专业管理**：维护专业目录，包括专业名称、专业代码、学科门类、学制、学位类型、专业介绍等。
+- **学校专业绑定**：维护院校与专业的招生计划关联，设置招生省份、录取批次、选科要求、计划人数与招生年份。
+- **学校评价管理**：查看学生提交的评价内容，支持审核、隐藏、删除与敏感词管理。
+- **学校专业分数线**：维护院校分数线与专业分数线，支持按年份、省份、批次、科类录入与查询。
+- **志愿信息管理**：查看学生志愿列表、志愿顺序、提交状态与推荐结果，支持导出与统计分析。
+- **志愿申请管理**：处理学生志愿申请，查看申请状态，并与学校审核结果联动。
+- **消息管理**：向指定学生、学校或全体用户发送系统消息，支持消息类型、阅读状态与发送记录管理。
+- **学生管理**：管理学生账号、个人信息、高考成绩、位次、选科组合、所属省份与账号状态。
+- **数据统计**：展示学生注册数、志愿提交量、热门院校、热门专业、审核通过率、公告阅读量等统计指标。
+
+### 学校端
+
+- **学校信息修改**：学校账号可维护本校基本信息、招生简介、校园环境图片、招生网址与联系方式。
+- **学校专业绑定**：为本校维护招生专业、招生计划、选科要求、录取批次与招生省份。
+- **学校评价管理**：查看本校收到的学生评价，支持回复、申诉与异常评价处理。
+- **专业分数线变更**：更新本校各专业历年录取分数线、最低位次、计划人数与录取批次信息。
+- **志愿审核**：查看报考本校的学生志愿申请，审核志愿材料并反馈审核结果。
+- **数据统计**：查看本校志愿申请数量、报考专业分布、生源地分布、评价数量与审核进度。
+- **帖子信息管理**：发布本校招生动态、专业介绍、校园生活等内容，并管理帖子状态与评论。
+
+### 学生端
+
+- **用户注册**：学生通过手机号或账号注册，完善姓名、省份、选科、高考成绩、位次等基本信息。
+- **修改个人信息**：维护联系方式、家庭住址、兴趣偏好、地域偏好、职业倾向等个人信息。
+- **个人志愿管理**：添加、编辑、删除志愿，调整志愿顺序，支持草稿保存与提交。
+- **志愿申请**：向目标院校提交志愿申请，查看申请状态与审核结果。
+- **学校评价**：对已了解或报考的院校进行评价，填写评价内容、评分与标签。
+- **志愿推荐**：根据成绩、位次、选科、地域偏好与历年分数线，获取推荐方案。
+
+---
+
+## 项目结构
+
+```text
+pharmacy-dispensing-system/
+├── backend/            # 后端 API 服务
+│   ├── src/
+│   │   ├── controllers/  # 控制器
+│   │   ├── models/       # 数据模型
+│   │   ├── routes/       # 路由
+│   │   └── services/     # 业务逻辑
+│   └── package.json
+├── frontend/           # 前端 Web 应用
+│   ├── src/
+│   │   ├── views/      # 页面视图
+│   │   ├── components/ # 公共组件
+│   │   └── store/      # 状态管理
+│   └── package.json
+├── docs/               # 项目文档与 API 接口说明
+├── LICENSE
+└── README.md
+```
+---
 
 
 #### 前台启动方式
@@ -55,29 +133,24 @@ WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
 #### 默认后台账户密码
 [管理员]
 admin
-1234qwer
+123456
 
-[学校]
-school
-1234qwer
-
-[学生]
+[用户]
 fank
-1234qwer
-#### 项目截图
+123456
 
+#### 项目截图
 |  |  |
 |---------------------|---------------------|
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879393958.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879527630.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725841407741.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879508089.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879633341.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879492094.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879617877.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879471554.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879591691.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879456818.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879577859.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879446178.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879568379.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879434903.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879555177.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879420137.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879545610.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1725879407528.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/work/936e9baf53eb9a217af4f89c616dc19.png) |
+| ![](./assets/image%20(1).png) | ![](./assets/image%20(2).png) |
+| ![](./assets/image%20(3).png) | ![](./assets/image%20(4).png) |
+| ![](./assets/image%20(5).png) | ![](./assets/image%20(6).png) |
+| ![](./assets/image%20(7).png) | ![](./assets/image%20(8).png) |
+| ![](./assets/image%20(9).png) | ![](./assets/image%20(10).png) |
+| ![](./assets/image%20(11).png) | ![](./assets/image%20(12).png) |
+| ![](./assets/image%20(13).png) | ![](./assets/image%20(14).png) |
+| ![](./assets/image%20(15).png) | ![](./assets/image%20(16).png) |
+| ![](./assets/image%20(17).png) | ![](./assets/image%20(18).png) |
 
 #### 演示视频
 
@@ -95,7 +168,10 @@ WeChat: `Storm_Berserker`
 
 > 项目部署调试不好包退！功能逻辑没讲明白包退！
 
+<div align=center><img align="center" src="./assets/product_word.png" alt="fankekeke" /></div>
+
 #### 其它资源
+[2026年-答辩顺利通过-客户评价🀄](https://berserker287.github.io/2026/06/29/2026%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
 [2025年-答辩顺利通过-客户评价🍜](https://berserker287.github.io/2025/06/18/2025%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
@@ -119,4 +195,8 @@ WeChat: `Storm_Berserker`
 
 More info: [悲伤的橘子树](https://berserker287.github.io/)
 
-<p><img align="center" src="https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/%E5%90%88%E4%BD%9C%E7%89%A9%E6%96%99%E6%A0%B7%E5%BC%8F%20(3).png" alt="fankekeke" /></p>
+<div align="center"><img align="center" src="./assets/chat_qr_code.png" alt="fankekeke" width=250 /></div>
+
+<p><img align="center" src="./assets/wechat_group.png" alt="fankekeke" /></p>
+
+**感谢查看**
